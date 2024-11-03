@@ -4,6 +4,7 @@ import {useSelector} from "react-redux";
 import {getCurrentUser} from "../../features/currentUserSlice";
 import axios from "axios";
 import BASE_URL from "../../app/apis/baseUrl";
+import {retry} from "@reduxjs/toolkit/query";
 
 const Modal = ({receivers, onClose}) => {
     const organization = useSelector(getCurrentUser);
@@ -12,7 +13,8 @@ const Modal = ({receivers, onClose}) => {
 
     const [toReceivers, setToReceivers] = useState('');
     const [messageTitle, setMessageTitle] = useState('');
-    const [file, setFile] = useState();
+    const [file, setFile] = useState(null);
+    const [fileType, setFileType] = useState("")
     const [textMessage, setTextMessage] = useState('');
 
     //:TODO Handle attach preview.
@@ -33,10 +35,38 @@ const Modal = ({receivers, onClose}) => {
         setMessageTitle(e.target.value)
     }
 
-    const handleAttach = (e) => {
-        console.log(e.target.files);
-        setFile(URL.createObjectURL(e.target.files[0]));
+    const handleFileChange = (e) => {
+        const selectedFile = e.target.files[0];
+        if (selectedFile) {
+            setFile(selectedFile);
+            setFileType(selectedFile.type);
+        }
     }
+
+    const renderPreview = () => {
+        if (!file) return null;
+
+        if (fileType.startsWith("image/")) {
+            return <img src={URL.createObjectURL(file)} alt="preview" width="200"/>;
+        } else if (fileType.startsWith("video/")) {
+            return (
+                <video width="320" height="240" controls>
+                    <source src={URL.createObjectURL(file)} type={fileType}/>
+                    Your browser does not support this video tag.
+                </video>
+            );
+        } else if (fileType === "application/pdf") {
+            return (
+                <embed src={URL.createObjectURL(file)}
+                       type="application/pdf"
+                       width="320"
+                       height="200"
+                />
+            );
+        } else {
+            return <p>Unsupported file type</p>;
+        }
+    };
 
     const handleSendCampaign = async () => {
         const response = await axios.post(`${BASE_URL}campaigns`, campaignBody);
@@ -79,7 +109,8 @@ const Modal = ({receivers, onClose}) => {
                     <div className="flex items-center justify-center w-full mb-8">
                         <label htmlFor="dropzone-file"
                                className="flex flex-col items-center justify-center w-7/12 h-30  border-gray-200 border shadow-sm  rounded-lg cursor-pointer  dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-                            <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                            <div className="file-preview flex flex-col items-center justify-center pt-5 pb-6">
+                                {renderPreview()}
                                 <svg className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
                                      xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
                                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"
@@ -90,7 +121,8 @@ const Modal = ({receivers, onClose}) => {
                                     photo *</p>
                             </div>
                             <input id="dropzone-file" type="file" className="hidden"
-                                   onChange={(e) => handleAttach(e)}
+                                   accept="image/*,video/*,application/pdf"
+                                   onChange={handleFileChange}
                             />
                         </label>
                     </div>

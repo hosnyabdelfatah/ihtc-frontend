@@ -41,7 +41,6 @@ const Campaigns = () => {
     const [minPageNumberLimit, setMinPageNumberLimit] = useState(0);
     //End pagination const
 
-
     let countryContent;
     useEffect(() => {
         const getCountries = async () => {
@@ -51,7 +50,6 @@ const Campaigns = () => {
         }
 
         (async () => await getCountries())();
-
     }, []);
 
     const handleSelectedDoctor = (e) => {
@@ -71,7 +69,6 @@ const Campaigns = () => {
             doctorsArray.forEach(doctor => {
                 newCheckedItems[doctor.id] = true; // Mark all items as checked
             });
-
         }
         setCheckedItems(newCheckedItems);
         setIsSelectAll(!isSelectAll);
@@ -82,18 +79,8 @@ const Campaigns = () => {
         if (!isSelectAll) {
             const selectedDoctors = searchDoctorsResult.map(doctor => setAllSelectedDoctors([...allSelectedDoctors, doctor._id]));
 
-
             setAllSelectedDoctors(Object.keys(checkedItems));
-        } else {
-            setAllSelectedDoctors([])
         }
-
-        //    :TODO Fix select all when I un check 1 of the select all checkboxes it's increment not decrement.
-        // selectedDoctorsIdsArray = [Object.keys(checkedItems)]
-        setAllSelectedDoctors([...Object.keys(checkedItems)]);
-        console.log(allSelectedDoctors)
-        console.log(selectedDoctorsIdsArray)
-        console.log(Object.keys(checkedItems).length, checkedItems)
     }
 
     const handleCheckboxChange = (id) => {
@@ -122,6 +109,7 @@ const Campaigns = () => {
                 return doctor;
             }
         });
+
         if (result.length > 0) {
             setSearchDoctorsResult(result)
             setMaxPageNumberLimit(Math.ceil(result.length / itemsPerPage))
@@ -131,7 +119,6 @@ const Campaigns = () => {
         } else {
             setSearchDoctorsResult([])
         }
-
     }
 
 
@@ -194,7 +181,6 @@ const Campaigns = () => {
         );
     };
 
-
     const handleClick = (event) => {
         setCurrentPage(Number(event.target.id));
     };
@@ -226,9 +212,7 @@ const Campaigns = () => {
                 <img src={doctor.image} className="w-10 h-10"
                      alt={(doctor.fname + "" + doctor.lname).toUpperCase()}/>
             </td>
-
         </tr>
-
     })
 
     const renderPageNumbers = pages.map((number) => {
@@ -326,14 +310,14 @@ const Campaigns = () => {
 
                 </div>
                 <div className="search-data flex flex-row justify-between   border-2 border-stone-100 px-2 w-[69%]">
+                    {/*<div>*/}
+                    {/*    <span className="mr-1">Country selected is </span>*/}
+                    {/*    <span className="font-semibold text-indigo-500">*/}
+                    {/*        {selectedCountryText ? selectedCountryText : "......"}*/}
+                    {/*    </span>*/}
+                    {/*</div>*/}
                     <div>
-                        <span className="mr-1">Country selected is </span>
-                        <span className="font-semibold text-indigo-500">
-                            {selectedCountryText ? selectedCountryText : "......"}
-                        </span>
-                    </div>
-                    <div>
-                        <span className="text-indigo-500 font-semibold mr-2"> {allSelectedDoctors.length}</span>
+                        <span className="text-indigo-500 font-semibold mr-2"> {Object.keys(checkedItems).length}</span>
                         <span>doctors selected</span>
                     </div>
                     <div>
