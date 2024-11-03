@@ -1,0 +1,11 @@
+form select option.english::before {
+    content: url("../../assets/images/flags/english.jpeg");
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 3px;
+    background-image: url("../../assets/images/flags/english.jpeg");
+    width: 20px;
+    height: 20px;
+}
