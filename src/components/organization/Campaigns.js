@@ -8,7 +8,7 @@ import {useFetchCountriesQuery} from "../../app/apis/countryApi";
 import React, {useEffect, useRef, useState} from "react";
 import BASE_URL from "../../app/apis/baseUrl";
 import Countries from "../Countries";
-import Modal from "../Modal";
+import Modal from "./Modal";
 import {HiChevronDown} from "react-icons/hi";
 import {IoSearchSharp} from "react-icons/io5";
 

@@ -1,9 +1,9 @@
 import ReactDom from 'react-dom';
 import React, {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
-import {getCurrentUser} from "../features/currentUserSlice";
+import {getCurrentUser} from "../../features/currentUserSlice";
 import axios from "axios";
-import BASE_URL from "../app/apis/baseUrl";
+import BASE_URL from "../../app/apis/baseUrl";
 
 const Modal = ({receivers, onClose}) => {
     const organization = useSelector(getCurrentUser);
@@ -65,9 +65,9 @@ const Modal = ({receivers, onClose}) => {
 
     return ReactDom.createPortal(
         <div className="z-50">
-            <div className="absolute inset-0 bg-gray-200 opacity-70 z-50" onClick={onClose}></div>
+            <div className="fixed inset-0 bg-gray-200 opacity-70 z-50" onClick={onClose}></div>
             <form onSubmit={(e) => e.preventDefault()}
-                  className="absolute inset-20 p-5 bg-yellow-400 z-50 w-[70%] mx-auto  "
+                  className="fixed inset-20 p-5 bg-yellow-400 z-50 w-[70%] mx-auto  "
             >
                 <div className="flex flex-col justify-center">
                     <div className="title mb-6">
