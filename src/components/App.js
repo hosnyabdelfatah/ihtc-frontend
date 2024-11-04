@@ -19,7 +19,22 @@ import Campaigns from "./organization/Campaigns";
 
 function App() {
     // const {userState} = useSelector(selectCurrentUserState)
+    function getCookie(name) {
+        const cookieArr = document.cookie.split(";");
+        for (let cookie of cookieArr) {
+            cookie = cookie.trim();
+            if (cookie.startsWith(name + "=")) {
+                return decodeURIComponent(cookie.substring(name.length + 1));
+            }
+        }
+        return null;
+    }
 
+    useEffect(() => {
+        const userType = getCookie("organizationJwt")
+        console.log(document.cookie)
+        console.log("User aas: ", userType);
+    }, [])
     return (
         <Routes>
             <Route element={<Layout/>}>

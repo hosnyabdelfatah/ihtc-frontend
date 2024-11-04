@@ -9,6 +9,14 @@ import axios from "axios";
 import useAuth from "../../hooks/useAuth";
 import BASE_URL from "../../app/apis/baseUrl";
 
+const setCookie = (name, value, days) => {
+    const date = new Date();
+    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+    const expires = `expires=${date.toUTCString()}`;
+    document.cookie = `${name}=${value}; ${expires}; path=/`;
+};
+
+
 const Login = ({}) => {
     const {auth, setAuth} = useAuth();
 
@@ -27,6 +35,7 @@ const Login = ({}) => {
     const navigate = useNavigate()
     const addError = [];
 
+
     useEffect(() => {
         if (auth.user) {
             console.log(auth);
@@ -40,6 +49,11 @@ const Login = ({}) => {
     useEffect(() => {
         setErrMsg('')
     }, [user, password])
+
+    const handleChaneUserAs = (value) => {
+        setCookie("useAs", value, 1000);
+        console.log(document.cookie)
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -95,22 +109,28 @@ const Login = ({}) => {
                 >
                     <button
                         className={`${userState !== "user" ? "opacity-75" : "opacity-100"} user-login w-[33%] bg-blue-700  py-3 rounded-tl-lg text-stone-100  border-2    shadow-sm text-base`}
-                        // onClick={() => handleChaneUserAs("user")}
-                        onClick={() => dispatch(changeUserState("user"))}
+                        onClick={() => {
+                            dispatch(changeUserState("user"))
+                            handleChaneUserAs("user")
+                        }}
                     >
                         User
                     </button>
                     <button
                         className={`${userState !== "doctor" ? "opacity-75" : "opacity-100"} doctor-login  w-[33%]  bg-lime-500  py-3 border-2	shadow-sm  text-base text-Indigo-400`}
-                        // onClick={() => handleChaneUserAs("doctor")}
-                        onClick={() => dispatch(changeUserState("doctor"))}
+                        onClick={() => {
+                            dispatch(changeUserState("doctor"))
+                            handleChaneUserAs("doctor")
+                        }}
                     >
                         Doctor
                     </button>
                     <button
                         className={`${userState !== "organization" ? "opacity-75" : "opacity-100"} organization-login  bg-amber-500 w-[33%]  py-3 rounded-tr-lg shadow-sm border-2  text-base shadow-sm  text-Violet-700`}
-                        // onClick={() => handleChaneUserAs("organization")}
-                        onClick={() => dispatch(changeUserState("organization"))}
+                        onClick={() => {
+                            dispatch(changeUserState("organization"))
+                            handleChaneUserAs("organization")
+                        }}
                     >
                         Organization
                     </button>
