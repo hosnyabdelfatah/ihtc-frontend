@@ -92,16 +92,17 @@ const Login = ({}) => {
         }
     }
 
-
     const handleUserInput = (e) => setUser(e.target.value)
     const handlePasswordInput = (e) => setPassword(e.target.value)
 
     return (
-        <div className="home mt-12 w-6/12 mx-auto rounded">
+        <div className="home mt-12  xs:w-full sm:mt-4  sm:w-8/12 mx-auto rounded">
             <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
-            <h2 className="my-8 text-xl font-semibold">
-                Use our site as <span
-                className="capitalize text-red-700 font-extrabold">{userState}</span>
+            <h2 className="mx-auto  sm: text-xl font-semibold">
+                Use our site as
+                <span
+                    className="capitalize text-red-700 font-extrabold ml-3">{userState}
+            </span>
             </h2>
             <div className=" shadow-lg px-4 py-6 rounded-lg">
                 <div

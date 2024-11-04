@@ -2,5 +2,5 @@
 
 // const BASE_URL = "http://localhost:5000/";
 // const BASE_URL = `https://glitch.com/edit/#!/tungsten-shell-weaver`;
-const BASE_URL = `ihtc-backend-czg783chj-hosnyabdelfatahs-projects.vercel.app`;
+const BASE_URL = `https://ihtc-backend-9fkstmosa-hosnyabdelfatahs-projects.vercel.app/`;
 export default BASE_URL;
