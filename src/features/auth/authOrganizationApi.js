@@ -8,9 +8,6 @@ export const authOrganizationApi = apiSlice.injectEndpoints({
                 method: 'POST',
                 body: {...credentials},
                 credentials: 'include',
-                headers: {'Content-type': 'application/json'},
-                withCredentials: true,
-                withXSRFToken: true
             })
         }),
     })
