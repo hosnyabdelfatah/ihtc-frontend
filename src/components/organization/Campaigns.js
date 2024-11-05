@@ -160,17 +160,6 @@ const Campaigns = () => {
     })
 
 
-    const getAllDoctors = async () => {
-        const response = await axios.get(`${BASE_URL}/doctors`);
-        const result = response?.data?.data
-        console.log(response)
-        if (result?.length > 0) {
-            setDoctors([...result]);
-            console.log(doctors)
-        }
-        console.log(result)
-    }
-
     useEffect(() => {
         setSelectedDoctorCategory(doctorCategory)
     }, [doctorCategory]);
@@ -273,6 +262,17 @@ const Campaigns = () => {
     ////////End Pagination
 
     useEffect(() => {
+        const getAllDoctors = async () => {
+            const response = await axios.get(`${BASE_URL}/doctors`);
+            const result = response?.data?.data
+            console.log(response)
+            if (result?.length > 0) {
+                setDoctors([...result]);
+                console.log(doctors)
+            }
+            console.log(result)
+        }
+
         (async () => await getAllDoctors())();
         console.log(doctors)
         handleSearchDoctors();
