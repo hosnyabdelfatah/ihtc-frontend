@@ -69,7 +69,7 @@ const Modal = ({receivers, onClose}) => {
     };
 
     const handleSendCampaign = async () => {
-        const response = await axios.post(`${BASE_URL}campaigns`, campaignBody);
+        const response = await axios.post(`${BASE_URL}/campaigns`, campaignBody);
         console.log(response)
 
         setMessageTitle('');
