@@ -273,14 +273,17 @@ const Campaigns = () => {
     ////////End Pagination
 
     useEffect(() => {
-        if (effectRan.current === true) {
-            (async () => await getAllDoctors())();
-            console.log(doctors)
-            handleSearchDoctors();
-        }
-        return () => {
-            effectRan.current = true;
-        }
+        (async () => await getAllDoctors())();
+        console.log(doctors)
+        handleSearchDoctors();
+        // if (effectRan.current === true) {
+        //     (async () => await getAllDoctors())();
+        //     console.log(doctors)
+        //     handleSearchDoctors();
+        // }
+        // return () => {
+        //     effectRan.current = true;
+        // }
     }, []);
 
 
