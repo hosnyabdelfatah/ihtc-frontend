@@ -6,7 +6,7 @@ import Skeleton from "../Skeleton";
 import {getCurrentUser} from "../../features/currentUserSlice";
 import DoctorSpecialties from "../doctor/DoctorSpecialties";
 import {useFetchCountriesQuery} from "../../app/apis/countryApi";
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useRef, useState, useMemo} from "react";
 import BASE_URL from "../../app/apis/baseUrl";
 import Countries from "../Countries";
 import Modal from "./Modal";
@@ -18,6 +18,9 @@ const Campaigns = () => {
     const effectRan = useRef(false);
 
     const organization = useSelector(getCurrentUser);
+    const [doctors, setDoctors] = useState({});
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const [doctorCategory, setDoctorCategory] = useState('');
     const [countries, setCountries] = useState([]);
     const [selectedDoctorCategory, setSelectedDoctorCategory] = useState('');
@@ -26,7 +29,7 @@ const Campaigns = () => {
     const [countriesClicked, setCountriesClicked] = useState(false);
     const [selectedCountryText, setSelectedCountryText] = useState('');
     // const [countryText, setCountryText] = useState('...');
-    const [doctors, setDoctors] = useState({});
+
     const [searchDoctorsResult, setSearchDoctorsResult] = useState([])
     const [allSelectedDoctors, setAllSelectedDoctors] = useState([])
     const [checkedItems, setCheckedItems] = useState({});
@@ -164,18 +167,32 @@ const Campaigns = () => {
         setSelectedDoctorCategory(doctorCategory)
     }, [doctorCategory]);
 
+    useEffect(() => {
+        const getAllDoctors = async () => {
+            try {
+                setLoading(true);
+                const response = await axios.get(`${BASE_URL}/doctors`);
+                const result = response.data.data;
+                setDoctors(result);
+                // if (result.length > 0) {
+                //
+                // }
+            } catch (error) {
+                console.error('Fetch error:', error);
+                setError(`Fetch error: ${error.message}`);
+            } finally {
+                setLoading(false);
+            }
+        };
+        getAllDoctors();
+        handleSearchDoctors(); // Ensure this is correctly scoped
+    }, []); // Add handleSearchDoctors if it relies on state/props
+    // let loadingContent;
+    // if (loading) loadingContent =
+    // if (error) loadingContent =
+
 
     /////Pagination
-    // const renderData = (data) => {
-    //     return (
-    //         <ul>
-    //             {data.length > 0 && data?.map((todo, index) => {
-    //                 return <li key={index}>{todo.title}</li>;
-    //             })}
-    //         </ul>
-    //     );
-    // };
-
     const handleClick = (event) => {
         setCurrentPage(Number(event.target.id));
     };
@@ -194,26 +211,28 @@ const Campaigns = () => {
     let renderCurrentItems;
 
 
-    renderCurrentItems = currentItems?.length > 0 && currentItems?.map((doctor, index) => {
-        return <tr
-            className="border-b-[1px] w-full flex flex-row justify-between items-center text-xs mb-2 pb-1 ">
-            <td key={doctor._id} className="w-[5%] flex flex-row justify-start relative  ">
-                <input type="checkbox" value={doctor._id} id={doctor._id} className="w-[20px] h-[20px] "
-                       checked={!!checkedItems[doctor._id]}
-                       onClick={(e) => handleSelectedDoctor(e)}
-                       onChange={() => handleCheckboxChange(doctor._id)}
-                />
-            </td>
-            <td className="w-[25%] ">{doctor.fname + "" + doctor.lname}</td>
-            <td className="w-[32%]">{doctor.specialty.title}</td>
-            <td className="w-[17%]">{doctor.country.title}</td>
-            <td className="w-[10%]">{doctor.language.title}</td>
-            <td className="w-[7%]">
-                <img src={doctor.image} className="w-10 h-10"
-                     alt={(doctor.fname + "" + doctor.lname).toUpperCase()}/>
-            </td>
-        </tr>
-    })
+    renderCurrentItems = loading ? <Skeleton className="h-8 w-8" times={8}/> :
+        error ? <div>Error Loading</div> :
+            currentItems?.length > 0 && currentItems?.map((doctor, index) => {
+                return <tr
+                    className="border-b-[1px] w-full flex flex-row justify-between items-center text-xs mb-2 pb-1 ">
+                    <td key={doctor._id} className="w-[5%] flex flex-row justify-start relative  ">
+                        <input type="checkbox" value={doctor._id} id={doctor._id} className="w-[20px] h-[20px] "
+                               checked={!!checkedItems[doctor._id]}
+                               onClick={(e) => handleSelectedDoctor(e)}
+                               onChange={() => handleCheckboxChange(doctor._id)}
+                        />
+                    </td>
+                    <td className="w-[25%] ">{doctor.fname + "" + doctor.lname}</td>
+                    <td className="w-[32%]">{doctor.specialty.title}</td>
+                    <td className="w-[17%]">{doctor.country.title}</td>
+                    <td className="w-[10%]">{doctor.language.title}</td>
+                    <td className="w-[7%]">
+                        <img src={doctor.image} className="w-10 h-10"
+                             alt={(doctor.fname + "" + doctor.lname).toUpperCase()}/>
+                    </td>
+                </tr>
+            })
 
     const renderPageNumbers = pages.map((number) => {
         if (number < maxPageNumberLimit + 1 && number > minPageNumberLimit) {
@@ -260,24 +279,6 @@ const Campaigns = () => {
         pageDecrementBtn = <li onClick={handlePrevBtn}> &hellip; </li>;
     }
     ////////End Pagination
-
-    useEffect(() => {
-        const getAllDoctors = async () => {
-            try {
-                const response = await axios.get(`${BASE_URL}/doctors`);
-                const result = response.data.data;
-
-                if (result.length > 0) {
-                    setDoctors(result);
-                }
-            } catch (error) {
-                console.error('Fetch error:', error);
-            }
-        };
-
-        getAllDoctors();
-        handleSearchDoctors(); // Ensure this is correctly scoped
-    }, []); // Add handleSearchDoctors if it relies on state/props
 
 
     return (
