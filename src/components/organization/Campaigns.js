@@ -273,9 +273,10 @@ const Campaigns = () => {
             console.log(result)
         }
 
-        (async () => await getAllDoctors())();
-        console.log(doctors)
+        getAllDoctors()
         handleSearchDoctors();
+        console.log(doctors)
+
         // if (effectRan.current === true) {
         //     (async () => await getAllDoctors())();
         //     console.log(doctors)
