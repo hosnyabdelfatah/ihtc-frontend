@@ -102,6 +102,7 @@ const Campaigns = () => {
         setIsSelectAll(false)
         setAllSelectedDoctors([])
         setCheckedItems([])
+
         console.log(doctors)
         const result = doctors?.length > 0 && doctors?.filter((doctor) => {
             if (selectedCountryText !== "" && selectedDoctorCategory !== "") {
@@ -190,16 +191,13 @@ const Campaigns = () => {
             }
         };
         getAllDoctors();
-
+        handleSearchDoctors()
 
         return () => {
             isMounted = false;
         }
     }, []); // Add handleSearchDoctors if it relies on state/props
 
-    useEffect(() => {
-        handleSearchDoctors(); // Ensure this is correctly scoped
-    }, [selectedCountryText, selectedDoctorCategory])
 
     /////Pagination
     const handleClick = (event) => {
