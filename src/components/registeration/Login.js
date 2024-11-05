@@ -96,7 +96,7 @@ const Login = ({}) => {
     const handlePasswordInput = (e) => setPassword(e.target.value)
 
     return (
-        <div className="home mt-12  xs:w-full sm:mt-4  sm:w-8/12 mx-auto rounded">
+        <div className="home mt-12  w-[50%] sm:mt-4  sm:w-8/12 mx-auto rounded">
             <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
             <h2 className="mx-auto  sm: text-xl font-semibold">
                 Use our site as
