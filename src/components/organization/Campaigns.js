@@ -79,10 +79,8 @@ const Campaigns = () => {
     };
 
     const handleSelectAllDoctors = () => {
-
         if (!isSelectAll) {
             const selectedDoctors = searchDoctorsResult?.map(doctor => setAllSelectedDoctors([...allSelectedDoctors, doctor?._id]));
-
             setAllSelectedDoctors(Object.keys(checkedItems));
         }
     }
@@ -111,13 +109,13 @@ const Campaigns = () => {
                 return doctor.country.title === selectedCountryText
             } else if (selectedCountryText === "" && selectedDoctorCategory !== "") {
                 return doctor.specialty.title === selectedDoctorCategory;
-            } else {
+            } else if (selectedCountryText === "" && selectedDoctorCategory === "") {
                 return doctor;
             }
         });
 
 
-        if (result?.length > 0) {
+        if (result.length > 0) {
             setSearchDoctorsResult(result)
             setMaxPageNumberLimit(Math.ceil(result?.length / itemsPerPage))
             setSelectedDoctorCategory('')
@@ -186,12 +184,11 @@ const Campaigns = () => {
             } finally {
                 if (isMounted) {
                     setLoading(false);
-
                 }
             }
         };
         getAllDoctors();
-        handleSearchDoctors()
+        // handleSearchDoctors()
 
         return () => {
             isMounted = false;

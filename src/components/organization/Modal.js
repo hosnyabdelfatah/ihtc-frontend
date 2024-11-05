@@ -97,19 +97,23 @@ const Modal = ({receivers, onClose}) => {
         <div className="z-50">
             <div className="fixed inset-0 bg-gray-200 opacity-70 z-50" onClick={onClose}></div>
             <form onSubmit={(e) => e.preventDefault()}
-                  className="fixed inset-20 p-5 bg-yellow-400 z-50 w-[70%] mx-auto  "
+                  className="fixed inset-5 p-5 bg-amber-400 z-50 w-[60%] mx-auto  "
             >
                 <div className="flex flex-col justify-center">
-                    <div className="title mb-6">
-                        <input type="text" className=" w-full p-2" value={messageTitle} onInput={(e) => {
-                            handleMessageTitle(e)
-                        }}/>
+                    <div className="title mb-6 flex flex-row justify-start items-center">
+                        <label className="mr-4 text-xl text-violet-900 font-semibold" htmlFor="subject">Subject</label>
+                        <input type="text" id="subject" className=" w-10/12 p-2  text-violet-900  font-semibold"
+                               value={messageTitle}
+                               onInput={(e) => {
+                                   handleMessageTitle(e)
+                               }}/>
                     </div>
 
-                    <div className="flex items-center justify-center w-full mb-8">
+                    <div className="flex items-center justify-center w-50 h-[230px] mb-8">
                         <label htmlFor="dropzone-file"
-                               className="flex flex-col items-center justify-center w-7/12 h-30  border-gray-200 border shadow-sm  rounded-lg cursor-pointer  dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-                            <div className="file-preview flex flex-col items-center justify-center pt-5 pb-6">
+                               className="flex flex-col items-center justify-center w-7/12 h-[230px]  border-gray-200 border shadow-sm  rounded-lg cursor-pointer  dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600 overflow-hidden">
+                            <div
+                                className="file-preview flex flex-col items-center justify-center py-5 overflow-hidden">
                                 {renderPreview()}
                                 <svg className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
                                      xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
@@ -117,8 +121,9 @@ const Modal = ({receivers, onClose}) => {
                                           strokeWidth="2"
                                           d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
                                 </svg>
-                                <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">Click to upload your
-                                    photo *</p>
+                                <p className="mb-2 text-sm text-gray-500 dark:text-violet-900 font-semibold">Click to
+                                    attach your image,
+                                    video or file .pdf</p>
                             </div>
                             <input id="dropzone-file" type="file" className="hidden"
                                    accept="image/*,video/*,application/pdf"
@@ -126,11 +131,15 @@ const Modal = ({receivers, onClose}) => {
                             />
                         </label>
                     </div>
-                    <textarea id="campaign-message" value={textMessage}
-                              rows="5" cols="10" onInput={handleTextMessage}>
+                    <div className="flex flex-row justify-start items-center">
+                        <label htmlFor="campaign-message"
+                               className="mr-4 text-xl text-violet-900 font-semibold">Message</label>
+                        <textarea id="campaign-message" className="w-10/12" value={textMessage}
+                                  rows="6" cols="6" onInput={handleTextMessage}>
 
-                    </textarea>
-                    <div className="w-full flex justify-center items-center">
+                        </textarea>
+                    </div>
+                    <div className="w-10/12 mx-auto flex justify-center items-center">
                         <button
                             className="py-3 px-5 m-6 text-lg text-blue-900 font-bold border-[1px] border-blue-500 rounded-full drop-shadow-xl
                             hover:bg-indigo-100 transition-all "
