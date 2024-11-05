@@ -4,7 +4,7 @@ export const authOrganizationApi = apiSlice.injectEndpoints({
     endpoints: builder => ({
         organizationLogin: builder.mutation({
             query: credentials => ({
-                url: 'organizations/login',
+                url: '/organizations/login',
                 method: 'POST',
                 body: {...credentials},
                 credentials: 'include',

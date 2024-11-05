@@ -44,7 +44,7 @@ const Campaigns = () => {
     let countryContent;
     useEffect(() => {
         const getCountries = async () => {
-            const response = await axios.get(`${BASE_URL}countries`)
+            const response = await axios.get(`${BASE_URL}/countries`)
             const result = response?.data?.data
             setCountries(result)
         }
@@ -157,7 +157,7 @@ const Campaigns = () => {
 
 
     const getAllDoctors = async () => {
-        const response = await axios.get(`${BASE_URL}doctors`);
+        const response = await axios.get(`${BASE_URL}/doctors`);
         const result = response?.data?.data
 
         if (result?.length > 0) {
