@@ -1,6 +1,7 @@
 import './campaign.scss';
 import {useSelector, useDispatch} from "react-redux";
 import axios from "axios";
+import Skeleton from "../Skeleton";
 
 import {getCurrentUser} from "../../features/currentUserSlice";
 import DoctorSpecialties from "../doctor/DoctorSpecialties";
@@ -64,10 +65,10 @@ const Campaigns = () => {
 
     const handleSelectAll = () => {
         const newCheckedItems = {};
-        const doctorsArray = searchDoctorsResult.length > 0 ? searchDoctorsResult : doctors;
+        const doctorsArray = searchDoctorsResult?.length > 0 ? searchDoctorsResult : doctors;
         if (!isSelectAll) {
-            doctorsArray.forEach(doctor => {
-                newCheckedItems[doctor.id] = true; // Mark all items as checked
+            doctorsArray?.forEach(doctor => {
+                newCheckedItems[doctor?.id] = true; // Mark all items as checked
             });
         }
         setCheckedItems(newCheckedItems);
@@ -75,9 +76,9 @@ const Campaigns = () => {
     };
 
     const handleSelectAllDoctors = () => {
-        let selectedDoctorsIdsArray
+
         if (!isSelectAll) {
-            const selectedDoctors = searchDoctorsResult.map(doctor => setAllSelectedDoctors([...allSelectedDoctors, doctor._id]));
+            const selectedDoctors = searchDoctorsResult?.map(doctor => setAllSelectedDoctors([...allSelectedDoctors, doctor?._id]));
 
             setAllSelectedDoctors(Object.keys(checkedItems));
         }
@@ -98,7 +99,7 @@ const Campaigns = () => {
         setIsSelectAll(false)
         setAllSelectedDoctors([])
         setCheckedItems([])
-        const result = doctors.length > 0 && doctors?.filter((doctor) => {
+        const result = doctors?.length > 0 && doctors?.filter((doctor) => {
             if (selectedCountryText !== "" && selectedDoctorCategory !== "") {
                 return doctor.country.title === selectedCountryText.trim() && doctor.specialty.title === selectedDoctorCategory.trim();
             } else if (selectedCountryText !== "" && selectedDoctorCategory === "") {
@@ -110,15 +111,17 @@ const Campaigns = () => {
             }
         });
 
-        if (result.length > 0) {
+
+        if (result?.length > 0) {
             setSearchDoctorsResult(result)
-            setMaxPageNumberLimit(Math.ceil(result.length / itemsPerPage))
+            setMaxPageNumberLimit(Math.ceil(result?.length / itemsPerPage))
             setSelectedDoctorCategory('')
             setSelectedCountryText('')
             setSelectedCountry('')
         } else {
             setSearchDoctorsResult([])
         }
+        console.log(result)
     }
 
 
@@ -144,7 +147,7 @@ const Campaigns = () => {
 
     countryContent = countries?.map(country => {
         return <li value={country._id} key={country._id}
-                   className="py-1 border-b-[1px] border-b-amber-400 cursor-pointer hover:bg-yellow-200"
+                   className="py-1.5 border-b-[1px] border-b-amber-400 cursor-pointer hover:bg-yellow-200"
                    onClick={() => {
                        handleCountriesClicked()
                        handleSelectCountry(country._id)
@@ -163,6 +166,7 @@ const Campaigns = () => {
         if (result?.length > 0) {
             setDoctors([...result]);
         }
+        console.log(result)
     }
 
     useEffect(() => {
@@ -186,15 +190,18 @@ const Campaigns = () => {
     };
 
     const pages = [];
-    for (let i = 1; i <= Math.ceil(doctors.length / itemsPerPage); i++) {
+    for (let i = 1; i <= Math.ceil(doctors?.length / itemsPerPage); i++) {
         pages.push(i);
     }
 
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 
-    const currentItems = searchDoctorsResult.length > 0 ? searchDoctorsResult.slice(indexOfFirstItem, indexOfLastItem) : doctors.length > 0 && doctors.slice(indexOfFirstItem, indexOfLastItem);
-    const renderCurrentItems = currentItems.length > 0 && currentItems.map((doctor, index) => {
+    const currentItems = searchDoctorsResult?.length > 0 ? searchDoctorsResult?.slice(indexOfFirstItem, indexOfLastItem) : doctors?.length > 0 && doctors?.slice(indexOfFirstItem, indexOfLastItem);
+
+    console.log(currentItems)
+
+    const renderCurrentItems = currentItems?.length > 0 && currentItems?.map((doctor, index) => {
         return <tr
             className="border-b-[1px] w-full flex flex-row justify-between items-center text-xs mb-2 pb-1 ">
             <td key={doctor._id} className="w-[5%] flex flex-row justify-start relative  ">
@@ -287,7 +294,7 @@ const Campaigns = () => {
                           }}>
 
                     <input type="text" className="selected-country border-2 z-10
-                    outline-none  text-center focus:outline-none text-indigo-500 font-semibold"
+                    outline-none  text-center hover:cursor-pointer focus:outline-none text-indigo-500 font-semibold"
                            value={selectedCountryText}
                            placeholder="Select country"/>
 
@@ -303,7 +310,7 @@ const Campaigns = () => {
                         <span className="search-icon text-xl text-[#0657A8]"><IoSearchSharp/></span>
                     </div>
 
-                    <ul className={`${countriesSelectShow ? "h-auto block" : " h-0 hidden"} countries absolute text-center list-n top-[36px] left-[8px]  w-3/4 cursor-pointer  bg-stone-100 transition-all
+                    <ul className={`${countriesSelectShow ? "h-auto block" : " h-0 hidden"} countries absolute text-center list-n top-[36px] left-[8px]  w-7/12 cursor-pointer border-3  bg-stone-100 transition-all
                     `}>
                         {countryContent}
                     </ul>
