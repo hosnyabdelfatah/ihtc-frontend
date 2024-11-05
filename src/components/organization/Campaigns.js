@@ -168,29 +168,38 @@ const Campaigns = () => {
     }, [doctorCategory]);
 
     useEffect(() => {
+        let isMounted = true;
         const getAllDoctors = async () => {
             try {
                 setLoading(true);
                 const response = await axios.get(`${BASE_URL}/doctors`);
                 const result = response.data.data;
-                setDoctors(result);
-                // if (result.length > 0) {
-                //
-                // }
+                if (isMounted) {
+                    setDoctors(result);
+                }
             } catch (error) {
-                console.error('Fetch error:', error);
-                setError(`Fetch error: ${error.message}`);
+                if (isMounted) {
+                    console.error('Fetch error:', error);
+                    setError(`Fetch error: ${error.message}`);
+                }
             } finally {
-                setLoading(false);
+                if (isMounted) {
+                    setLoading(false);
+
+                }
             }
         };
         getAllDoctors();
-        handleSearchDoctors(); // Ensure this is correctly scoped
-    }, []); // Add handleSearchDoctors if it relies on state/props
-    // let loadingContent;
-    // if (loading) loadingContent =
-    // if (error) loadingContent =
 
+
+        return () => {
+            isMounted = false;
+        }
+    }, []); // Add handleSearchDoctors if it relies on state/props
+
+    useEffect(() => {
+        handleSearchDoctors(); // Ensure this is correctly scoped
+    }, [selectedCountryText, selectedDoctorCategory])
 
     /////Pagination
     const handleClick = (event) => {
