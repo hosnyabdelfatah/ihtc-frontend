@@ -271,6 +271,7 @@ const Campaigns = () => {
     useEffect(() => {
         if (effectRan.current === true) {
             (async () => await getAllDoctors())();
+            console.log(doctors)
             handleSearchDoctors();
         }
         return () => {
