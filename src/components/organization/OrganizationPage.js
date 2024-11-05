@@ -9,6 +9,7 @@ const OrganizationPage = () => {
     const organization = useSelector(getCurrentUser)
     const organizationData = organization?.currentUser
     const logo = organizationData?.logo
+
     return (
         <div
             className="organization-page h-screen mt-4 border-red-700 mb-6 mx-4"
@@ -41,7 +42,7 @@ const OrganizationPage = () => {
                         className="organization_info-industry organization_info-country mb-3 flex flex-row justify-start items-center  ">
                         <span
                             className="px-2 border border-[#ffc907] shadow-[#0657A8]  rounded-xl text-[#0657A8] font-bold mr-2">
-                            {organizationData?.industryField}
+                            {organizationData?.industryField?.charAt(0).toUpperCase() + organizationData?.industryField?.slice(1)}
                         </span>
 
                     </div>
