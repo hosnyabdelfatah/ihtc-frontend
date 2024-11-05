@@ -277,7 +277,7 @@ const Campaigns = () => {
 
         getAllDoctors();
         handleSearchDoctors(); // Ensure this is correctly scoped
-    }, [handleSearchDoctors]); // Add handleSearchDoctors if it relies on state/props
+    }, []); // Add handleSearchDoctors if it relies on state/props
 
 
     return (
