@@ -15,7 +15,7 @@ const OrganizationsList = ({organization}) => {
 
     let content;
     if (isFetching) {
-        content = <Skeleton times={3} className='h-8 w-8'/>
+        content = <Skeleton times={8} className='h-full w-full'/>
     } else if (error) {
         console.log(error)
         content = <div>Error loading organizations.</div>

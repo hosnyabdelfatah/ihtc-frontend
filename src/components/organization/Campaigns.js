@@ -99,6 +99,7 @@ const Campaigns = () => {
         setIsSelectAll(false)
         setAllSelectedDoctors([])
         setCheckedItems([])
+        console.log(doctors)
         const result = doctors?.length > 0 && doctors?.filter((doctor) => {
             if (selectedCountryText !== "" && selectedDoctorCategory !== "") {
                 return doctor.country.title === selectedCountryText.trim() && doctor.specialty.title === selectedDoctorCategory.trim();
@@ -162,9 +163,10 @@ const Campaigns = () => {
     const getAllDoctors = async () => {
         const response = await axios.get(`${BASE_URL}/doctors`);
         const result = response?.data?.data
-
+        console.log(response)
         if (result?.length > 0) {
             setDoctors([...result]);
+            console.log(doctors)
         }
         console.log(result)
     }
@@ -175,15 +177,15 @@ const Campaigns = () => {
 
 
     /////Pagination
-    const renderData = (data) => {
-        return (
-            <ul>
-                {data.length > 0 && data?.map((todo, index) => {
-                    return <li key={index}>{todo.title}</li>;
-                })}
-            </ul>
-        );
-    };
+    // const renderData = (data) => {
+    //     return (
+    //         <ul>
+    //             {data.length > 0 && data?.map((todo, index) => {
+    //                 return <li key={index}>{todo.title}</li>;
+    //             })}
+    //         </ul>
+    //     );
+    // };
 
     const handleClick = (event) => {
         setCurrentPage(Number(event.target.id));
@@ -200,8 +202,10 @@ const Campaigns = () => {
     const currentItems = searchDoctorsResult?.length > 0 ? searchDoctorsResult?.slice(indexOfFirstItem, indexOfLastItem) : doctors?.length > 0 && doctors?.slice(indexOfFirstItem, indexOfLastItem);
 
     console.log(currentItems)
+    let renderCurrentItems;
 
-    const renderCurrentItems = currentItems?.length > 0 && currentItems?.map((doctor, index) => {
+
+    renderCurrentItems = currentItems?.length > 0 && currentItems?.map((doctor, index) => {
         return <tr
             className="border-b-[1px] w-full flex flex-row justify-between items-center text-xs mb-2 pb-1 ">
             <td key={doctor._id} className="w-[5%] flex flex-row justify-start relative  ">
@@ -366,7 +370,11 @@ const Campaigns = () => {
                                     </button>
                                 </td>
                             </tr>
-                            {renderCurrentItems}
+                            {
+                                currentItems.length > 0 ?
+                                    renderCurrentItems
+                                    : <Skeleton className="w-full h-full" times={10}/>
+                            }
                             </tbody>
                         </table>
                         {/*:TODO fix pagination*/}
