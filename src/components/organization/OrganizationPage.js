@@ -14,7 +14,7 @@ const OrganizationPage = () => {
         <div
             className="organization-page h-screen mt-4 border-red-700 mb-6 mx-4"
         >
-            <div className="organization_header h-2/6"
+            <div className="organization_header h-3/6"
                  style={{
                      fontSize: `30px`,
                      backgroundImage: `url(${logo})`,
@@ -29,9 +29,9 @@ const OrganizationPage = () => {
                 <h3 className="text-xl border-2 border-[#ffc907] drop-shadow-md p-2 rounded-md text-violet-700  font-extrabold p2 mr-3">organization_info</h3>
                 <span className="text-[#ffc907]"><BsFillInfoSquareFill/></span>
             </div>
-            <div className="organization_info flex flex-row mx-5">
-                <div>
-                    <div className="info  flex flex-row">
+            <div className="organization_info flex flex-row  mx-5 ">
+                <div className="">
+                    <div className="info  flex flex-col">
                         <div className="organization_info-country mb-3 flex flex-row justify-start items-center">
                         <span
                             className="px-2 border border-[#ffc907] shadow-[#0657A8]  rounded-xl text-[#0657A8] font-bold mr-2">
@@ -49,7 +49,7 @@ const OrganizationPage = () => {
                     </div>
                 </div>
 
-                <div className="organization_description flex flex-col items-start ml-8 my-5 w-3/4">
+                <div className="organization_description  flex flex-col items-start ml-8  w-3/4">
                     <h3 className="px-2 border border-[#ffc907] shadow-[#0657A8]  rounded-xl text-[#0657A8] font-bold mb-2">Description</h3>
                     <p className="text-md text-stone-900">{organizationData?.description}</p>
                 </div>

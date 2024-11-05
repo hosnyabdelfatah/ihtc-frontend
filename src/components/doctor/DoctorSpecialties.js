@@ -24,7 +24,7 @@ const DoctorSpecialties = ({sendParent}) => {
     }
     return (
         <div className="border-2 p-2 h-4/12">
-            {content}
+            {content ? content : <Skeleton className="w-full h-5" times={10}/>}
         </div>
     );
 };
