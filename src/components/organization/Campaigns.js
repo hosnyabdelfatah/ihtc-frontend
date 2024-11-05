@@ -149,16 +149,17 @@ const Campaigns = () => {
     }
 
     countryContent = countries?.map(country => {
-        return <li value={country._id} key={country._id}
-                   className="py-1.5 border-b-[1px] border-b-amber-400 cursor-pointer hover:bg-yellow-200"
-                   onClick={() => {
-                       handleCountriesClicked()
-                       handleSelectCountry(country._id)
-                       handleCountriesSelectShow()
-                   }}
-        >
-            {country.title}
-        </li>
+        return loading ? <Skeleton className="w-5 h-5" times={1}/>
+            : <li value={country._id} key={country._id}
+                  className="py-1.5 border-b-[1px] border-b-amber-400 cursor-pointer hover:bg-yellow-200"
+                  onClick={() => {
+                      handleCountriesClicked()
+                      handleSelectCountry(country._id)
+                      handleCountriesSelectShow()
+                  }}
+            >
+                {country.title}
+            </li>
     })
 
 
@@ -215,28 +216,26 @@ const Campaigns = () => {
     let renderCurrentItems;
 
 
-    renderCurrentItems = loading ? <Skeleton className="h-8 w-8" times={8}/> :
-        error ? <div>Error Loading</div> :
-            currentItems?.length > 0 && currentItems?.map((doctor, index) => {
-                return <tr
-                    className="border-b-[1px] w-full flex flex-row justify-between items-center text-xs mb-2 pb-1 ">
-                    <td key={doctor._id} className="w-[5%] flex flex-row justify-start relative  ">
-                        <input type="checkbox" value={doctor._id} id={doctor._id} className="w-[20px] h-[20px] "
-                               checked={!!checkedItems[doctor._id]}
-                               onClick={(e) => handleSelectedDoctor(e)}
-                               onChange={() => handleCheckboxChange(doctor._id)}
-                        />
-                    </td>
-                    <td className="w-[25%] ">{doctor.fname + "" + doctor.lname}</td>
-                    <td className="w-[32%]">{doctor.specialty.title}</td>
-                    <td className="w-[17%]">{doctor.country.title}</td>
-                    <td className="w-[10%]">{doctor.language.title}</td>
-                    <td className="w-[7%]">
-                        <img src={doctor.image} className="w-10 h-10"
-                             alt={(doctor.fname + "" + doctor.lname).toUpperCase()}/>
-                    </td>
-                </tr>
-            })
+    renderCurrentItems = currentItems?.length > 0 && currentItems?.map((doctor, index) => {
+        return <tr
+            className="border-b-[1px] w-full flex flex-row justify-between items-center text-xs mb-2 pb-1 ">
+            <td key={doctor._id} className="w-[5%] flex flex-row justify-start relative  ">
+                <input type="checkbox" value={doctor._id} id={doctor._id} className="w-[20px] h-[20px] "
+                       checked={!!checkedItems[doctor._id]}
+                       onClick={(e) => handleSelectedDoctor(e)}
+                       onChange={() => handleCheckboxChange(doctor._id)}
+                />
+            </td>
+            <td className="w-[25%] ">{doctor.fname + "" + doctor.lname}</td>
+            <td className="w-[32%]">{doctor.specialty.title}</td>
+            <td className="w-[17%]">{doctor.country.title}</td>
+            <td className="w-[10%]">{doctor.language.title}</td>
+            <td className="w-[7%]">
+                <img src={doctor.image} className="w-10 h-10"
+                     alt={(doctor.fname + "" + doctor.lname).toUpperCase()}/>
+            </td>
+        </tr>
+    })
 
     const renderPageNumbers = pages.map((number) => {
         if (number < maxPageNumberLimit + 1 && number > minPageNumberLimit) {
@@ -318,17 +317,15 @@ const Campaigns = () => {
 
                     <ul className={`${countriesSelectShow ? "h-auto block" : " h-0 hidden"} countries absolute text-center list-n top-[36px] left-[8px]  w-7/12 cursor-pointer border-3  bg-stone-100 transition-all
                     `}>
-                        {countryContent}
+                        {
+                            loading ? <Skeleton className="h-8 w-30" times={8}/> :
+                                error ? <div>Error Loading</div> : countryContent
+                        }
+
                     </ul>
 
                 </div>
                 <div className="search-data flex flex-row justify-between   border-2 border-stone-100 px-2 w-[69%]">
-                    {/*<div>*/}
-                    {/*    <span className="mr-1">Country selected is </span>*/}
-                    {/*    <span className="font-semibold text-indigo-500">*/}
-                    {/*        {selectedCountryText ? selectedCountryText : "......"}*/}
-                    {/*    </span>*/}
-                    {/*</div>*/}
                     <div>
                         <span className="text-indigo-500 font-semibold mr-2"> {Object.keys(checkedItems).length}</span>
                         <span>doctors selected</span>
@@ -372,9 +369,9 @@ const Campaigns = () => {
                                 </td>
                             </tr>
                             {
-                                currentItems.length > 0 ?
-                                    renderCurrentItems
-                                    : <Skeleton className="w-full h-full" times={10}/>
+                                loading ? <Skeleton className="h-8 w-30" times={8}/> :
+                                    error ? <div>Error Loading</div> : renderCurrentItems
+
                             }
                             </tbody>
                         </table>

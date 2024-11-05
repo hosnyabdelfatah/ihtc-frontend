@@ -1,4 +1,4 @@
-import {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {useSelector, useDispatch} from "react-redux";
 import {Link, useNavigate, useLocation} from 'react-router-dom';
 import {setCredentials} from "../../features/auth/authSlice";
@@ -8,6 +8,7 @@ import {useOrganizationLoginMutation} from "../../store";
 import axios from "axios";
 import useAuth from "../../hooks/useAuth";
 import BASE_URL from "../../app/apis/baseUrl";
+import Spinner from '../../components/Spinner'
 
 const setCookie = (name, value, days) => {
     const date = new Date();
@@ -31,6 +32,7 @@ const Login = ({}) => {
     const [user, setUser] = useState('')
     const [password, setPassword] = useState('')
     const [errMsg, setErrMsg] = useState('')
+    const [logging, setLogging] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const navigate = useNavigate()
     const addError = [];
@@ -53,6 +55,10 @@ const Login = ({}) => {
     const handleChaneUserAs = (value) => {
         setCookie("useAs", value, 1000);
         console.log(document.cookie)
+    }
+
+    const handleLogging = () => {
+        setLogging(true)
     }
 
     const handleSubmit = async (e) => {
@@ -94,6 +100,18 @@ const Login = ({}) => {
 
     const handleUserInput = (e) => setUser(e.target.value)
     const handlePasswordInput = (e) => setPassword(e.target.value)
+    const circleSpinner = <span className="flex justify-center items-center ">
+        <svg className="mr-3 h-5 w-5 animate-spin text-violet-700"
+             xmlns="http://www.w3.org/2000/svg"
+             fill="none"
+             viewBox="0 0 24 24">
+        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                stroke-width="4"></circle>
+        <path className="opacity-75" fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+    </svg>
+       <span className="text-violet-900"> Processing...</span>
+    </span>
 
     return (
         <div className="home mt-12 sm:w-[60%] md:w-[40%] sm:mt-4  mx-auto rounded">
@@ -147,7 +165,7 @@ const Login = ({}) => {
                     <div className="user flex flex-row items-baseline p-3 justify-between">
                         <label htmlFor="user"
                                className="w-2/12 text-left">{userState === "doctor" ? "User" : " Email"} </label>
-                        <input type="text" id="user" name="email" value={user}
+                        <input type="text" id="user" name="email" value={user} disabled={logging}
                                ref={userRef} required
                                placeholder={`${userState === "doctor" ? "email or unique Id" : "email"}`}
                                onChange={handleUserInput}
@@ -159,6 +177,7 @@ const Login = ({}) => {
                     <div className="password  flex flex-row justify-between p-3  items-baseline ">
                         <label htmlFor="password" className="w-2/12 text-left">Password</label>
                         <input type="password" id="password" name="password" required
+                               disabled={logging}
                                value={password}
                                onChange={handlePasswordInput}
                                className={`${userState === "user" ? "border-blue-300"
@@ -170,9 +189,12 @@ const Login = ({}) => {
                     <button
                         className={`${userState === "user" ? "bg-blue-700 text-stone-100"
                             : userState === "doctor" ? "bg-lime-500"
-                                : "bg-amber-500"} w-full  border-2 border-amber-200 shadow-md py-4 mt-6 rounded-b-lg text-xl text-blue-900 hover:font-extrabold hover:bg-gray-200 focus:text-blue-600 font-semibold focus:shadow visited:shadow-xl`}
+                                : "bg-amber-500"} w-full  border-2 border-amber-200 shadow-md py-4 mt-6 rounded-b-lg text-xl text-blue-900 tracking-wider hover:font-extrabold hover:bg-gray-200 focus:text-blue-600 font-bold focus:shadow visited:shadow-xl`}
+                        onClick={() => {
+                            handleLogging()
+                        }}
                     >
-                        Login
+                        {logging ? circleSpinner : 'Login'}
                     </button>
                 </form>
             </div>
