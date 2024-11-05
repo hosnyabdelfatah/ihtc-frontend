@@ -265,25 +265,25 @@ const Campaigns = () => {
         const getAllDoctors = async () => {
             try {
                 const response = await axios.get(`${BASE_URL}/doctors`);
-                const result = response.data.data; // axios response already gives data in .data
-
-                if (result.length > 0) {
-                    setDoctors(result); // No need to spread into a new array
-                    console.log(result);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
                 }
-            } catch (error) {
-                console.error('Fetch error:', error);
+                const result = await response.data.data
+                console.log(response)
+                if (result.length > 0) {
+                    setDoctors([...result]);
+                    console.log(doctors)
+                }
+                console.log(result)
+            } catch (e) {
+                console.log('Fetch error:', e)
             }
-        };
-
+        }
 
         getAllDoctors()
         handleSearchDoctors();
-    }, [handleSearchDoctors]);
+    }, []);
 
-    useEffect(() => {
-        console.log(doctors);
-    }, [doctors]);
 
     return (
         <div className="w-[90%] mx-auto relative max-h-screen flex flex-col mb-8">
