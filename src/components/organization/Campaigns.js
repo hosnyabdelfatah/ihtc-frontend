@@ -263,14 +263,21 @@ const Campaigns = () => {
 
     useEffect(() => {
         const getAllDoctors = async () => {
-            const response = await axios.get(`${BASE_URL}/doctors`);
-            const result = response?.data?.data
-            console.log(response)
-            if (result?.length > 0) {
-                setDoctors([...result]);
-                console.log(doctors)
+            try {
+                const response = await axios.get(`${BASE_URL}/doctors`);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const result = await response.data.data
+                console.log(response)
+                if (result.length > 0) {
+                    setDoctors([...result]);
+                    console.log(doctors)
+                }
+                console.log(result)
+            } catch (e) {
+                console.log('Fetch error:', e)
             }
-            console.log(result)
         }
 
         getAllDoctors()
