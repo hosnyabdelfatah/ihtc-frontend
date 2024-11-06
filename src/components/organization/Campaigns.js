@@ -309,7 +309,7 @@ const Campaigns = () => {
                      />
                     </span>
 
-                    <div className="search w-[3%]" onClick={() => {
+                    <div className="search w-[3%] cursor-pointer" onClick={() => {
                         handleSearchDoctors()
                     }}>
                         <span className="search-icon text-xl text-[#0657A8]"><IoSearchSharp/></span>

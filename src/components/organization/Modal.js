@@ -1,5 +1,5 @@
 import ReactDom from 'react-dom';
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useRef} from "react";
 import {useSelector} from "react-redux";
 import {getCurrentUser} from "../../features/currentUserSlice";
 import axios from "axios";
@@ -11,11 +11,17 @@ const Modal = ({receivers, onClose}) => {
     const sender = organization?.currentUser._id;
     const receiversText = receivers.join('-')
 
+    const errRef = useRef();
+
     const [toReceivers, setToReceivers] = useState('');
     const [messageTitle, setMessageTitle] = useState('');
     const [file, setFile] = useState(null);
     const [fileType, setFileType] = useState("")
     const [textMessage, setTextMessage] = useState('');
+    const [errs, setErrs] = useState([])
+
+    let errorMessage = [];
+
 
     //:TODO Handle attach preview.
 
@@ -68,14 +74,44 @@ const Modal = ({receivers, onClose}) => {
         }
     };
 
-    const handleSendCampaign = async () => {
-        const response = await axios.post(`${BASE_URL}/campaigns`, campaignBody);
-        console.log(response)
+    const handleErrMsg = () => {
+        if (toReceivers.length <= 0) setErrs([...errs, 'There is no any receiver to send to him please select your target receiver!']);
 
-        setMessageTitle('');
-        setFile('');
-        setTextMessage('');
-        onClose();
+        if (!messageTitle || messageTitle === "") setErrs([...errs, 'Message title is require!']);
+
+        if (!textMessage || textMessage === "" || textMessage.length < 5) setErrs([...errs, 'Message text is require and must be more than or equal 5 characters!']);
+
+        if (errs.length > 0) {
+            errs.map((err) => errorMessage.push(err))
+        }
+        console.log(errs)
+
+        const renderErrMsg = errorMessage.map(error => <span
+            className="block text-stone-100 font-bold">{error}</span>);
+        return renderErrMsg;
+    }
+
+    const handleSendCampaign = async () => {
+        if (errs.length > 0) {
+            console.log(errs)
+            handleErrMsg()
+            return;
+        } else {
+            try {
+                const response = await axios.post(`${BASE_URL}/campaigns`, campaignBody);
+                console.log(response)
+                setMessageTitle('');
+                setFile('');
+                setTextMessage('');
+                onClose();
+            } catch (err) {
+                console.log(err)
+                errRef.current.focus();
+            }
+
+
+        }
+
     }
 
     useEffect(() => {
@@ -94,7 +130,14 @@ const Modal = ({receivers, onClose}) => {
     }, []);
 
     return ReactDom.createPortal(
-        <div className="z-50">
+        <div className="z-50 relative">
+            <p
+                ref={errRef}
+                className={`${errorMessage.length > 0 ? "block" : "hidden"} absolute 
+                top-[20px] bg-red-700 text-md text-stone-100 font-bold `}
+            >
+                {handleErrMsg}
+            </p>
             <div className="fixed inset-0 bg-gray-200 opacity-70 z-50" onClick={onClose}></div>
             <form onSubmit={(e) => e.preventDefault()}
                   className="fixed inset-5 p-5 bg-amber-400 z-50 w-[60%] mx-auto  "
@@ -103,6 +146,7 @@ const Modal = ({receivers, onClose}) => {
                     <div className="title mb-6 flex flex-row justify-start items-center">
                         <label className="mr-4 text-xl text-violet-900 font-semibold" htmlFor="subject">Subject</label>
                         <input type="text" id="subject" className=" w-10/12 p-2  text-violet-900  font-semibold"
+                               required
                                value={messageTitle}
                                onInput={(e) => {
                                    handleMessageTitle(e)
@@ -135,7 +179,9 @@ const Modal = ({receivers, onClose}) => {
                         <label htmlFor="campaign-message"
                                className="mr-4 text-xl text-violet-900 font-semibold">Message</label>
                         <textarea id="campaign-message" className="w-10/12" value={textMessage}
-                                  rows="6" cols="6" onInput={handleTextMessage}>
+                                  rows="6" cols="6" onInput={handleTextMessage}
+                                  required
+                        >
 
                         </textarea>
                     </div>
@@ -144,6 +190,7 @@ const Modal = ({receivers, onClose}) => {
                             className="py-3 px-5 m-6 text-lg text-blue-900 font-bold border-[1px] border-blue-500 rounded-full drop-shadow-xl
                             hover:bg-indigo-100 transition-all "
                             onClick={handleSendCampaign}
+                            disabled={errs.length > 0}
                         >
                             Send Campaign
                         </button>
