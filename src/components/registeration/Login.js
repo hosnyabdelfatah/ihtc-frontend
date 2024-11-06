@@ -126,7 +126,7 @@ const Login = ({}) => {
     return (
         <div className="home mt-12 sm:w-[60%] md:w-[40%] sm:mt-4  mx-auto rounded">
             <p ref={errRef}
-               className={`${errMsg ? "errmsg" : "offscreen"} bg-red-700 text-stone-100 font-bold rounded `}
+               className={`${errMsg ? "errmsg" : "offscreen"} bg-red-700 text-stone-100 font-bold rounded text-center py-1`}
                aria-live="assertive">{errMsg}</p>
             <h2 className="mx-auto  sm: text-xl font-semibold">
                 Use our site as
