@@ -34,6 +34,7 @@ const Login = ({}) => {
     const [errMsg, setErrMsg] = useState('')
     const [logging, setLogging] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [validateErrMsg, setValidateErrMsg] = useState('');
     const navigate = useNavigate()
     const addError = [];
 
@@ -61,8 +62,17 @@ const Login = ({}) => {
         setLogging(true)
     }
 
+    const handleValidatErr = () => {
+
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault()
+        if (user === '' || password === '') {
+            setErrMsg('User and password is require');
+            setLogging(false)
+            return
+        }
         try {
             if (userState === 'organization') {
                 const data = await login({user, password}).unwrap()

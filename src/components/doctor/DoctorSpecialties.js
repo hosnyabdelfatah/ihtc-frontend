@@ -8,7 +8,7 @@ const DoctorSpecialties = ({sendParent}) => {
 
     let content
     if (isFetching) {
-        content = <Skeleton className="w-6 h6" times={3}/>
+        content = <Skeleton className="w-full h-6" times={10}/>
     } else if (error) {
         content = <div>Error loading...</div>
     } else {
