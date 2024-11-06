@@ -111,7 +111,7 @@ const Login = ({}) => {
     const handleUserInput = (e) => setUser(e.target.value)
     const handlePasswordInput = (e) => setPassword(e.target.value)
     const circleSpinner = <span className="flex justify-center items-center ">
-        <svg className="mr-3 h-5 w-5 animate-spin text-violet-700"
+        <svg className="mr-3 h-5 w-5 animate-spin text-stone-100"
              xmlns="http://www.w3.org/2000/svg"
              fill="none"
              viewBox="0 0 24 24">
@@ -120,7 +120,7 @@ const Login = ({}) => {
         <path className="opacity-75" fill="currentColor"
               d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
     </svg>
-       <span className="text-violet-900"> Processing...</span>
+       <span className="text-stone-100"> Processing...</span>
     </span>
 
     return (
@@ -139,7 +139,7 @@ const Login = ({}) => {
                     className="buttons w-ful mx-auto font-bold my-4 w-f flex flex-row justify-between rounded-t-lg overflow-hidden "
                 >
                     <button
-                        className={`${userState !== "user" ? "opacity-75" : "opacity-100"} user-login w-[33%] bg-blue-700  py-3 rounded-tl-lg text-stone-100  border-2    shadow-sm text-base`}
+                        className={` user-login w-[33%] bg-blue-700  py-3 rounded-tl-lg text-stone-100  border-2 shadow-sm text-base`}
                         onClick={() => {
                             dispatch(changeUserState("user"))
                             handleChaneUserAs("user")
@@ -148,7 +148,7 @@ const Login = ({}) => {
                         User
                     </button>
                     <button
-                        className={`${userState !== "doctor" ? "opacity-75" : "opacity-100"} doctor-login  w-[33%]  bg-lime-500  py-3 border-2	shadow-sm  text-base text-Indigo-400`}
+                        className={`doctor-login  w-[33%]  bg-blue-700  py-3 border-2	shadow-sm  text-base text-stone-100`}
                         onClick={() => {
                             dispatch(changeUserState("doctor"))
                             handleChaneUserAs("doctor")
@@ -157,7 +157,7 @@ const Login = ({}) => {
                         Doctor
                     </button>
                     <button
-                        className={`${userState !== "organization" ? "opacity-75" : "opacity-100"} organization-login  bg-amber-500 w-[33%]  py-3 rounded-tr-lg shadow-sm border-2  text-base shadow-sm  text-Violet-700`}
+                        className={` organization-login  bg-blue-700 w-[33%]  py-3 rounded-tr-lg shadow-sm border-2  text-base shadow-sm  text-stone-100`}
                         onClick={() => {
                             dispatch(changeUserState("organization"))
                             handleChaneUserAs("organization")
@@ -181,9 +181,7 @@ const Login = ({}) => {
                                ref={userRef} required
                                placeholder={`${userState === "doctor" ? "email or unique Id" : "email"}`}
                                onChange={handleUserInput}
-                               className={`${userState === "user" ? "border-blue-300"
-                                   : userState === "doctor" ? "border-lime-400"
-                                       : "border-yellow-400"} block w-8/12 px-3 py-2 border rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-2 focus:border-green-400 transition duration-150 ease-in-out text-lg sm:leading-5`}
+                               className={`border-stone-300 block w-8/12 px-3 py-2 border rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border focus:border-blue-400 transition duration-150 ease-in-out text-lg sm:leading-5`}
                         />
                     </div>
                     <div className="password  flex flex-row justify-between p-3  items-baseline ">
@@ -192,16 +190,17 @@ const Login = ({}) => {
                                disabled={logging}
                                value={password}
                                onChange={handlePasswordInput}
-                               className={`${userState === "user" ? "border-blue-300"
-                                   : userState === "doctor" ? "border-lime-400"
-                                       : "border-yellow-400"} block w-8/12 px-3 py-2 border rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-2 focus:border-green-400 transition duration-150 ease-in-out text-lg sm:leading-5`}
+                               className="block w-8/12 px-3 py-2 border border-stone-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border focus:border-blue-400
+                                transition duration-150 ease-in-out text-lg sm:leading-5"
                         />
                     </div>
 
                     <button
-                        className={`${userState === "user" ? "bg-blue-700 text-stone-100"
-                            : userState === "doctor" ? "bg-lime-500"
-                                : "bg-amber-500"} w-full  border-2 border-amber-200 shadow-md py-4 mt-6 rounded-b-lg text-xl text-blue-900 tracking-wider hover:font-extrabold hover:bg-gray-200 focus:text-blue-600 font-bold focus:shadow visited:shadow-xl`}
+                        className="w-full  border-2 border-amber-200 shadow-md py-4 mt-6
+                         rounded-b-lg text-xl text-stone-100 tracking-wider bg-blue-700
+                          hover:font-extrabold hover:bg-gray-200 hover:text-blue-700
+                          focus:text-blue-600 font-bold focus:shadow visited:shadow-xl
+                           transition-all"
                         onClick={() => {
                             handleLogging()
                         }}

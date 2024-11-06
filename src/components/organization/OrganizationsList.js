@@ -28,7 +28,7 @@ const OrganizationsList = ({organization}) => {
 
 
     return (
-        <div className="m-2  max-w-10/12  flex flex-row items-center justify-between">
+        <div className="m-2  max-w-[90%]  mx-auto  flex flex-row items-center justify-between p-2">
             {content}
         </div>
     );
