@@ -6,7 +6,7 @@ const DoctorSpecialties = ({sendParent}) => {
     const {data, error, isFetching} = useFetchDoctorSpecialtiesQuery();
 
     const [search, setSearch] = useState('');
-    
+
     let content
     if (isFetching) {
         content = <Skeleton className="w-full h-6" times={10}/>
@@ -37,7 +37,7 @@ const DoctorSpecialties = ({sendParent}) => {
         });
     }
     return (
-        <div className="border-2 p-2 h-4/12">
+        <div className="border-2 p-2 h-4/12 rounded">
             <form>
                 <input type="text" onChange={(e) => setSearch(e.target.value)}
                        className="border w-full rounded mb-2 text-base  outline-none focus:outline-none p-1"

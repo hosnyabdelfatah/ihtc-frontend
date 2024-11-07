@@ -29,7 +29,7 @@ const OrganizationsList = ({organization}) => {
 
     return (
         <div className="m-2  max-w-[90%]  mx-auto  flex flex-row items-center justify-between p-2">
-            {content}
+            {content ? content : <Skeleton times={10} className="w-full h-screen"/>}
         </div>
     );
 };

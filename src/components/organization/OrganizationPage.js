@@ -12,16 +12,16 @@ const OrganizationPage = () => {
 
     return (
         <div
-            className="organization-page h-screen mt-4 border-red-700 mb-6 mx-4"
+            className="organization-page h-screen mt-2 w-[90%] border-red-700 mb-6 mx-auto"
         >
-            <div className="organization_header h-3/6"
+            <div className="organization_header h-3/6 border"
                  style={{
                      fontSize: `30px`,
                      backgroundImage: `url(${logo})`,
                      backgroundRepeat: "no-repeat",
-                     backgroundClip: "padding-box",
-                     backgroundSize: "50%",
-                     backgroundPosition: "center center",
+                     // backgroundClip: "padding-box",
+                     backgroundSize: "30%",
+                     backgroundPosition: "center center ",
                      backgroundAttachment: "fixed",
                  }}>
             </div>

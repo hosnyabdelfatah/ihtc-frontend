@@ -139,7 +139,7 @@ const Login = ({}) => {
                     className="buttons w-ful mx-auto font-bold my-4 w-f flex flex-row justify-between rounded-t-lg overflow-hidden "
                 >
                     <button
-                        className={` user-login w-[33%] bg-blue-600  py-3 rounded-tl-lg text-stone-100  border-2 shadow-sm text-base`}
+                        className={` user-login w-[33%] bg-stone-500  py-3 rounded-tl-lg text-stone-100  border-2 shadow-sm text-base`}
                         onClick={() => {
                             dispatch(changeUserState("user"))
                             handleChaneUserAs("user")
@@ -148,7 +148,7 @@ const Login = ({}) => {
                         User
                     </button>
                     <button
-                        className={`doctor-login  w-[33%]  bg-blue-600  py-3 border-2	shadow-sm  text-base text-stone-100`}
+                        className={`doctor-login  w-[33%]  bg-stone-500  py-3 border-2	shadow-sm  text-base text-stone-100`}
                         onClick={() => {
                             dispatch(changeUserState("doctor"))
                             handleChaneUserAs("doctor")
@@ -157,7 +157,7 @@ const Login = ({}) => {
                         Doctor
                     </button>
                     <button
-                        className={` organization-login  bg-blue-600 w-[33%]  py-3 rounded-tr-lg shadow-sm border-2  text-base shadow-sm  text-stone-100`}
+                        className={` organization-login  bg-stone-500 w-[33%]  py-3 rounded-tr-lg shadow-sm border-2  text-base shadow-sm  text-stone-100`}
                         onClick={() => {
                             dispatch(changeUserState("organization"))
                             handleChaneUserAs("organization")
@@ -196,10 +196,10 @@ const Login = ({}) => {
                     </div>
 
                     <button
-                        className="w-full  border-2 border-amber-200 shadow-md py-4 mt-6
-                         rounded-b-lg text-xl text-stone-100 tracking-wider bg-blue-600
-                          hover:font-extrabold hover:bg-gray-200 hover:text-blue-700
-                          focus:text-blue-600 font-bold focus:shadow visited:shadow-xl
+                        className="w-full  border-2  shadow-md py-3 mt-6
+                         rounded-b-lg text-xl text-stone-100 tracking-wider bg-stone-500
+                          hover:font-extrabold hover:bg-stone-300 hover:text-stone-700
+                          focus:text-stone-600 font-bold focus:shadow visited:shadow-xl
                            transition-all"
                         onClick={() => {
                             handleLogging()
