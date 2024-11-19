@@ -1,9 +1,12 @@
-import {configureStore} from "@reduxjs/toolkit";
+import {combineReducers, configureStore} from "@reduxjs/toolkit";
+import {persistReducer} from "redux-persist";
+import storage from "redux-persist/lib/storage";
 import {setupListeners} from "@reduxjs/toolkit/query";
 import {changeUserState} from "../features/userAsSlice";
 import userStateSlice from '../features/userAsSlice';
 import {statusApi} from "../app/apis/statusApi";
 import {apiSlice} from "../app/apiSlice";
+import doctorSlice from "../features/doctorSlice";
 import authReducer from "../features/auth/authSlice";
 import currentUserReducer, {setCurrentUser} from '../features/currentUserSlice';
 import currentOrganizationsListReducer, {setOrganizationsList} from '../features/organizatiosListSlice';
@@ -14,8 +17,20 @@ import {doctorApi} from "../app/apis/doctorApi";
 import {doctorSpecialtyApi} from "../app/apis/doctorSpecialtyApi";
 import {countryApi} from "../app/apis/countryApi";
 
+const rootReducer = combineReducers({
+    doctor: doctorSlice,
+});
+
+const persistConfig = {
+    key: "root",
+    storage,
+};
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
 export const store = configureStore({
     reducer: {
+        persistedReducer,
         userState: userStateSlice,
         [apiSlice.reducerPath]: apiSlice.reducer,
         auth: authReducer,

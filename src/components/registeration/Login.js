@@ -1,14 +1,14 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {useSelector, useDispatch} from "react-redux";
+import {loginDoctor} from "../../features/doctorSlice";
 import {Link, useNavigate, useLocation} from 'react-router-dom';
-import {setCredentials} from "../../features/auth/authSlice";
+import {setCredentials, setError, selectCurrentError} from "../../features/auth/authSlice";
 import {changeUserState, setCurrentUser, selectCurrentToken, useFetchUserUseStatusQuery} from "../../store";
 import {selectCurrentUserState} from "../../features/userAsSlice";
 import {useOrganizationLoginMutation} from "../../store";
 import axios from "axios";
 import useAuth from "../../hooks/useAuth";
 import BASE_URL from "../../app/apis/baseUrl";
-import Spinner from '../../components/Spinner'
 
 const setCookie = (name, value, days) => {
     const date = new Date();
@@ -21,11 +21,18 @@ const setCookie = (name, value, days) => {
 const Login = ({}) => {
     const {auth, setAuth} = useAuth();
 
-    const [login, {isLoading}] = useOrganizationLoginMutation()
+    const [login, {isLoading, isSuccess, isError, data, error}] = useOrganizationLoginMutation()
     const dispatch = useDispatch();
-
-    // console.log(data)
+    const navigate = useNavigate()
+    // console.log()
     const {userState} = useSelector(selectCurrentUserState)
+    // const data = useSelector(selectCurrentError);
+
+    const signUp = userState === 'organization'
+        ? 'organization-signup'
+        : userState === 'doctor'
+            ? 'doctor-signup'
+            : 'user-sign-up';
 
     const userRef = useRef();
     const errRef = useRef();
@@ -33,9 +40,11 @@ const Login = ({}) => {
     const [password, setPassword] = useState('')
     const [errMsg, setErrMsg] = useState('')
     const [logging, setLogging] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [loginError, setLoginError] = useState(null);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [validateErrMsg, setValidateErrMsg] = useState('');
-    const navigate = useNavigate()
+
     const addError = [];
 
 
@@ -62,17 +71,14 @@ const Login = ({}) => {
         setLogging(true)
     }
 
-    const handleValidatErr = () => {
-
-    }
-
     const handleSubmit = async (e) => {
         e.preventDefault()
+        console.log(`Response Error: ${error}`)
         if (user === '' || password === '') {
             setErrMsg('User and password is require');
             setLogging(false)
             return
-        } else if (userState === 'doctor' || userState === 'user') {
+        } else if (userState === 'user') {
             setErrMsg(`No server for ${userState} yet`)
             setLogging(false)
             return
@@ -80,23 +86,44 @@ const Login = ({}) => {
         try {
             if (userState === 'organization') {
                 const data = await login({user, password}).unwrap()
-                const userData = data.organization
-                console.log(userData)
+                // console.log(data)
+                const userData = data?.organization
+                // console.log(userData)
                 const {email, name, tokens} = userData
-                const token = data.token
+                const token = data?.token
                 dispatch(setCredentials({...userData, token}))
                 setAuth({...userData})
-                console.log(auth)
+                // console.log(auth)
                 dispatch(setCurrentUser({...userData}))
 
                 setUser('')
                 setPassword('')
                 navigate('/organization')
+            } else if (userState === 'doctor') {
+                dispatch(loginDoctor({user, password})).then((res) => {
+                    console.log(res.payload)
+
+                    if (res.payload !== undefined) {
+                        setAuth({...res.payload})
+                        setUser("");
+                        setPassword("");
+                        navigate("/doctor");
+                    } else {
+                        console.log(res.payload)
+                        if (res.error.message === "Request failed with status code 401") {
+                            setLoginError("Access Denied! Invalid username or password");
+                        } else {
+                            setLoginError(res.error.message);
+                        }
+                    }
+                });
             }
 
         } catch (err) {
+            console.log(error)
+
             if (!err?.originalStatus) {
-                console.log(err)
+                console.log(err?.originalStatus)
                 setErrMsg('No Server Response');
             } else if (err?.response?.status === 400) {
                 setErrMsg('Missing Username or Password');
@@ -118,7 +145,7 @@ const Login = ({}) => {
              fill="none"
              viewBox="0 0 24 24">
         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                strokewidth="4"></circle>
+                strokeWidth="4"></circle>
         <path className="opacity-75" fill="currentColor"
               d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
     </svg>
@@ -171,7 +198,7 @@ const Login = ({}) => {
                 <p className="my-8">Login with your email or unique ID<br/>
                     haven't an account<span> </span>
                     <span className="underline text-blue-500 font-semibold">
-                        <Link to={`${selectCurrentUserState}s/signup`}>register</Link>
+                        <Link to={`/${signUp}`}>register</Link>
                     </span>
                 </p>
 

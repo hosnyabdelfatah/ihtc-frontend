@@ -9,6 +9,8 @@ const OrganizationPage = () => {
     const organization = useSelector(getCurrentUser)
     const organizationData = organization?.currentUser
     const logo = organizationData?.logo
+    const banner = organizationData?.banner
+    console.log(banner)
 
     return (
         <div
@@ -16,14 +18,14 @@ const OrganizationPage = () => {
         >
             <div className="organization_header h-3/6 border"
                  style={{
-                     fontSize: `30px`,
-                     backgroundImage: `url(${logo})`,
+                     backgroundImage: `url(${banner})`,
                      backgroundRepeat: "no-repeat",
-                     // backgroundClip: "padding-box",
-                     backgroundSize: "30%",
+                     backgroundClip: "border-box",
+                     backgroundSize: "auto",
                      backgroundPosition: "center center ",
                      backgroundAttachment: "fixed",
                  }}>
+                {/*<img src={banner} alt="Banner"/>*/}
             </div>
             <div className="organization_info-header flex flex-row justify-start items-baseline mt-6 mb-8">
                 <h3 className="text-xl border-2 border-[#ffc907] drop-shadow-md p-2 rounded-md text-violet-700  font-extrabold p2 mr-3">organization_info</h3>

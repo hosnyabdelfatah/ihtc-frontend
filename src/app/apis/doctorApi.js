@@ -3,7 +3,7 @@ import queryString from 'query-string';
 import BASE_URL from "./baseUrl";
 
 const doctorApi = createApi({
-    reducerPath: 'doctors',
+    reducerPath: 'doctor',
     baseQuery: fetchBaseQuery({
         baseUrl: BASE_URL,
         fetchFn: (doctors) => {
@@ -60,7 +60,7 @@ const doctorApi = createApi({
 //                     },
 //                     query: (doctor) => {
 //                         return {
-//                             url: '/doctors',
+//                             url: '/doctor',
 //                             method: 'GET'
 //                         }
 //                     }

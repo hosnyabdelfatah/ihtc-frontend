@@ -1,4 +1,5 @@
 import {apiSlice} from "../../app/apiSlice";
+import {setError} from "./authSlice";
 
 export const authOrganizationApi = apiSlice.injectEndpoints({
     endpoints: builder => ({
@@ -8,7 +9,7 @@ export const authOrganizationApi = apiSlice.injectEndpoints({
                 method: 'POST',
                 body: {...credentials},
                 credentials: 'include',
-            })
+            }),
         }),
     })
 })

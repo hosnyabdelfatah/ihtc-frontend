@@ -15,6 +15,11 @@ import OrganizationsList from "./organization/OrganizationsList";
 import RequireOrganizationAuth from "../features/auth/RequireOrganizationAuth";
 import OrganizationCardDetails from "./organization/OrganizationCardDetails";
 import Campaigns from "./organization/Campaigns";
+import OrganizationSignup from "./registeration/OrganizationSignup";
+import DoctorSignup from "./registeration/DoctorSignup";
+import DoctorPage from "./doctor/DoctorPage";
+import DoctorLayout from "./doctor/DoctorLayout";
+import RequireDoctorAuth from "../features/auth/RequireDoctorAuth";
 
 
 function App() {
@@ -33,23 +38,24 @@ function App() {
     useEffect(() => {
         const userType = getCookie("organizationJwt")
         console.log(document.cookie)
-        console.log("User aas: ", userType);
     }, [])
     return (
         <Routes>
             <Route element={<Layout/>}>
                 <Route path="/" element={<Login/>}/>
                 <Route path="/login" element={<Login/>}/>
-                <Route element={<PersistLogin/>}>
+                <Route path="organization-signup" element={<OrganizationSignup/>}/>
+                <Route path="doctor-signup" element={<DoctorSignup/>}/>
 
+                <Route element={<PersistLogin/>}>
                     <Route path="home" element={<Home/>}/>
                     <Route path="welcome" element={<Welcome/>}/>
-
 
                 </Route>
 
             </Route>
             {/*Organization Routes*/}
+
             <Route element={<RequireOrganizationAuth/>}>
                 <Route element={<OrganizationLayout/>}>
                     <Route path="organization" element={<OrganizationPage/>}/>
@@ -57,8 +63,14 @@ function App() {
                     <Route path="card-details/:email" element={<OrganizationCardDetails/>}
                     />
                     <Route path="campaign" element={<Campaigns/>}/>
-
                 </Route>
+            </Route>
+
+            <Route element={<RequireDoctorAuth/>}>
+                <Route element={<DoctorLayout/>}>
+                    <Route path="doctor" element={<DoctorPage/>}/>
+                </Route>
+                {/*<Route path="doctor" element={<DoctorPage/>}/>*/}
             </Route>
         </Routes>
     );

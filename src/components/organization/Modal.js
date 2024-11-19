@@ -22,9 +22,6 @@ const Modal = ({receivers, onClose}) => {
 
     let errorMessage = [];
 
-
-    //:TODO Handle attach preview.
-
     const campaignBody = {
         subject: messageTitle,
         from: sender,
@@ -108,10 +105,7 @@ const Modal = ({receivers, onClose}) => {
                 console.log(err)
                 errRef.current.focus();
             }
-
-
         }
-
     }
 
     useEffect(() => {
@@ -123,7 +117,6 @@ const Modal = ({receivers, onClose}) => {
 
     useEffect(() => {
         document.body.classList.add('overflow-hidden');
-
         return () => {
             document.body.classList.remove('overflow-hidden');
         }

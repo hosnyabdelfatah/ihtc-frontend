@@ -41,7 +41,7 @@ const DataShow = () => {
     //     </div>
     // </label>
 
-    {/*doctorsContent = doctors?.length > 0 && doctors?.map((doctor, index) => {*/
+    {/*doctorsContent = doctor?.length > 0 && doctor?.map((doctor, index) => {*/
     }
     {/*    return <label htmlFor={index} key={index}*/
     }
@@ -87,7 +87,7 @@ const DataShow = () => {
     //     </label>
     // });
 
-    // let dataSlice = doctors?.length > 0 && doctors?.slice(1, 20)
+    // let dataSlice = doctor?.length > 0 && doctor?.slice(1, 20)
     // console.log(dataSlice)
     // let content = dataSlice.length > 0 && dataSlice?.map((doc) => {
     //     return <div>

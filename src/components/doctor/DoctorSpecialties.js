@@ -1,11 +1,17 @@
 import {useFetchDoctorSpecialtiesQuery} from "../../store";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Skeleton from "../Skeleton";
 
-const DoctorSpecialties = ({sendParent}) => {
+const DoctorSpecialties = ({sendParent, clearInput}) => {
+    // const [inputValue, setInputValue] = useState('');
     const {data, error, isFetching} = useFetchDoctorSpecialtiesQuery();
-
     const [search, setSearch] = useState('');
+
+
+    useEffect(() => {
+        if (clearInput)
+            setSearch("");
+    }, [clearInput]);
 
     let content
     if (isFetching) {
@@ -14,7 +20,7 @@ const DoctorSpecialties = ({sendParent}) => {
         content = <div>Error loading...</div>
     } else {
         content = data.data.filter((specialty) => {
-            return search.toLowerCase() === ''
+            return search?.toLowerCase() === ''
                 ? specialty
                 : specialty.title.toLowerCase().startsWith(search);
         }).sort((a, b) => {
@@ -31,7 +37,7 @@ const DoctorSpecialties = ({sendParent}) => {
             return <button key={index}
                            className="block rounded-lg bg-yellow-50 w-full text-left p-2 mb-2 text-indigo-700 font-semibold hover:bg-yellow-400 hover:text-violet-900 transition-all"
                            onClick={() => {
-                               sendParent(title)
+                               sendParent(specialty)
                            }}
             >{specialty.title.trim()}</button>
         });
@@ -41,6 +47,7 @@ const DoctorSpecialties = ({sendParent}) => {
             <form>
                 <input type="text" onChange={(e) => setSearch(e.target.value)}
                        className="border w-full rounded mb-2 text-base  outline-none focus:outline-none p-1"
+                       value={search}
                 />
             </form>
             {content ? content : <Skeleton className="w-full h-5" times={10}/>}
