@@ -243,7 +243,7 @@ const OrganizationSignup = () => {
 
                 </div>
                 <div className=" sm:px-10 bg-white mb-8 py-8 px-4 shadow-lg sm:rounded-lg">
-                    <form method="POST" onSubmit={handleSubmit}>
+                    <form method="POST" onSubmit={handleSubmit} encType="multipart/form-data">
 
                         <div className="upload-banner flex items-center justify-center w-full mb-4 ">
                             <label htmlFor="banner"

@@ -20,6 +20,7 @@ import DoctorSignup from "./registeration/DoctorSignup";
 import DoctorPage from "./doctor/DoctorPage";
 import DoctorLayout from "./doctor/DoctorLayout";
 import RequireDoctorAuth from "../features/auth/RequireDoctorAuth";
+import UserSignup from "./registeration/UserSignup";
 
 
 function App() {
@@ -46,6 +47,7 @@ function App() {
                 <Route path="/login" element={<Login/>}/>
                 <Route path="organization-signup" element={<OrganizationSignup/>}/>
                 <Route path="doctor-signup" element={<DoctorSignup/>}/>
+                <Route path="user-signup" element={<UserSignup/>}/>
 
                 <Route element={<PersistLogin/>}>
                     <Route path="home" element={<Home/>}/>

@@ -1,4 +1,3 @@
-import '../doctor/create-doctor.css'
 import React, {useState, useRef, useEffect} from 'react';
 import {Link, useNavigate} from "react-router-dom";
 import Skeleton from "../Skeleton";
@@ -16,7 +15,7 @@ import axios from "axios";
 import BASE_URL from "../../app/apis/baseUrl";
 
 
-const DoctorSignup = () => {
+const UserSignup = () => {
     let content;
     let specialtyContent;
 
@@ -47,7 +46,7 @@ const DoctorSignup = () => {
     }
 
 
-    const [image, setImage] = useState('');
+    const [avatar, setAvatar] = useState('');
     const [fname, setFname] = useState('');
     const [lname, setLname] = useState('');
     const [email, setEmail] = useState('')
@@ -107,7 +106,7 @@ const DoctorSignup = () => {
         }
     }
 
-    const handleImage = (e) => setImage(e.target.files[0])
+    const handleAvatar = (e) => setAvatar(e.target.files[0])
     const handleFname = (e) => setFname(e.target.value)
     const handleLname = (e) => setLname(e.target.value)
     const handleEmail = (e) => setEmail(e.target.value);
@@ -150,7 +149,7 @@ const DoctorSignup = () => {
 
     useEffect(() => {
         setErrMsg('')
-    }, [image, fname, lname, email, password, passwordConfirm, whatsapp, facebook, , selectedSpecialty, jobTitle, workPlace, selectedCountry, selectedLanguage, description]);
+    }, [avatar, fname, lname, email, password, passwordConfirm, whatsapp, facebook, , selectedSpecialty, jobTitle, workPlace, selectedCountry, selectedLanguage, description]);
 
     specialtyContent = specialties?.sort((a, b) => {
             if (a.title < b.title) {
@@ -192,7 +191,7 @@ const DoctorSignup = () => {
 
     const errors = {}
     const validate = () => {
-        if (!image || image === '') errors['image'] = true;
+        if (!avatar || avatar === '') errors['avatar'] = true;
         if (!fname || fname === '') errors['fname'] = true;
         if (!lname || lname === '') errors['lname'] = true;
         if (!email || email === '') errors['email'] = true;
@@ -206,10 +205,42 @@ const DoctorSignup = () => {
         if (!selectedLanguage || selectedLanguage === '') errors['selectedLanguage'] = true;
     }
 
+    const [formData, setFormData] = useState({
+        avatar: null,
+        fname: "",
+        lname: "",
+        email: "",
+        password: "",
+        passwordConfirm: "",
+        whatsapp: "",
+        facebook: "",
+        specialty: "",
+        jobTitle: "",
+        workPlace: "",
+        country: "",
+        language: "",
+        description: ""
+    });
+
+    const handleChange = (e) => {
+        const {name, value} = e.target;
+        setFormData((prevState) => ({
+            ...prevState,
+            [name]: value,
+        }));
+    };
+
+    const handleFileChange = (e) => {
+        setFormData((prevState) => ({
+            ...prevState,
+            avatar: e.target.files[0]
+        }));
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         validate();
+
         if (password !== passwordConfirm) {
             setErrMsg('Password not match password confirm');
             return false
@@ -223,65 +254,83 @@ const DoctorSignup = () => {
         const data = new FormData();
 
 
-        data.append("image", image);
-        data.append("fname", fname);
-        data.append("lname", lname);
-        data.append("email", email);
-        data.append("password", password);
-        data.append("passwordConfirm", passwordConfirm);
-        data.append("whatsapp", whatsapp);
-        data.append("facebook", facebook);
+        data.append("avatar", formData.avatar);
+        data.append("fname", formData.fname);
+        data.append("lname", formData.lname);
+        data.append("email", formData.email);
+        data.append("password", formData.password);
+        data.append("passwordConfirm", formData.passwordConfirm);
+        data.append("whatsapp", formData.whatsapp);
+        data.append("facebook", formData.facebook);
         data.append("specialty", selectedSpecialty);
-        data.append("jobTitle", jobTitle);
-        data.append("workPlace", workPlace);
+        data.append("jobTitle", formData.jobTitle);
+        data.append("workPlace", formData.workPlace);
         data.append("country", selectedCountry);
         data.append("language", selectedLanguage);
-        data.append("description", description);
+        data.append("description", formData.description);
         console.log(data)
 
         try {
-            const response = await axios.post(`${BASE_URL}/doctors/doctor-signup`,
-                data, {
-                    headers: {'Content-Type': 'multipart/form-data'},
-                    data: data,
-                    transformRequest: [
-                        (data) => data,
-                    ]
-                });
-
-            const result = await response.data
+            const response = await axios.post(`${BASE_URL}/users/user-signup`, data, {
+                headers: {'Content-Type': 'multipart/form-data'},
+                data: data,
+                transformRequest: [
+                    (data) => data,
+                ]
+            });
             console.log(response)
-            console.log("Signup successful:", result);
-            setFname('');
-            setLname('');
-            setEmail('');
-            setImage(null);
-            setPreview(null);
-            setPassword('');
-            setPasswordConfirm('');
-            setWhatsapp('');
-            setFacebook('');
-            setSelectedSpecialty('');
-            setSelectedSpecialtyText('');
-            setJobTitle('');
-            setWhatsapp('')
-            setSelectedCountry('');
-            setSelectedCountryText('');
-            setSelectedLanguage('');
-            setSelectedLanguageText('');
-            setDescription('')
-            setSuccess(true)
-            // navigate('/login')
+            if (response.ok) {
+                const result = await response.json();
+                console.log("Signup successful:", result);
+                setFormData({
+                    avatar: null,
+                    fname: "",
+                    lname: "",
+                    email: "",
+                    password: "",
+                    passwordConfirm: "",
+                    whatsapp: "",
+                    facebook: "",
+                    specialty: "",
+                    jobTitle: "",
+                    workPlace: "",
+                    country: "",
+                    language: "",
+                    description: ""
+                })
 
-
+                setFname('');
+                setLname('');
+                setEmail('');
+                setAvatar(null);
+                setPreview(null);
+                setPassword('');
+                setPasswordConfirm('');
+                setWhatsapp('');
+                setFacebook('');
+                setSelectedSpecialty('');
+                setSelectedSpecialtyText('');
+                setJobTitle('');
+                setWhatsapp('')
+                setSelectedCountry('');
+                setSelectedCountryText('');
+                setSelectedLanguage('');
+                setSelectedLanguageText('');
+                setDescription('')
+                setSuccess(true)
+                navigate('/login')
+            }
         } catch (err) {
-            if (err.response?.status === 409) {
+            console.error("Error during signup:", error);
+            if (!err?.response) {
+                console.log(err)
+                setErrMsg("No server response");
+            } else if (err.response?.status === 409) {
                 setErrMsg("Username taken");
             } else {
-                // console.log(`Error code is: ${err.code}`)
-                // console.log(`Error is: ${(err?.response?.data)}`)
-                console.log(err)
-                // setErrMsg(err?.response.data)
+                console.log(`Error is: ${err.code}`)
+                console.log(`Error is: ${(err.response.data)}`)
+                setErrMsg(err?.response.data)
             }
             errRef.current.focus();
         }
@@ -299,7 +348,7 @@ const DoctorSignup = () => {
 
                     <div className="registration-title  justify-evenly content-baseline ">
                         <h2 className="mt-3 text-center  text-xl leading-5 font-bold text-gray-500">
-                            Doctor registration.
+                            User registration.
                         </h2>
                         <p className="mt-1 text-center text-sm leading-5 text-gray-500 max-w">
                             I have an account:<span> </span>
@@ -315,7 +364,7 @@ const DoctorSignup = () => {
                     <form method="POST" onSubmit={handleSubmit} encType="multipart/form-data">
 
                         <div className="flex items-center justify-center  w-full mb-4">
-                            <label htmlFor="image"
+                            <label htmlFor="avatar"
                                    className="flex flex-col items-center justify-center w-6/12 h-[180px]  border-gray-200 border shadow-sm  rounded-full cursor-pointer  dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
                             >
 
@@ -347,11 +396,13 @@ const DoctorSignup = () => {
                                         </div>
                                     )}
                                 </div>
-                                <input id="image" name="image" type="file" className="hidden"
+                                <input type="file" id="avatar" name="avatar" className="hidden"
                                        accept="image/*"
+                                       required
                                        onChange={(e) => {
-                                           handleImage(e)
+                                           handleAvatar(e)
                                            handleImagePreview(e)
+                                           handleFileChange(e)
                                        }}
                                 />
                             </label>
@@ -361,19 +412,27 @@ const DoctorSignup = () => {
                             <div className="fname w-5/12 mt-1 flex flex-row justify-between relative rounded-md ">
                                 {/*<label htmlFor="fname"*/}
                                 {/*       className="block text-sm font-medium leading-5  text-gray-700">Name</label>*/}
-                                <input id="fname" name="fname" placeholder="First name *" type="text" required=""
+                                <input id="fname" name="fname" placeholder="First name *" type="text" required
                                        className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-lime focus:border-lime-400 transition duration-150 ease-in-out shadow-sm text-lg sm:leading-5"
-                                       value={fname}
-                                       onChange={(e) => handleFname(e)}
+                                       value={formData.fname}
+                                       onChange={(e) => {
+                                           handleFname(e);
+                                           handleChange(e)
+                                       }
+                                       }
                                 />
                             </div>
                             <div className="lname w-5/12 mt-1 flex flex-row justify-between relative rounded-md ">
                                 {/*<label htmlFor="lname"*/}
                                 {/*       className="block text-sm font-medium leading-5  text-gray-700">Name</label>*/}
-                                <input id="lname" name="lname" placeholder="Family name *" type="text" required=""
+                                <input id="lname" name="lname" placeholder="Family name *" type="text" required
                                        className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-lime focus:border-lime-400 transition duration-150 ease-in-out text-lg shadow-sm sm:leading-5"
-                                       value={lname}
-                                       onChange={(e) => handleLname(e)}
+                                       value={formData.lname}
+                                       onChange={(e) => {
+                                           handleLname(e)
+                                           handleChange(e)
+                                       }
+                                       }
                                 />
                             </div>
                         </div>
@@ -388,8 +447,11 @@ const DoctorSignup = () => {
                                        required
                                        className=" block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-lime focus:border-lime-400 transition duration-150
                                        text-lg text-stone-700  ease-in-out  sm:leading-5"
-                                       value={email}
-                                       onChange={(e) => handleEmail(e)}
+                                       value={formData.email}
+                                       onChange={(e) => {
+                                           handleEmail(e)
+                                           handleChange(e)
+                                       }}
                                 />
                                 <div
                                     className="hidden absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
@@ -408,11 +470,14 @@ const DoctorSignup = () => {
                             {/*</label>*/}
                             <div className="mt-1 rounded-md shadow-sm relative">
                                 <input id="password" name="password" type={showPassword ? "text" : "password"}
-                                       required=""
+                                       required
                                        placeholder="Password"
                                        className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-lime-400 transition duration-150 ease-in-out text-lg sm:leading-5"
-                                       value={password}
-                                       onChange={(e) => handlePassword(e)}
+                                       value={formData.password}
+                                       onChange={(e) => {
+                                           handlePassword(e)
+                                           handleChange(e)
+                                       }}
                                 />
                                 <span className="inline-block absolute text-gray-400 right-2 top-3"
                                       onClick={handleShowPassword}>{showPassword ?
@@ -428,12 +493,15 @@ const DoctorSignup = () => {
                             {/*    Confirm Password*/}
                             {/*</label>*/}
                             <div className="mt-1 relative rounded-md shadow-sm">
-                                <input id="password-confirmation" name="password-confirmation"
+                                <input id="passwordConfirm" name="passwordConfirm"
                                        type={showPasswordConfirm ? "text" : "password"}
                                        required="" placeholder="Confirm password"
                                        className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-lime-400 transition duration-150 ease-in-out text-lg sm:leading-5"
-                                       value={passwordConfirm}
-                                       onChange={(e) => handlePasswordConfirm(e)}
+                                       value={formData.passwordConfirm}
+                                       onChange={(e) => {
+                                           handleChange(e)
+                                           handlePasswordConfirm(e)
+                                       }}
                                 />
                                 <span className="inline-block absolute text-gray-400 right-2 top-3"
                                       onClick={handleShowPasswordConfirm}>{showPasswordConfirm ?
@@ -447,23 +515,31 @@ const DoctorSignup = () => {
                             <input type="text" name="whatsapp" id="whatsapp"
                                    className="appearance-none placeholder-gray-400 block w-full px-3 py-2 border border-gray-300 rounded-md  focus:outline-none focus:shadow-outline-blue focus:border-lime-400 transition duration-150 ease-in-out text-lg sm:leading-5"
                                    placeholder="Whatsapp number"
-                                   value={whatsapp}
-                                   onChange={(e) => handleWhatsapp(e)}
+                                   value={formData.whatsapp}
+                                   onChange={(e) => {
+                                       handleChange(e)
+                                       handleWhatsapp(e)
+                                   }}
                             />
                         </div>
 
                         <div className="facebook-id mt-4">
-                            <input type="text" name="facebook-id" id="facebook-id"
+                            <input type="text" name="facebook" id="facebook"
                                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-lime-400 transition duration-150 ease-in-out text-lg sm:leading-5"
                                    placeholder="facebook id"
-                                   value={facebook}
-                                   onChange={(e) => handleFacebook(e)}
+                                   value={formData.facebook}
+                                   onChange={(e) => {
+                                       handleChange(e)
+                                       handleFacebook(e)
+                                   }}
                             />
                         </div>
 
                         <div className="specialty mt-4 relative"
                         >
-                            <input type="text" name="specialty" id="specialty"
+                            <input name="specialty" type="hidden" value={selectedSpecialty} onChange={() => {
+                            }}/>
+                            <input type="text" id="specialty"
                                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 cursor-pointer focus:outline-none focus:shadow-outline-blue focus:border-lime-400 transition duration-150 ease-in-out text-lg sm:leading-5"
                                    autoComplete="off"
                                    placeholder="Specialty"
@@ -490,20 +566,26 @@ const DoctorSignup = () => {
                         </div>
 
                         <div className="job-title mt-4">
-                            <input type="text" name="job-title" id="job-title"
+                            <input type="text" name="jobTitle" id="jobTitle"
                                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-lime-400 transition duration-150 ease-in-out text-lg sm:leading-5"
                                    placeholder="Job title"
-                                   value={jobTitle}
-                                   onChange={(e) => handleJobTitle(e)}
+                                   value={formData.jobTitle}
+                                   onChange={(e) => {
+                                       handleChange(e)
+                                       handleJobTitle(e)
+                                   }}
                             />
                         </div>
 
                         <div className="work-place mt-4">
-                            <input type="text" name="work-place" id="work-place" placeholder="Work place"
+                            <input type="text" name="workPlace" id="workPlace" placeholder="Work place"
                                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-lime-400 transition duration-150 ease-in-out text-lg sm:leading-5"
 
-                                   value={workPlace}
-                                   onChange={(e) => handleWorkPlace(e)}
+                                   value={formData.workPlace}
+                                   onChange={(e) => {
+                                       handleChange(e)
+                                       handleWorkPlace(e)
+                                   }}
                             />
                         </div>
                         <div className="countries-div mt-4"
@@ -512,6 +594,8 @@ const DoctorSignup = () => {
                                 handleCountriesClicked()
                             }}
                                  className="countries-input w-full  relative  pr-0.5 text-lg">
+                                <input name="country" type="hidden" value={selectedCountry} onChange={() => {
+                                }}/>
                                 <input name="countries" id="countries"
                                        className="countries cursor-pointer block w-full px-4 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-lime-400 transition duration-150 ease-in-out text-lg sm:leading-5 "
                                        autoComplete="off"
@@ -531,7 +615,6 @@ const DoctorSignup = () => {
                                     className={`${countriesSelectShow ? "h-[100px] block" : "h-0 hidden "} language_ul w-full bg-white absolute overflow-y-scroll z-10 pl-5 border-2 cursor-pointer transition-all duration-300`}
                                     onClick={(e) => {
                                         e.stopPropagation()
-                                        e.stopImmediatePropagation()
                                         handleCountriesClicked()
                                     }}
                                 >
@@ -541,7 +624,9 @@ const DoctorSignup = () => {
                         </div>
 
                         <div className="language-div mt-4 relative ">
-                            <input type="text" id="languages"
+                            <input name="language" type="hidden" value={selectedLanguage} onChange={() => {
+                            }}/>
+                            <input type="text"
                                    placeholder="Preferred language"
                                    autoComplete="off"
                                    className="cursor-pointer block w-full px-4 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-lime-400 transition duration-150 ease-in-out text-lg sm:leading-5 "
@@ -573,8 +658,11 @@ const DoctorSignup = () => {
                             <textarea name="description" id="description" cols="30" rows="6"
                                       className={`${errors.description === true ? "border-red-600" : "border-gray-300"} appearance-none block w-full mt-4 px-3 py-2 border  rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-lime-400 transition duration-150 ease-in-out text-lg sm:leading-5`}
                                       required
-                                      value={description}
-                                      onChange={(e) => handleDescription(e)}
+                                      value={formData.description}
+                                      onChange={(e) => {
+                                          handleChange(e)
+                                          handleDescription(e)
+                                      }}
                                       placeholder="Description *"
                             >
 
@@ -596,4 +684,4 @@ const DoctorSignup = () => {
     );
 };
 
-export default DoctorSignup;
+export default UserSignup;

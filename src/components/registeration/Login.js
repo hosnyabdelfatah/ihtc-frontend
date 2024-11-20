@@ -32,7 +32,7 @@ const Login = ({}) => {
         ? 'organization-signup'
         : userState === 'doctor'
             ? 'doctor-signup'
-            : 'user-sign-up';
+            : 'user-signup';
 
     const userRef = useRef();
     const errRef = useRef();
@@ -153,7 +153,7 @@ const Login = ({}) => {
     </span>
 
     return (
-        <div className="home mt-12 sm:w-[60%] md:w-[40%] sm:mt-4  mx-auto rounded">
+        <div className="login mt-12 sm:w-[60%] md:w-[40%] sm:mt-4  mx-auto rounded">
             <p ref={errRef}
                className={`${errMsg ? "errmsg block" : "hidden"} bg-red-700 text-stone-100 font-bold rounded text-center py-1`}
                aria-live="assertive">{errMsg}</p>
