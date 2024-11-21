@@ -35,7 +35,7 @@ const OrganizationCardDetails = ({organization}) => {
                      backgroundImage: `url(${organizationData.banner})`,
                      backgroundRepeat: "no-repeat",
                      backgroundClip: "padding-box",
-                     backgroundSize: "20%",
+                     backgroundSize: "cover",
                      backgroundPosition: "center center",
                      backgroundAttachment: "fixed",
                  }}>

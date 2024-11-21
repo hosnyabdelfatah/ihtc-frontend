@@ -91,20 +91,6 @@ const OrganizationSignup = () => {
         }
     }
 
-    const newOrganization = {
-        banner,
-        logo,
-        name,
-        email,
-        password,
-        passwordConfirm,
-        phone,
-        mobile,
-        industryField: industry,
-        country: selectedCountry,
-        description
-    }
-
     const handleBanner = (e) => setBanner(e.target.files[0]);
     const handleLogo = (e) => setLogo(e.target.files[0]);
     const handleName = (e) => setName(e.target.value);
@@ -179,13 +165,38 @@ const OrganizationSignup = () => {
         setErrMsg('')
     }, [logo, banner, name, email, password, passwordConfirm, industry, country, selectedCountry, description]);
 
+    const newOrganization = {
+        banner, logo, name, email, password, passwordConfirm, phone, mobile, industryField: industry,
+        country: selectedCountry, description
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!validate()) return false;
         if (Object.keys(errors) > 0) return false;
 
+        const formData = new FormData();
+
+        formData.append("banner", banner);
+        formData.append("logo", logo);
+        formData.append("name", name);
+        formData.append("email", email);
+        formData.append("password", password);
+        formData.append("passwordConfirm", passwordConfirm);
+        formData.append("phone", phone);
+        formData.append("mobile", mobile);
+        formData.append("industryField", industry);
+        formData.append("country", selectedCountry);
+        formData.append("description", description);
+
         try {
-            const response = await axios.post(`${BASE_URL}/organizations/organization-signup`, newOrganization);
+            const response = await axios.post(`${BASE_URL}/organizations/organization-signup`, formData, {
+                headers: {'Content-Type': 'multipart/form-data'},
+                data: formData,
+                transformRequest: [
+                    (data) => data,
+                ]
+            });
 
             setBanner('')
             setLogo('')

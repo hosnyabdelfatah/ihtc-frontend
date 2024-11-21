@@ -10,7 +10,7 @@ const OrganizationPage = () => {
     const organizationData = organization?.currentUser
     const logo = organizationData?.logo
     const banner = organizationData?.banner
-    console.log(banner)
+    console.log(`Banner: ${banner}`)
 
     return (
         <div
