@@ -75,7 +75,6 @@ const Login = ({}) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        console.log(`Response Error: ${error}`)
         if (user === '' || password === '') {
             setErrMsg('User and password is require');
             setLogging(false)
@@ -134,11 +133,7 @@ const Login = ({}) => {
             }
 
         } catch (err) {
-            console.log(error)
-            if (!err?.originalStatus) {
-                console.log(err?.originalStatus)
-                setErrMsg('No Server Response');
-            } else if (err?.response?.status === 400) {
+            if (err?.response?.status === 400) {
                 setErrMsg('Missing Username or Password');
             } else if (err?.response?.status === 401) {
                 setErrMsg('Unauthorized');
