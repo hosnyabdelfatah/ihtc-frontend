@@ -1,5 +1,6 @@
 import React, {useState, useRef, useEffect} from 'react';
 import {Link, useNavigate} from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
 import Skeleton from "../Skeleton";
 import {FaRegEyeSlash} from "react-icons/fa";
 import {FaRegEye} from "react-icons/fa";
@@ -16,6 +17,8 @@ import BASE_URL from "../../app/apis/baseUrl";
 
 
 const UserSignup = () => {
+    const {setAuth} = useAuth();
+
     let content;
     let specialtyContent;
 
@@ -268,7 +271,6 @@ const UserSignup = () => {
         data.append("country", selectedCountry);
         data.append("language", selectedLanguage);
         data.append("description", formData.description);
-        console.log(data)
 
         try {
             const response = await axios.post(`${BASE_URL}/users/user-signup`, data, {
@@ -279,58 +281,54 @@ const UserSignup = () => {
                 ]
             });
             console.log(response)
-            if (response.ok) {
-                const result = await response.json();
-                console.log("Signup successful:", result);
-                setFormData({
-                    avatar: null,
-                    fname: "",
-                    lname: "",
-                    email: "",
-                    password: "",
-                    passwordConfirm: "",
-                    whatsapp: "",
-                    facebook: "",
-                    specialty: "",
-                    jobTitle: "",
-                    workPlace: "",
-                    country: "",
-                    language: "",
-                    description: ""
-                })
+            const result = await response?.data?.data;
+            console.log("Signup successful:", result);
+            setErrMsg(`Registration is ${response.data.status}`);
+            setFormData({
+                avatar: null,
+                fname: "",
+                lname: "",
+                email: "",
+                password: "",
+                passwordConfirm: "",
+                whatsapp: "",
+                facebook: "",
+                specialty: "",
+                jobTitle: "",
+                workPlace: "",
+                country: "",
+                language: "",
+                description: ""
+            })
 
-                setFname('');
-                setLname('');
-                setEmail('');
-                setAvatar(null);
-                setPreview(null);
-                setPassword('');
-                setPasswordConfirm('');
-                setWhatsapp('');
-                setFacebook('');
-                setSelectedSpecialty('');
-                setSelectedSpecialtyText('');
-                setJobTitle('');
-                setWhatsapp('')
-                setSelectedCountry('');
-                setSelectedCountryText('');
-                setSelectedLanguage('');
-                setSelectedLanguageText('');
-                setDescription('')
-                setSuccess(true)
-                navigate('/login')
-            }
+            setFname('');
+            setLname('');
+            setEmail('');
+            setAvatar(null);
+            setPreview(null);
+            setPassword('');
+            setPasswordConfirm('');
+            setWhatsapp('');
+            setFacebook('');
+            setSelectedSpecialty('');
+            setSelectedSpecialtyText('');
+            setJobTitle('');
+            setWhatsapp('')
+            setSelectedCountry('');
+            setSelectedCountryText('');
+            setSelectedLanguage('');
+            setSelectedLanguageText('');
+            setDescription('')
+            setSuccess(true)
+            setAuth({...result});
+            navigate('/user')
         } catch (err) {
-            console.error("Error during signup:", error);
-            if (!err?.response) {
-                console.log(err)
-                setErrMsg("No server response");
-            } else if (err.response?.status === 409) {
+            if (err.response?.status === 409) {
                 setErrMsg("Username taken");
             } else {
                 console.log(`Error is: ${err.code}`)
                 console.log(`Error is: ${(err.response.data)}`)
-                setErrMsg(err?.response.data)
+                setErrMsg(err?.response)
             }
             errRef.current.focus();
         }
@@ -618,7 +616,11 @@ const UserSignup = () => {
                                         handleCountriesClicked()
                                     }}
                                 >
-                                    {content}
+                                    {
+                                        isFetching
+                                            ? <Skeleton className="w-full h-4" times={6}/>
+                                            : content
+                                    }
                                 </ul>
                             </div>
                         </div>

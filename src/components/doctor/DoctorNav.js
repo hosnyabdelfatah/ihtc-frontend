@@ -15,7 +15,7 @@ function DoctorNav() {
     const doctorData = {...auth}
     const dispatch = useDispatch();
 
-    const handleSingout = () => {
+    const handleSignout = () => {
         setAuth({});
         dispatch(clearDoctor())
     }
@@ -53,7 +53,7 @@ function DoctorNav() {
                 </Link>
                 <div
                     className="logout w-1/4 cursor-pointer mr-1 pl-2 py-1 rounded-[12px] flex flex-row justify-center items-end hover:bg-red-100"
-                    onClick={handleSingout}
+                    onClick={handleSignout}
                 >
 
                     <span> {doctorData?.name ? "Logout" : "Login"}</span>

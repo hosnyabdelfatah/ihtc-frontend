@@ -2,7 +2,7 @@ import React from 'react';
 import {useDispatch} from "react-redux";
 import {Link} from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
-import {clearDoctor} from "../../features/doctorSlice";
+import {clearUser} from "../../features/userSlice";
 import Logo from "../../assets/images/logo-transparent.webp";
 import {GrGroup} from "react-icons/gr";
 import {SiAmazonsimpleemailservice} from "react-icons/si";
@@ -10,26 +10,26 @@ import {TbLogout} from "react-icons/tb";
 import {HiOutlineLogin} from "react-icons/hi";
 
 
-function DoctorNav() {
+function UserNav() {
     const {auth, setAuth} = useAuth();
-    const doctorData = {...auth}
+    const userData = {...auth}
     const dispatch = useDispatch();
 
-    const handleSingout = () => {
+    const handleSignout = () => {
         setAuth({});
-        dispatch(clearDoctor())
+        dispatch(clearUser())
     }
 
     return (
         <div
-            className="doctor-nav border-b-2 border-b-[#ffc907]   drop-shadow-md flex flex-row justify-between items-center py-1 pr-4 mb-2">
+            className="user-nav border-b-2 border-b-[#ffc907]   drop-shadow-md flex flex-row justify-between items-center py-1 pr-4 mb-2">
             <div className="logo w-2/12"><img src={Logo} alt="logo"/></div>
             <div
                 className="title flex justify-center w-[100px]  drop-shadow-md w-2/12">
-                <Link to="doctor"
+                <Link to="user"
                       className="">
-                    <img src={doctorData?.image}
-                         alt={doctorData.firstName + " " + doctorData.lastName}
+                    <img src={userData?.image}
+                         alt={userData.firstName + " " + userData.lastName}
                     />
                 </Link>
             </div>
@@ -53,14 +53,14 @@ function DoctorNav() {
                 </Link>
                 <div
                     className="logout w-1/4 cursor-pointer mr-1 pl-2 py-1 rounded-[12px] flex flex-row justify-center items-end hover:bg-red-100"
-                    onClick={handleSingout}
+                    onClick={handleSignout}
                 >
 
-                    <span> {doctorData?.name ? "Logout" : "Login"}</span>
-                    <Link to={doctorData?.name ? "" : "login"}
+                    <span> {userData?.name ? "Logout" : "Login"}</span>
+                    <Link to={userData?.name ? "" : "login"}
                           className="ml-2 text-red-600  text-2xl"
                     >
-                        {doctorData?.name ? <TbLogout/> : <HiOutlineLogin/>}
+                        {userData?.name ? <TbLogout/> : <HiOutlineLogin/>}
                     </Link>
                 </div>
 
@@ -69,4 +69,4 @@ function DoctorNav() {
     );
 }
 
-export default DoctorNav;
+export default UserNav;

@@ -215,15 +215,10 @@ const OrganizationSignup = () => {
 
             navigate('/login')
         } catch (err) {
-            if (!err?.response) {
-                console.log(err)
-                setErrMsg("No server response");
-            } else if (err.response?.status === 409) {
+            if (err.response?.status === 409) {
                 setErrMsg("Username taken");
             } else {
-                console.log(`Error is: ${err.code}`)
-                console.log(`Error is: ${(err.response.data.message)}`)
-                setErrMsg(err?.response.data.message);
+                setErrMsg(err?.response?.data.message);
             }
             errRef.current.focus();
         }

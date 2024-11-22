@@ -7,6 +7,7 @@ import userStateSlice from '../features/userAsSlice';
 import {statusApi} from "../app/apis/statusApi";
 import {apiSlice} from "../app/apiSlice";
 import doctorSlice from "../features/doctorSlice";
+import userSlice from "../features/userSlice";
 import authReducer from "../features/auth/authSlice";
 import currentUserReducer, {setCurrentUser} from '../features/currentUserSlice';
 import currentOrganizationsListReducer, {setOrganizationsList} from '../features/organizatiosListSlice';

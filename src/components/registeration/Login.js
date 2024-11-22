@@ -1,6 +1,8 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {useSelector, useDispatch} from "react-redux";
 import {loginDoctor} from "../../features/doctorSlice";
+import {loginUser} from "../../features/userSlice";
+
 import {Link, useNavigate, useLocation} from 'react-router-dom';
 import {setCredentials, setError, selectCurrentError} from "../../features/auth/authSlice";
 import {changeUserState, setCurrentUser, selectCurrentToken, useFetchUserUseStatusQuery} from "../../store";
@@ -78,10 +80,6 @@ const Login = ({}) => {
             setErrMsg('User and password is require');
             setLogging(false)
             return
-        } else if (userState === 'user') {
-            setErrMsg(`No server for ${userState} yet`)
-            setLogging(false)
-            return
         }
         try {
             if (userState === 'organization') {
@@ -102,7 +100,6 @@ const Login = ({}) => {
             } else if (userState === 'doctor') {
                 dispatch(loginDoctor({user, password})).then((res) => {
                     console.log(res.payload)
-
                     if (res.payload !== undefined) {
                         setAuth({...res.payload})
                         setUser("");
@@ -117,11 +114,27 @@ const Login = ({}) => {
                         }
                     }
                 });
+            } else if (userState === 'user') {
+                dispatch(loginUser({user, password})).then((res) => {
+                    console.log(res.payload)
+                    if (res.payload !== undefined) {
+                        setAuth({...res.payload})
+                        setUser("");
+                        setPassword("");
+                        navigate("/user");
+                    } else {
+                        console.log(res)
+                        if (res?.error?.message === "Request failed with status code 401") {
+                            setLoginError("Access Denied! Invalid username or password");
+                        } else {
+                            setLoginError(res?.error?.message);
+                        }
+                    }
+                });
             }
 
         } catch (err) {
             console.log(error)
-
             if (!err?.originalStatus) {
                 console.log(err?.originalStatus)
                 setErrMsg('No Server Response');
@@ -235,7 +248,7 @@ const Login = ({}) => {
                         }}
                     >
 
-                        {logging ? circleSpinner : 'Login'}
+                        {error ? 'Login' : logging ? circleSpinner : 'Login'}
                     </button>
                 </form>
             </div>

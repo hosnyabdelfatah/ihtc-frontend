@@ -21,6 +21,9 @@ import DoctorPage from "./doctor/DoctorPage";
 import DoctorLayout from "./doctor/DoctorLayout";
 import RequireDoctorAuth from "../features/auth/RequireDoctorAuth";
 import UserSignup from "./registeration/UserSignup";
+import RequireUserAuth from "../features/auth/RequireUserAuth";
+import UserPage from "./User/UserPage";
+import UserLayout from "./User/UserLayout";
 
 
 function App() {
@@ -72,7 +75,12 @@ function App() {
                 <Route element={<DoctorLayout/>}>
                     <Route path="doctor" element={<DoctorPage/>}/>
                 </Route>
-                {/*<Route path="doctor" element={<DoctorPage/>}/>*/}
+            </Route>
+
+            <Route element={<RequireUserAuth/>}>
+                <Route element={<UserLayout/>}>
+                    <Route path="user" element={<UserPage/>}/>
+                </Route>
             </Route>
         </Routes>
     );

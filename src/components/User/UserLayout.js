@@ -1,14 +1,14 @@
 import {Outlet} from "react-router-dom";
-import DoctorNav from "./DoctorNav";
+import UserNav from "./UserNav";
 
 
-function DoctorLayout() {
+function UserLayout() {
     return (
         <>
-            <DoctorNav/>
+            <UserNav/>
             <Outlet/>
         </>
     );
 }
 
-export default DoctorLayout;
+export default UserLayout;
