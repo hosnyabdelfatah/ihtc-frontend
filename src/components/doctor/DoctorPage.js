@@ -14,8 +14,8 @@ function DoctorPage() {
                 </div>
                 <div className="doctor_info flex flex-col ">
                     <h2>{doctor.firstName + " " + doctor.lastName}</h2>
-                    <span>{doctor.specialty.title}</span>
-                    <span>{doctor.country.title}</span>
+                    <span>{doctor.specialty}</span>
+                    <span>{doctor.country}</span>
                 </div>
             </div>
             <p className="doctor_description">{doctor.description}</p>
