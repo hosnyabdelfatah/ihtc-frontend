@@ -6,16 +6,19 @@ function DoctorPage() {
     const doctor = {...auth};
     return (
         <div>
-            <div className="doctor_image">
-                <img src={doctor.image}
-                     alt={doctor.firstName + " " + doctor.lastName}
-                />
+            <div className="w-full flex justify-start items-center">
+                <div className="doctor_image">
+                    <img src={doctor.image}
+                         alt={doctor.firstName + " " + doctor.lastName}
+                    />
+                </div>
+                <div className="doctor_info flex flex-col ">
+                    <h2>{doctor.firstName + " " + doctor.lastName}</h2>
+                    <span>{doctor.specialty.title}</span>
+                    <span>{doctor.country.title}</span>
+                </div>
             </div>
-
-            <h2>{doctor.firstName + " " + doctor.lastName}</h2>
-            {/*<span>{doctor.specialty.title}</span>*/}
-            {/*<span>{doctor.country.title}</span>*/}
-            <p>{doctor.description}</p>
+            <p className="doctor_description">{doctor.description}</p>
         </div>
     );
 }

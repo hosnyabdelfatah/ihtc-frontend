@@ -30,6 +30,7 @@ const Login = ({}) => {
     const {userState} = useSelector(selectCurrentUserState)
     // const data = useSelector(selectCurrentError);
 
+
     const signUp = userState === 'organization'
         ? 'organization-signup'
         : userState === 'doctor'
@@ -47,6 +48,7 @@ const Login = ({}) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [validateErrMsg, setValidateErrMsg] = useState('');
 
+
     const addError = [];
 
 
@@ -63,7 +65,7 @@ const Login = ({}) => {
 
     useEffect(() => {
         setErrMsg('')
-    }, [user, password])
+    }, [user, password, userState])
 
     const handleChaneUserAs = (value) => {
         setCookie("useAs", value, 1000);
@@ -90,17 +92,23 @@ const Login = ({}) => {
                 const {email, name, tokens} = userData
                 const token = data?.token
                 dispatch(setCredentials({...userData, token}))
+
                 setAuth({...userData})
                 // console.log(auth)
                 dispatch(setCurrentUser({...userData}))
+                if (error) {
+                    dispatch(setError(error))
+                    console.log(error)
+                }
 
                 setUser('')
                 setPassword('')
-                console.log(response)
+                console.log(error)
                 navigate('/organization')
             } else if (userState === 'doctor') {
                 dispatch(loginDoctor({user, password})).then((res) => {
                     console.log(res.payload)
+                    console.log(res)
                     if (res.payload !== undefined) {
                         setAuth({...res.payload})
                         setUser("");
@@ -135,13 +143,17 @@ const Login = ({}) => {
             }
 
         } catch (err) {
+            if (err) setLogging(false)
             if (err?.response?.status === 400) {
                 setErrMsg('Missing Username or Password');
             } else if (err?.response?.status === 401) {
                 setErrMsg('Unauthorized');
-            } else {
-                setErrMsg('Login Failed');
+            } else if (err.message ===
+                "Cannot destructure property 'user' of 'action.payload' as it is undefined.") {
+                setErrMsg('Login Failed, please write correct email and password! ');
                 console.log(err)
+            } else {
+                setErrMsg(err.message)
             }
             errRef.current.focus()
         }
@@ -161,6 +173,10 @@ const Login = ({}) => {
     </svg>
        <span className="text-stone-100"> Processing...</span>
     </span>
+
+    useEffect(() => {
+        setLogging(false)
+    }, [userState])
 
     return (
         <div className="login mt-12 sm:w-[60%] md:w-[40%] sm:mt-4  mx-auto rounded">
