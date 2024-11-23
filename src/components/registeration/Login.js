@@ -50,15 +50,16 @@ const Login = ({}) => {
     const addError = [];
 
 
-    useEffect(() => {
-        if (auth.user) {
-            console.log(auth);
-            setIsLoggedIn(true);
-        }
-    }, [])
+    // useEffect(() => {
+    //     if (auth.user) {
+    //         console.log(auth);
+    //         setIsLoggedIn(true);
+    //     }
+    // }, []);
+
     useEffect(() => {
         userRef.current.focus();
-    }, [])
+    }, []);
 
     useEffect(() => {
         setErrMsg('')
