@@ -96,6 +96,7 @@ const Login = ({}) => {
 
                 setUser('')
                 setPassword('')
+                console.log(response)
                 navigate('/organization')
             } else if (userState === 'doctor') {
                 dispatch(loginDoctor({user, password})).then((res) => {
