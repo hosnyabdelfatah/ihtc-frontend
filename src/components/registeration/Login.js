@@ -26,7 +26,6 @@ const Login = ({}) => {
     const [login, {isLoading, isSuccess, isError, data, error}] = useOrganizationLoginMutation()
     const dispatch = useDispatch();
     const navigate = useNavigate()
-    // console.log()
     const {userState} = useSelector(selectCurrentUserState)
     // const data = useSelector(selectCurrentError);
 
@@ -107,15 +106,15 @@ const Login = ({}) => {
                 navigate('/organization')
             } else if (userState === 'doctor') {
                 dispatch(loginDoctor({user, password})).then((res) => {
-                    console.log(res.payload)
-                    console.log(res)
+                    // console.log(res.payload)
+                    // console.log(res)
                     if (res.payload !== undefined) {
                         setAuth({...res.payload})
                         setUser("");
                         setPassword("");
                         navigate("/doctor");
                     } else {
-                        console.log(res.payload)
+                        // console.log(res.payload)
                         if (res.error.message === "Request failed with status code 401") {
                             setLoginError("Access Denied! Invalid username or password");
                         } else {
@@ -125,14 +124,14 @@ const Login = ({}) => {
                 });
             } else if (userState === 'user') {
                 dispatch(loginUser({user, password})).then((res) => {
-                    console.log(res.payload)
+                    // console.log(res.payload)
                     if (res.payload !== undefined) {
                         setAuth({...res.payload})
                         setUser("");
                         setPassword("");
                         navigate("/user");
                     } else {
-                        console.log(res)
+                        // console.log(res)
                         if (res?.error?.message === "Request failed with status code 401") {
                             setLoginError("Access Denied! Invalid username or password");
                         } else {

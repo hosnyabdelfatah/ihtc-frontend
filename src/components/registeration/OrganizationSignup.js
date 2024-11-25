@@ -144,7 +144,7 @@ const OrganizationSignup = () => {
             errors['industry'] = true;
         }
         if (!selectedCountry || selectedCountry === '') {
-            console.log(selectedCountry)
+            // console.log(selectedCountry)
             formError['country'] = 'Country is require!';
             errors['country'] = true;
         }

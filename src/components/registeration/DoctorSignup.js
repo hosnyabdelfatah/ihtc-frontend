@@ -237,7 +237,7 @@ const DoctorSignup = () => {
         data.append("country", selectedCountry);
         data.append("language", selectedLanguage);
         data.append("description", description);
-        console.log(data)
+        // console.log(data)
 
         try {
             const response = await axios.post(`${BASE_URL}/doctors/doctor-signup`,
@@ -250,7 +250,7 @@ const DoctorSignup = () => {
                 });
 
             const result = await response.data
-            console.log(response)
+            // console.log(response)
             console.log("Signup successful:", result);
             setFname('');
             setLname('');

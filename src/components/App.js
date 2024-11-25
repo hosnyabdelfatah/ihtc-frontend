@@ -25,6 +25,8 @@ import RequireUserAuth from "../features/auth/RequireUserAuth";
 import UserPage from "./User/UserPage";
 import UserLayout from "./User/UserLayout";
 
+// import InsertDoctors from "./admins/dashboard/InsertDoctors";
+
 
 function App() {
     // const {userState} = useSelector(selectCurrentUserState)
@@ -55,10 +57,11 @@ function App() {
                 <Route element={<PersistLogin/>}>
                     <Route path="home" element={<Home/>}/>
                     <Route path="welcome" element={<Welcome/>}/>
-
                 </Route>
+                {/*<Route path="insert-doctors" element={<InsertDoctors/>}/>*/}
 
             </Route>
+
             {/*Organization Routes*/}
 
             <Route element={<RequireOrganizationAuth/>}>

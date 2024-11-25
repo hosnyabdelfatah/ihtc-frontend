@@ -280,7 +280,7 @@ const UserSignup = () => {
                     (data) => data,
                 ]
             });
-            console.log(response)
+            // console.log(response)
             const result = await response?.data?.data;
             console.log("Signup successful:", result);
             setErrMsg(`Registration is ${response.data.status}`);
@@ -326,8 +326,8 @@ const UserSignup = () => {
             if (err.response?.status === 409) {
                 setErrMsg("Username taken");
             } else {
-                console.log(`Error is: ${err.code}`)
-                console.log(`Error is: ${(err.response.data)}`)
+                console.log(`Error is: ${err}`)
+                // console.log(`Error is: ${(err.response.data)}`)
                 setErrMsg(err?.response)
             }
             errRef.current.focus();
