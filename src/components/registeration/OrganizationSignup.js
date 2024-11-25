@@ -56,7 +56,7 @@ const OrganizationSignup = () => {
 
 
     if (isFetching) {
-        content = <Skeleton className="w-4 h-4" times={4}/>
+        content = <Skeleton className="w-full h-4" times={4}/>
     } else {
         content = data.data.map((country) => {
             return <li key={country.id} value={country.id}
