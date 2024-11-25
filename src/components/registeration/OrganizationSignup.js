@@ -57,8 +57,6 @@ const OrganizationSignup = () => {
 
     if (isFetching) {
         content = <Skeleton className="w-4 h-4" times={4}/>
-    } else if (error) {
-        content = <div>Data error loading...</div>
     } else {
         content = data.data.map((country) => {
             return <li key={country.id} value={country.id}
