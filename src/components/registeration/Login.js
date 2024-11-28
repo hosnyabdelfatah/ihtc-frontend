@@ -107,16 +107,17 @@ const Login = ({}) => {
             } else if (userState === 'doctor') {
                 dispatch(loginDoctor({user, password})).then((res) => {
                     // console.log(res.payload)
-                    // console.log(res)
+                    // console.log(res.error)
                     if (res.payload !== undefined) {
                         setAuth({...res.payload})
                         setUser("");
                         setPassword("");
                         navigate("/doctor");
                     } else {
-                        // console.log(res.payload)
-                        if (res.error.message === "Request failed with status code 401") {
+                        console.log(res.error)
+                        if (res.error.message === "Request failed with status code 401" || res.error.message === "Request failed with status code 400") {
                             setLoginError("Access Denied! Invalid username or password");
+                            setErrMsg("Access Denied! Invalid username or password")
                         } else {
                             setLoginError(res.error.message);
                         }
@@ -131,8 +132,9 @@ const Login = ({}) => {
                         setPassword("");
                         navigate("/user");
                     } else {
-                        // console.log(res)
-                        if (res?.error?.message === "Request failed with status code 401") {
+                        console.log(res.error)
+                        if (res?.error?.message === "Request failed with status code 401" || res?.error?.message === "Request failed with status code 404") {
+                            setErrMsg('Invalid username or password')
                             setLoginError("Access Denied! Invalid username or password");
                         } else {
                             setLoginError(res?.error?.message);
@@ -260,7 +262,7 @@ const Login = ({}) => {
                         }}
                     >
 
-                        {error ? 'Login' : logging ? circleSpinner : 'Login'}
+                        {error || errMsg !== "" ? 'Login' : logging ? circleSpinner : 'Login'}
                     </button>
                 </form>
             </div>

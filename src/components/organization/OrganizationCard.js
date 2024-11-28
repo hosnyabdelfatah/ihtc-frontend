@@ -2,8 +2,7 @@ import {Link} from 'react-router-dom';
 
 const OrganizationCard = ({organization}) => {
     return (
-
-        <Link to={`/card-details/${organization.email}`}
+        <Link to={`/card-details/${organization.id}`}
               className="ml-2 rounded-md w-[22%] mb-5 h-[350px] border px-1 pt-1 pb-3 bg-gray-50
                hover:scale-110 hover:z-30 transition-transform ">
             <div className="organization-header   rounded-md h-4/6  mb-2">

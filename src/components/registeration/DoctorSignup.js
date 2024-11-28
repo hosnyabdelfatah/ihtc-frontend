@@ -251,7 +251,7 @@ const DoctorSignup = () => {
 
             const result = await response.data
             // console.log(response)
-            console.log("Signup successful:", result);
+            // console.log("Signup successful:", result);
             setFname('');
             setLname('');
             setEmail('');

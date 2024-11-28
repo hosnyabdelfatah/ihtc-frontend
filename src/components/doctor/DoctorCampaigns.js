@@ -1,25 +1,18 @@
-import React, {useEffect, useState} from 'react';
+// import './campaign.css';
 import {useSelector, useDispatch} from "react-redux";
-import DoctorCard from './DoctorCard';
-import {useFetchDoctorsQuery} from "../../app/apis/doctorApi";
-import {getCurrentUser} from "../../features/currentUserSlice";
-import useAuth from "../../hooks/useAuth";
-
-import Skeleton from "../Skeleton";
 import axios from "axios";
-import BASE_URL from "../../app/apis/baseUrl";
+import Skeleton from "../Skeleton";
 import Pagination from "../Pagination";
+
+import {getCurrentUser} from "../../features/currentUserSlice";
+import DoctorSpecialties from "../doctor/DoctorSpecialties";
+import React, {useEffect, useRef, useState, useMemo} from "react";
+import BASE_URL from "../../app/apis/baseUrl";
+import Modal from "./Modal";
 import {HiChevronDown} from "react-icons/hi";
 import {IoSearchSharp} from "react-icons/io5";
-import DoctorSpecialties from "./DoctorSpecialties";
-import Modal from "../organization/Modal";
-import {Link} from "react-router-dom";
 
-const DoctorsList = ({doctor}) => {
-
-    const {auth} = useAuth();
-    const doctorData = {...auth}
-
+const DoctorCampaigns = () => {
     const [doctors, setDoctors] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -220,8 +213,8 @@ const DoctorsList = ({doctor}) => {
                     </span>
 
                     <div className="search w-[3%] cursor-pointer bg-red ">
-                        <span className="search-icon text-2xl  ">
-                            <IoSearchSharp className="text-red-600 block"
+                        <span className="search-icon text-xl  ">
+                            <IoSearchSharp className="text-red-600 block border-2"
                                            onClick={() => {
                                                handleSearchDoctors()
                                                getAllDoctors()
@@ -239,19 +232,19 @@ const DoctorsList = ({doctor}) => {
                     </ul>
 
                 </div>
-                {/*<div className="search-data flex flex-row justify-between   border-2 border-stone-100 px-2 w-[69%]">*/}
-                {/*    <div>*/}
-                {/*        <span*/}
-                {/*            className="text-indigo-500 font-semibold mr-2">*/}
-                {/*            {Object.keys(allSelectedDoctors).length}*/}
-                {/*        </span>*/}
-                {/*        <span>doctors selected</span>*/}
-                {/*    </div>*/}
-                {/*    <div>*/}
-                {/*        <span>result</span>*/}
-                {/*        <span className="text-indigo-500 font-semibold"> {doctors.length} </span>doctors*/}
-                {/*    </div>*/}
-                {/*</div>*/}
+                <div className="search-data flex flex-row justify-between   border-2 border-stone-100 px-2 w-[69%]">
+                    <div>
+                        <span
+                            className="text-indigo-500 font-semibold mr-2">
+                            {Object.keys(allSelectedDoctors).length}
+                        </span>
+                        <span>doctors selected</span>
+                    </div>
+                    <div>
+                        <span>result</span>
+                        <span className="text-indigo-500 font-semibold"> {doctors.length} </span>doctors
+                    </div>
+                </div>
             </div>
 
             <div className="w-full max-h-[60%] flex flex-row justify-between items-stretch mt-4 v  overflow-y-hidden">
@@ -270,57 +263,55 @@ const DoctorsList = ({doctor}) => {
                         {/*Pagination*/}
                         <table className="w-full">
                             <tbody className="w-full">
-                            {/*<tr className="w-full flex justify-start items-baseline">*/}
-                            {/*    <td className="mr-3">*/}
-                            {/*        <input type="checkbox" className=" w-[20px] h-[20px]"*/}
-                            {/*               checked={isSelectAll}*/}
-                            {/*               onChange={() => {*/}
-                            {/*                   handleSelectAll();*/}
-                            {/*                   handleSelectAllDoctors()*/}
-                            {/*               }}*/}
-                            {/*        />*/}
-                            {/*    </td>*/}
-                            {/*    <td>Select all</td>*/}
-                            {/*    <td className="  w-[60%] flex flex-row justify-center">*/}
-                            {/*        <button onClick={handleShowModal}*/}
-                            {/*                className="block p-1 border border-amber-400*/}
-                            {/*                rounded-full text-violet-700 font-bold">*/}
-                            {/*            Create*/}
-                            {/*            campaign*/}
-                            {/*        </button>*/}
-                            {/*    </td>*/}
-                            {/*</tr>*/}
+                            <tr className="w-full flex justify-start items-baseline">
+                                <td className="mr-3">
+                                    <input type="checkbox" className=" w-[20px] h-[20px]"
+                                           checked={isSelectAll}
+                                           onChange={() => {
+                                               handleSelectAll();
+                                               handleSelectAllDoctors()
+                                           }}
+                                    />
+                                </td>
+                                <td>Select all</td>
+                                <td className="  w-[60%] flex flex-row justify-center">
+                                    <button onClick={handleShowModal}
+                                            className="block p-1 border border-amber-400
+                                            rounded-full text-violet-700 font-bold">
+                                        Create
+                                        campaign
+                                    </button>
+                                </td>
+                            </tr>
                             {loading && <Skeleton className="h-8 w-30" times={20}/>}
                             {error && <div>Error Loading</div>}
                             {
                                 doctors.length > 0 ? doctors?.map((doctor, index) => {
-                                    return <Link to={`/doctor-info/${doctor._id}`}>
-                                        <tr key={doctor._id}
-                                            className="border-b-[1px] w-full flex flex-row justify-between items-center text-xs mb-2  ">
-                                            {/*<td key={doctor._id} className="w-[5%] flex flex-row justify-start relative  ">*/}
-                                            {/*    <input type="checkbox" value={doctor._id} id={doctor._id}*/}
-                                            {/*           className="w-[20px] h-[20px] "*/}
-                                            {/*        // checked={!!checkedItems[doctor._id]}*/}
-                                            {/*           checked={!!checkedItems[doctor._id]}*/}
-                                            {/*        // onClick={(e) => handleSelectedDoctor(e)}*/}
-                                            {/*           onChange={*/}
-                                            {/*               (e) => {*/}
-                                            {/*                   handleCheckboxChange(doctor._id)*/}
-                                            {/*                   handleSelectedDoctor(e)*/}
-                                            {/*               }*/}
-                                            {/*           }*/}
-                                            {/*    />*/}
-                                            {/*</td>*/}
-                                            <td className="w-[25%] ">{doctor.fname + "" + doctor.lname}</td>
-                                            <td className="w-[32%]">{doctor.specialty.title}</td>
-                                            <td className="w-[17%]">{doctor.country.title}</td>
-                                            <td className="w-[10%]">{doctor.language.title}</td>
-                                            <td className="w-[7%]">
-                                                <img src={doctor.image} className="w-10 h-10"
-                                                     alt={(doctor.fname + "" + doctor.lname).toUpperCase()}/>
-                                            </td>
-                                        </tr>
-                                    </Link>
+                                    return <tr key={doctor._id}
+                                               className="border-b-[1px] w-full flex flex-row justify-between items-center text-xs mb-2  ">
+                                        <td key={doctor._id} className="w-[5%] flex flex-row justify-start relative  ">
+                                            <input type="checkbox" value={doctor._id} id={doctor._id}
+                                                   className="w-[20px] h-[20px] "
+                                                // checked={!!checkedItems[doctor._id]}
+                                                   checked={!!checkedItems[doctor._id]}
+                                                // onClick={(e) => handleSelectedDoctor(e)}
+                                                   onChange={
+                                                       (e) => {
+                                                           handleCheckboxChange(doctor._id)
+                                                           handleSelectedDoctor(e)
+                                                       }
+                                                   }
+                                            />
+                                        </td>
+                                        <td className="w-[25%] ">{doctor.fname + "" + doctor.lname}</td>
+                                        <td className="w-[32%]">{doctor.specialty.title}</td>
+                                        <td className="w-[17%]">{doctor.country.title}</td>
+                                        <td className="w-[10%]">{doctor.language.title}</td>
+                                        <td className="w-[7%]">
+                                            <img src={doctor.image} className="w-10 h-10"
+                                                 alt={(doctor.fname + "" + doctor.lname).toUpperCase()}/>
+                                        </td>
+                                    </tr>
                                 }) : <div className="flex justify-center mt-8 font-semibold text-red-600">
                                     No doctors found belong to your conditions.
                                 </div>
@@ -337,9 +328,9 @@ const DoctorsList = ({doctor}) => {
 
                 </div>
             </div>
-            {/*{showModal && <Modal receivers={[...allSelectedDoctors]} onClose={handleCloseModal}/>}*/}
+            {showModal && <Modal receivers={[...allSelectedDoctors]} onClose={handleCloseModal}/>}
         </div>
     );
-};
+}
 
-export default DoctorsList;
+export default DoctorCampaigns;

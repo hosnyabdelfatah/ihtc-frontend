@@ -4,6 +4,7 @@
 
 :root {
     --blue: #1E90FF;
+    --light-blue: rgba(30, 144, 255, 0.6);
     --medium-blue: #0657A8;
     --yellow: #e4e932;
     --lime: #c2ff00;

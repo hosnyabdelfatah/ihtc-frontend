@@ -19,11 +19,15 @@ import OrganizationSignup from "./registeration/OrganizationSignup";
 import DoctorSignup from "./registeration/DoctorSignup";
 import DoctorPage from "./doctor/DoctorPage";
 import DoctorLayout from "./doctor/DoctorLayout";
+import DoctorList from './doctor/DoctorsList';
 import RequireDoctorAuth from "../features/auth/RequireDoctorAuth";
 import UserSignup from "./registeration/UserSignup";
 import RequireUserAuth from "../features/auth/RequireUserAuth";
 import UserPage from "./User/UserPage";
 import UserLayout from "./User/UserLayout";
+import UserServices from "./User/UserServices";
+import DoctorCampaigns from "./doctor/DoctorCampaigns";
+import DoctorInfo from "./doctor/DoctorInfo";
 
 // import InsertDoctors from "./admins/dashboard/InsertDoctors";
 
@@ -50,6 +54,7 @@ function App() {
             <Route element={<Layout/>}>
                 <Route path="/" element={<Login/>}/>
                 <Route path="/login" element={<Login/>}/>
+                <Route path="organizations" element={<OrganizationsList/>}/>
                 <Route path="organization-signup" element={<OrganizationSignup/>}/>
                 <Route path="doctor-signup" element={<DoctorSignup/>}/>
                 <Route path="user-signup" element={<UserSignup/>}/>
@@ -68,7 +73,7 @@ function App() {
                 <Route element={<OrganizationLayout/>}>
                     <Route path="organization" element={<OrganizationPage/>}/>
                     <Route path="community" element={<OrganizationsList/>}/>
-                    <Route path="card-details/:email" element={<OrganizationCardDetails/>}
+                    <Route path="card-details/:id" element={<OrganizationCardDetails/>}
                     />
                     <Route path="campaign" element={<Campaigns/>}/>
                 </Route>
@@ -77,12 +82,17 @@ function App() {
             <Route element={<RequireDoctorAuth/>}>
                 <Route element={<DoctorLayout/>}>
                     <Route path="doctor" element={<DoctorPage/>}/>
+                    <Route path="doctors" element={<DoctorList/>}/>
+                    <Route path="doctor-campaigns" element={<DoctorCampaigns/>}/>
+                    <Route path="/doctor-info/:id" element={<DoctorInfo/>}/>
+
                 </Route>
             </Route>
 
             <Route element={<RequireUserAuth/>}>
                 <Route element={<UserLayout/>}>
                     <Route path="user" element={<UserPage/>}/>
+                    <Route path="services" element={<UserServices/>}/>
                 </Route>
             </Route>
         </Routes>

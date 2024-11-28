@@ -4,6 +4,7 @@ import {Link} from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import {clearUser} from "../../features/userSlice";
 import Logo from "../../assets/images/logo-transparent.webp";
+import {SiCloudflareworkers} from "react-icons/si";
 import {GrGroup} from "react-icons/gr";
 import {SiAmazonsimpleemailservice} from "react-icons/si";
 import {TbLogout} from "react-icons/tb";
@@ -14,7 +15,7 @@ function UserNav() {
     const {auth, setAuth} = useAuth();
     const userData = {...auth}
     const dispatch = useDispatch();
-
+    console.log(userData)
     const handleSignout = () => {
         setAuth({});
         dispatch(clearUser())
@@ -22,37 +23,38 @@ function UserNav() {
 
     return (
         <div
-            className="user-nav border-b-2 border-b-[#ffc907]   drop-shadow-md flex flex-row justify-between items-center py-1 pr-4 mb-2">
+            className="user-nav border-b border-b-[rgb(30, 144, 255)]   drop-shadow-md flex flex-row justify-between items-center py-1 pr-4 mb-2">
             <div className="logo w-2/12"><img src={Logo} alt="logo"/></div>
             <div
                 className="title flex justify-center w-[100px]  drop-shadow-md w-2/12">
                 <Link to="user"
-                      className="">
-                    <img src={userData?.image}
+                      className="flex flx-row justify-center items-center">
+                    <img className="rounded-full mr-3" src={userData?.profileImage}
                          alt={userData.firstName + " " + userData.lastName}
                     />
+                    <span>{userData.firstName + " " + userData.lastName}</span>
                 </Link>
             </div>
             <div
-                className="navbar w-4/12 p-1 overflow-hidden flex flex-row items-center justify-between border rounded-[12px]"
+                className="navbar w-4/12 px-2 py-1 overflow-hidden flex flex-row items-center justify-between border border-[rgb(30, 144, 255)] rounded-[12px]"
             >
 
-                <Link to="community"
-                      className="community  w-1/4 p-1 ml-1 flex flex-row justify-center items-center            cursor-pointer rounded-[12px]  hover:bg-indigo-100">
-                    <span className="mr-2  text-2xl text-[#ffc907]"><GrGroup/></span>
-                    <span>Community</span>
+                <Link to="organizations"
+                      className="organizations  min-w-[3/12] p-1 ml-1 flex flex-row justify-center items-center cursor-pointer rounded-[12px]  hover:bg-amber-200 transition-all">
+                    <span className="mr-2  text-2xl text-[#1E90FF]"><SiCloudflareworkers/></span>
+                    <span>Organizations</span>
                 </Link>
 
 
-                <Link to="campaign"
-                      className="mails  w-1/4 py-1 ml-1 flex flex-row justify-center items-center            cursor-pointer rounded-[12px]  hover:bg-indigo-100">
-                        <span className="mr-2  text-2xl text-[#ffc907]">
+                <Link to="services"
+                      className="mails  min-w-[3/12] py-1 ml-1 flex flex-row justify-center items-center            cursor-pointer rounded-[12px]  hover:bg-amber-200">
+                        <span className="mr-2  text-2xl text-[#1E90FF]">
                         <SiAmazonsimpleemailservice/>
                     </span>
-                    <span>Campaigns</span>
+                    <span>Services</span>
                 </Link>
                 <div
-                    className="logout w-1/4 cursor-pointer mr-1 pl-2 py-1 rounded-[12px] flex flex-row justify-center items-end hover:bg-red-100"
+                    className="logout  min-w-[3/12] cursor-pointer mr-1 pl-2 py-1 rounded-[12px] flex flex-row justify-center items-end hover:bg-red-100"
                     onClick={handleSignout}
                 >
 

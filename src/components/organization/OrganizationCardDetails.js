@@ -7,7 +7,8 @@ import Skeleton from "../Skeleton";
 import OrganizationCard from "./OrganizationCard";
 
 const OrganizationCardDetails = ({organization}) => {
-    const {email} = useParams()
+    const {id} = useParams()
+    // console.log(id)
     let organizationData;
     const {data, error, isFetching} = useFetchOrganizationsQuery(organization);
 
@@ -15,14 +16,13 @@ const OrganizationCardDetails = ({organization}) => {
     if (isFetching) {
         content = <Skeleton times={3} className='h-8 w-8'/>
     } else if (error) {
-        console.log(error)
+        // console.log(error)
         content = <div>Error loading organizations.</div>
     } else {
 
 
-        const cardDetails = data.data.filter((organization) => organization.email === email)
-        organizationData = cardDetails[0]
-        console.log(organizationData)
+        const cardDetails = data.data.filter((organization) => organization.id === id)
+        organizationData = cardDetails[0];
     }
 
     return (

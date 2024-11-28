@@ -6,7 +6,6 @@ import OrganizationCard from "./OrganizationCard";
 
 
 const OrganizationsList = ({organization}) => {
-
     const dispatch = useDispatch();
     const {data, error, isFetching} = useFetchOrganizationsQuery(organization);
 
@@ -25,7 +24,6 @@ const OrganizationsList = ({organization}) => {
             return <OrganizationCard key={organization.id} organization={organization}/>
         })
     }
-
 
     return (
         <div className="m-2  max-w-[90%]  mx-auto  flex flex-row  flex-wrap items-center justify-start p-2">
