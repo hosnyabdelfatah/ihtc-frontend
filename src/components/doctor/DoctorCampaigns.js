@@ -254,7 +254,7 @@ const DoctorCampaigns = () => {
             {/*        /!*    // onChange={(e) => handleSearch(e)}*!/*/}
             {/*        /!*       className="border w-full rounded mb-2 text-base  outline-none focus:outline-none p-1"*!/*/}
             {/*        /!*    // value={search}*!/*/}
-            {/*        /!*/>*!/*/}
+            {/*        >*!/*/}
             {/*        <DoctorSpecialties sendParent={handleChildValue} clearInput={clearInput}/>*/}
             {/*    </div>*/}
 
