@@ -329,7 +329,7 @@ const DoctorCampaigns = () => {
             {/*    </div>*/}
             {/*</div>*/}
             {/*{showModal && <Modal receivers={[...allSelectedDoctors]} onClose={handleCloseModal}/>}*/}
-            Under Construction!
+            <h2 className="mx-auto"> Under Construction!</h2>
         </div>
     );
 }
