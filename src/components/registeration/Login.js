@@ -40,7 +40,7 @@ const Login = ({}) => {
     const errRef = useRef();
     const [user, setUser] = useState('')
     const [password, setPassword] = useState('')
-    const [errMsg, setErrMsg] = useState('')
+    const [errMsg, setErrMsg] = useState('');
     const [logging, setLogging] = useState(false);
     const [loading, setLoading] = useState(false);
     const [loginError, setLoginError] = useState(null);
@@ -72,8 +72,10 @@ const Login = ({}) => {
     }
 
     const handleLogging = () => {
-        setLogging(true)
+        if (errMsg !== '')
+            setLogging(true)
     }
+
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -184,10 +186,10 @@ const Login = ({}) => {
             <p ref={errRef}
                className={`${errMsg ? "errmsg block" : "hidden"} bg-red-700 text-stone-100 font-bold rounded text-center py-1`}
                aria-live="assertive">{errMsg}</p>
-            <h2 className="mx-auto  sm: text-xl font-semibold">
+            <h2 className="mx-auto px-5 text-xl font-semibold">
                 Use our site as
                 <span
-                    className="capitalize text-red-700 font-extrabold ml-3">{userState}
+                    className={`${userState === 'user' ? "bg-indigo-200" : userState === 'doctor' ? "bg-lime-200" : "bg-amber-200"} py-1 px-4 rounded-xl border-2 drop-shadow-md capitalize text-red-700 font-extrabold ml-3`}>{userState}
             </span>
             </h2>
             <div className=" shadow-lg px-4 py-6 rounded-lg">

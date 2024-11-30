@@ -26,7 +26,7 @@ import RequireUserAuth from "../features/auth/RequireUserAuth";
 import UserPage from "./User/UserPage";
 import UserLayout from "./User/UserLayout";
 import UserServices from "./User/UserServices";
-import DoctorCampaigns from "./doctor/DoctorCampaigns";
+import DoctorMessage from "./doctor/DoctorMessage";
 import DoctorInfo from "./doctor/DoctorInfo";
 
 // import InsertDoctors from "./admins/dashboard/InsertDoctors";
@@ -83,7 +83,7 @@ function App() {
                 <Route element={<DoctorLayout/>}>
                     <Route path="doctor" element={<DoctorPage/>}/>
                     <Route path="doctors" element={<DoctorList/>}/>
-                    <Route path="doctor-campaigns" element={<DoctorCampaigns/>}/>
+                    <Route path="doctor-campaigns" element={<DoctorMessage/>}/>
                     <Route path="/doctor-info/:id" element={<DoctorInfo/>}/>
 
                 </Route>

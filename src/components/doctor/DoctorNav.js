@@ -51,15 +51,15 @@ function DoctorNav() {
                         <span className="mr-2  text-2xl text-lime-400">
                         <SiAmazonsimpleemailservice/>
                     </span>
-                    <span>Campaigns</span>
+                    <span>Send Message</span>
                 </Link>
                 <div
                     className="logout min-w-3/12 cursor-pointer mr-1 pl-2 py-1 rounded-[12px] flex flex-row justify-center items-end hover:bg-red-100"
                     onClick={handleSignout}
                 >
 
-                    <span> {doctorData?.name ? "Logout" : "Login"}</span>
-                    <Link to={doctorData?.name ? "" : "login"}
+                    <span> {doctorData?.lastName ? "Logout" : "Login"}</span>
+                    <Link to={doctorData?.lastName ? "logout" : "login"}
                           className="ml-2 text-red-600  text-2xl"
                     >
                         {doctorData?.name ? <TbLogout/> : <HiOutlineLogin/>}
