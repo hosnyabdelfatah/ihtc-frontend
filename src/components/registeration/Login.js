@@ -3,9 +3,9 @@ import {useSelector, useDispatch} from "react-redux";
 import {loginDoctor} from "../../features/doctorSlice";
 import {loginUser} from "../../features/userSlice";
 
-import {Link, useNavigate, useLocation} from 'react-router-dom';
-import {setCredentials, setError, selectCurrentError} from "../../features/auth/authSlice";
-import {changeUserState, setCurrentUser, selectCurrentToken, useFetchUserUseStatusQuery} from "../../store";
+import {Link, useNavigate} from 'react-router-dom';
+import {setCredentials, setError} from "../../features/auth/authSlice";
+import {changeUserState, setCurrentUser} from "../../store";
 import {selectCurrentUserState} from "../../features/userAsSlice";
 import {useOrganizationLoginMutation} from "../../store";
 import axios from "axios";
@@ -60,6 +60,7 @@ const Login = ({}) => {
 
     useEffect(() => {
         userRef.current.focus();
+        // console.log(userState)
     }, []);
 
     useEffect(() => {
@@ -134,8 +135,9 @@ const Login = ({}) => {
                         setPassword("");
                         navigate("/user");
                     } else {
-                        console.log(res.error)
-                        if (res?.error?.message === "Request failed with status code 401" || res?.error?.message === "Request failed with status code 404") {
+                        console.log(res)
+
+                        if (res?.error?.message === "Request failed with status code 400" || res?.error?.message === "Request failed with status code 401" || res?.error?.message === "Request failed with status code 404") {
                             setErrMsg('Invalid username or password')
                             setLoginError("Access Denied! Invalid username or password");
                         } else {
@@ -185,7 +187,9 @@ const Login = ({}) => {
         <div className="login mt-12 sm:w-[60%] md:w-[40%] sm:mt-4  mx-auto rounded">
             <p ref={errRef}
                className={`${errMsg ? "errmsg block" : "hidden"} bg-red-700 text-stone-100 font-bold rounded text-center py-1`}
-               aria-live="assertive">{errMsg}</p>
+               aria-live="assertive">
+                {errMsg}
+            </p>
             <h2 className="mx-auto px-5 text-xl font-semibold">
                 Use our site as
                 <span
@@ -251,8 +255,13 @@ const Login = ({}) => {
                                className="block w-8/12 px-3 py-2 border border-stone-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border focus:border-blue-400
                                 transition duration-150 ease-in-out text-lg sm:leading-5"
                         />
-                    </div>
 
+
+                    </div>
+                    <div
+                        className="forget-password flex flex-row justify-center items-center text-violet-700 font-semibold underline">
+                        <Link to="/forget-password">Forget password</Link>
+                    </div>
                     <button
                         className="w-full  border-2  shadow-md py-3 mt-6
                          rounded-b-lg text-xl text-stone-100 tracking-wider bg-stone-500

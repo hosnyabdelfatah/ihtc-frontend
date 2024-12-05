@@ -21,6 +21,10 @@ function DoctorPage() {
         // setMessageOutCount()
     }
 
+    const getMessagesIn = async () => {
+        const response = await axios.get();
+    }
+
     useEffect(() => {
         getMessageOut();
     }, []);

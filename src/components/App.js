@@ -2,7 +2,7 @@ import './App.css';
 import {useEffect} from "react";
 import {useSelector, useDispatch} from "react-redux";
 import {useFetchOrganizationsQuery} from '../store';
-import {selectCurrentUserState} from "../features/userAsSlice";
+import {selectCurrentUserState, changeUserState} from "../features/userAsSlice";
 import {Routes, Route} from "react-router-dom";
 import OrganizationLayout from "./organization/OrganizationLayout";
 import Login from './registeration/Login'
@@ -28,12 +28,17 @@ import UserLayout from "./User/UserLayout";
 import UserServices from "./User/UserServices";
 import DoctorMessage from "./doctor/DoctorMessage";
 import DoctorInfo from "./doctor/DoctorInfo";
+import ForgetPassword from "./registeration/ForgetPassword";
+import CheckEmail from "./registeration/CheckEmail";
+import ResetPassword from "./registeration/ResetPassword";
 
 // import InsertDoctors from "./admins/dashboard/InsertDoctors";
 
 
 function App() {
-    // const {userState} = useSelector(selectCurrentUserState)
+    const {userState} = useSelector(selectCurrentUserState)
+    const dispatch = useDispatch();
+
     function getCookie(name) {
         const cookieArr = document.cookie.split(";");
         for (let cookie of cookieArr) {
@@ -46,8 +51,11 @@ function App() {
     }
 
     useEffect(() => {
-        const userType = getCookie("organizationJwt")
-        console.log(document.cookie)
+        const userType = getCookie("useAs")
+        dispatch(changeUserState(userType))
+        // console.log(userState)
+        // console.log(document.cookie)
+        // console.log(userType)
     }, [])
     return (
         <Routes>
@@ -58,6 +66,9 @@ function App() {
                 <Route path="organization-signup" element={<OrganizationSignup/>}/>
                 <Route path="doctor-signup" element={<DoctorSignup/>}/>
                 <Route path="user-signup" element={<UserSignup/>}/>
+                <Route path="forget-password" element={<ForgetPassword/>}/>
+                <Route path="check-email" element={<CheckEmail/>}/>
+                <Route path="reset-password" element={<ResetPassword/>}/>
 
                 <Route element={<PersistLogin/>}>
                     <Route path="home" element={<Home/>}/>
@@ -83,7 +94,7 @@ function App() {
                 <Route element={<DoctorLayout/>}>
                     <Route path="doctor" element={<DoctorPage/>}/>
                     <Route path="doctors" element={<DoctorList/>}/>
-                    <Route path="doctor-campaigns" element={<DoctorMessage/>}/>
+                    <Route path="doctor-messages" element={<DoctorMessage/>}/>
                     <Route path="/doctor-info/:id" element={<DoctorInfo/>}/>
 
                 </Route>

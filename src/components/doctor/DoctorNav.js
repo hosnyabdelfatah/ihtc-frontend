@@ -51,8 +51,7 @@ function DoctorNav() {
                     <span>Doctors</span>
                 </Link>
 
-
-                <Link to="doctor-campaigns"
+                <Link to="doctor-messages"
                       className="mails min-w-3/12 py-1 ml-1 flex flex-row justify-center items-center            cursor-pointer rounded-[12px]  hover:bg-indigo-100">
                         <span className="mr-2  text-2xl text-lime-400">
                         <SiAmazonsimpleemailservice/>

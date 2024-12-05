@@ -294,7 +294,7 @@ const DoctorsList = ({doctor}) => {
                             {error && <div>Error Loading</div>}
                             {
                                 doctors.length > 0 ? doctors?.map((doctor, index) => {
-                                    return <Link to={`/doctor-info/${doctor._id}`}>
+                                    return <Link to={`/doctor-info/${doctor._id}`} key={doctor.id}>
                                         <tr key={doctor._id}
                                             className="border-b-[1px] w-full flex flex-row justify-between items-center text-xs mb-2  ">
                                             {/*<td key={doctor._id} className="w-[5%] flex flex-row justify-start relative  ">*/}
