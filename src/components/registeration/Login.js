@@ -28,7 +28,7 @@ const Login = ({}) => {
     const navigate = useNavigate()
     const {userState} = useSelector(selectCurrentUserState)
     // const data = useSelector(selectCurrentError);
-
+    // console.log(userState)
 
     const signUp = userState === 'organization'
         ? 'organization-signup'
@@ -50,13 +50,6 @@ const Login = ({}) => {
 
     const addError = [];
 
-
-    // useEffect(() => {
-    //     if (auth.user) {
-    //         console.log(auth);
-    //         setIsLoggedIn(true);
-    //     }
-    // }, []);
 
     useEffect(() => {
         userRef.current.focus();
@@ -117,12 +110,12 @@ const Login = ({}) => {
                         setPassword("");
                         navigate("/doctor");
                     } else {
-                        console.log(res.error)
-                        if (res.error.message === "Request failed with status code 401" || res.error.message === "Request failed with status code 400") {
+                        console.log(res?.error)
+                        if (res?.error?.message === "Request failed with status code 401" || res?.error?.message === "Request failed with status code 400") {
                             setLoginError("Access Denied! Invalid username or password");
                             setErrMsg("Access Denied! Invalid username or password")
                         } else {
-                            setLoginError(res.error.message);
+                            setLoginError(res?.error?.message);
                         }
                     }
                 });

@@ -7,7 +7,11 @@ export const loginDoctor = createAsyncThunk(
     async (userCredintial) => {
         const request = await axios.post(
             `${BASE_URL}/doctors/login`,
-            userCredintial
+            userCredintial,
+            {
+                withCredentials: true,
+                headers: {'Content-Type': 'application/json'}
+            },
         );
 
         const response = await request.data.doctor;

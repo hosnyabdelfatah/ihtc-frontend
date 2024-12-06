@@ -4,6 +4,7 @@ import BASE_URL from "../../app/apis/baseUrl";
 import useAuth from "../../hooks/useAuth";
 import Skeleton from "../Skeleton";
 import {IoPaperPlaneOutline} from "react-icons/io5";
+import {Link} from "react-router-dom";
 
 function DoctorPage() {
     const {auth} = useAuth();
@@ -32,7 +33,7 @@ function DoctorPage() {
     return (
         <div className="w-[80%] mt-8 mx-auto text-stone-700">
 
-            <div className="w-full flex justify-start items-center mt-3 mb-16">
+            <div className="w-full flex justify-start items-center mt-3 mb-5">
                 <div className=" w-2/12  h-[250px] border-2 drop-shadow-md rounded-xl overflow-hidden">
                     {doctor?.profileImage ? <img className="" src={doctor?.profileImage}
                                                  alt={doctor?.firstName + " " + doctor?.lastName}
@@ -75,6 +76,13 @@ function DoctorPage() {
                     </table>
 
                 </div>
+            </div>
+            <div className="doctor_admin mb-5">
+                <Link className="font-semibold text-violet-700 underline"
+                      to="/update-password"
+                      alt="Reset Password">
+                    Reset Password
+                </Link>
             </div>
             <div className="description">{doctor?.profileImage ? <>
                     <span className="border-2 drop-shadow-sm rounded-md px-1 bg-lime-200 font-semibold">Description</span>

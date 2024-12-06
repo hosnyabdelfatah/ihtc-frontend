@@ -31,6 +31,7 @@ import DoctorInfo from "./doctor/DoctorInfo";
 import ForgetPassword from "./registeration/ForgetPassword";
 import CheckEmail from "./registeration/CheckEmail";
 import ResetPassword from "./registeration/ResetPassword";
+import UpdatePassword from "./registeration/UpdatePassword";
 
 // import InsertDoctors from "./admins/dashboard/InsertDoctors";
 
@@ -50,12 +51,23 @@ function App() {
         return null;
     }
 
+    const setCookie = (name, value, days) => {
+        const date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        const expires = `expires=${date.toUTCString()}`;
+        document.cookie = `${name}=${value}; ${expires}; path=/`;
+    };
+
     useEffect(() => {
         const userType = getCookie("useAs")
-        dispatch(changeUserState(userType))
-        // console.log(userState)
-        // console.log(document.cookie)
-        // console.log(userType)
+        if (!getCookie("useAs") || getCookie("useAs") === null || getCookie("useAs") === "null") {
+            setCookie("useAs", "user", 1000);
+        }
+
+        dispatch(changeUserState(userType ? userType : "user"));
+
+        console.log(document.cookie)
+        console.log(userType)
     }, [])
     return (
         <Routes>
@@ -69,6 +81,7 @@ function App() {
                 <Route path="forget-password" element={<ForgetPassword/>}/>
                 <Route path="check-email" element={<CheckEmail/>}/>
                 <Route path="reset-password" element={<ResetPassword/>}/>
+                <Route path="update-password" element={<UpdatePassword/>}/>
 
                 <Route element={<PersistLogin/>}>
                     <Route path="home" element={<Home/>}/>
