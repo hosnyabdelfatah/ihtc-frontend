@@ -1,4 +1,5 @@
 import React, {useEffect, useState, useRef} from 'react';
+import {useNavigate} from "react-router-dom";
 import axios from 'axios';
 import BASE_URL from '../../app/apis/baseUrl';
 import {selectCurrentUserState} from "../../features/userAsSlice";
@@ -13,6 +14,7 @@ function UpdatePassword() {
     const {userState} = useSelector(selectCurrentUserState);
     // console.log(userState)
     const errRef = useRef();
+    const navigate = useNavigate();
 
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
@@ -38,10 +40,14 @@ function UpdatePassword() {
         e.preventDefault();
         try {
             setSending(true);
-            const response = await axios.patch(`${BASE_URL}/${userState}s/updatePassword`, {
+            const response = await axios.patch(`${BASE_URL}/${userState}s/updatePassword`,
+                {
                     currentPassword,
                     newPassword,
                     newPasswordConfirm
+                }, {
+                    withCredentials: true,
+                    headers: {'Content-Type': 'application/json'}
                 }
             );
             setCurrentPassword('');
@@ -49,6 +55,7 @@ function UpdatePassword() {
             setNewPasswordConfirm('');
             setSending(false);
             console.log(response)
+            navigate('/login');
         } catch (err) {
             console.log(err)
             setErrMsg(err.response.data);

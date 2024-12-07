@@ -14,7 +14,6 @@ function DoctorPage() {
     const [messageOutCount, setMessageOutCount] = useState(0);
 
     const getMessageOut = async () => {
-        console.log(`${BASE_URL}/${doctor.id}`)
         const response = await axios.get(`${BASE_URL}/doctor-messages/${doctor.id}`);
 
         if (response)
