@@ -7,7 +7,7 @@ function UserPage() {
     const user = {...auth};
 
     return (
-        <div className="w-[80%]  mx-auto">
+        <div className="w-[80%]  mx-auto mb-6">
 
             <div className="profile-image flex justify-start items-center mb-8">
                 <img className="w-[30%]" src={user.profileImage}
