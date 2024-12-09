@@ -136,12 +136,15 @@ const Login = ({}) => {
                     } else {
                         console.log(res)
                         setLogging(false)
-                        if (res?.error?.message === "Request failed with status code 400" || res?.error?.message === "Request failed with status code 401" || res?.error?.message === "Request failed with status code 404") {
+                        if (res?.error?.message === "Network Error") {
+                            setErrMsg("Network Error!. Please try again later")
+                        } else if (res?.error?.message === "Request failed with status code 400" || res?.error?.message === "Request failed with status code 401" || res?.error?.message === "Request failed with status code 404") {
                             setErrMsg('Invalid username or password')
                             setLoginError("Access Denied! Invalid username or password");
                         } else {
                             setErrMsg(res?.error?.message);
                             setLoginError(res?.error?.message);
+
                         }
                     }
                 });
