@@ -70,7 +70,7 @@ function App() {
         dispatch(changeUserState(userType ? userType : "user"));
 
         // console.log(document.cookie)
-        // console.log(userType)
+        console.log(userType)
     }, [])
     return (
         <Routes>
@@ -79,6 +79,7 @@ function App() {
                 <Route path="/login" element={<Login/>}/>
                 <Route path="organizations" element={<OrganizationsList/>}/>
                 <Route path="organization" element={<OrganizationPage/>}/>
+                <Route path="/organization-info/:id" element={<OrganizationInfo/>}/>
 
                 <Route path="organization-signup" element={<OrganizationSignup/>}/>
                 <Route path="doctor-signup" element={<DoctorSignup/>}/>
@@ -114,7 +115,6 @@ function App() {
                     <Route path="doctors" element={<DoctorList/>}/>
                     <Route path="doctor-messages" element={<DoctorMessage/>}/>
                     <Route path="/doctor-info/:id" element={<DoctorInfo/>}/>
-                    <Route path="/organization-info/:id" element={<OrganizationInfo/>}/>
 
                 </Route>
             </Route>

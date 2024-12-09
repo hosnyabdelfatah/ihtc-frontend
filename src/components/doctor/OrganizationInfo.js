@@ -28,6 +28,7 @@ function OrganizationInfo({organization}) {
         <div
             className="organization-page h-screen mt-4 border-red-700 mb-6 mx-4"
         >
+
             <div className="organization_header h-2/4 border-2"
                  style={{
                      fontSize: `30px`,
@@ -38,6 +39,8 @@ function OrganizationInfo({organization}) {
                      backgroundPosition: "center center",
                      backgroundAttachment: "fixed",
                  }}>
+                {isFetching ? <Skeleton className="w-full h-full" times={1}/>
+                    : <div className="w-full h-full"></div>}
             </div>
             <div className="organization_info">
                 <div className="organization_info-header flex flex-row justify-start items-baseline mt-6 mb-8">
