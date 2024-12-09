@@ -7,12 +7,15 @@ import {FaRegEyeSlash} from "react-icons/fa";
 import {FaRegEye} from "react-icons/fa";
 import Spinner from '../Spinner';
 import {useSelector} from "react-redux";
+import useAuth from "../../hooks/useAuth";
 
 // import {auth} from '../../app/apis/'
 
 function UpdatePassword() {
+    const {auth} = useAuth();
+
     const {userState} = useSelector(selectCurrentUserState);
-    // console.log(userState)
+
     const errRef = useRef();
     const navigate = useNavigate();
 
@@ -36,16 +39,19 @@ function UpdatePassword() {
     const handleShowPassword = () => setShowPassword(!showPassword)
     const handleShowPasswordConfirm = () => setShowPasswordConfirm(!showPasswordConfirm);
 
+    const formData = new FormData();
+    formData.append("id", auth.id);
+    formData.append("currentPassword", currentPassword);
+    formData.append("newPassword", newPassword);
+    formData.append("newPasswordConfirm", newPasswordConfirm);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             setSending(true);
             const response = await axios.patch(`${BASE_URL}/${userState}s/updatePassword`,
-                {
-                    currentPassword,
-                    newPassword,
-                    newPasswordConfirm
-                }, {
+                formData
+                , {
                     withCredentials: true,
                     headers: {'Content-Type': 'application/json'}
                 }
@@ -54,7 +60,7 @@ function UpdatePassword() {
             setNewPassword('');
             setNewPasswordConfirm('');
             setSending(false);
-            console.log(response)
+            // console.log(response)
             navigate('/login');
         } catch (err) {
             console.log(err)

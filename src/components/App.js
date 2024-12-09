@@ -32,6 +32,9 @@ import ForgetPassword from "./registeration/ForgetPassword";
 import CheckEmail from "./registeration/CheckEmail";
 import ResetPassword from "./registeration/ResetPassword";
 import UpdatePassword from "./registeration/UpdatePassword";
+import UnderConstruction from "./UnderConstruction";
+import OrganizationsHome from "./User/OrganizationsHome";
+import OrganizationInfo from "./doctor/OrganizationInfo";
 
 // import InsertDoctors from "./admins/dashboard/InsertDoctors";
 
@@ -66,8 +69,8 @@ function App() {
 
         dispatch(changeUserState(userType ? userType : "user"));
 
-        console.log(document.cookie)
-        console.log(userType)
+        // console.log(document.cookie)
+        // console.log(userType)
     }, [])
     return (
         <Routes>
@@ -75,6 +78,8 @@ function App() {
                 <Route path="/" element={<Login/>}/>
                 <Route path="/login" element={<Login/>}/>
                 <Route path="organizations" element={<OrganizationsList/>}/>
+                <Route path="organization" element={<OrganizationPage/>}/>
+
                 <Route path="organization-signup" element={<OrganizationSignup/>}/>
                 <Route path="doctor-signup" element={<DoctorSignup/>}/>
                 <Route path="user-signup" element={<UserSignup/>}/>
@@ -82,6 +87,7 @@ function App() {
                 <Route path="check-email" element={<CheckEmail/>}/>
                 <Route path="reset-password" element={<ResetPassword/>}/>
                 <Route path="update-password" element={<UpdatePassword/>}/>
+                <Route path="under-construction" element={<UnderConstruction/>}/>
 
                 <Route element={<PersistLogin/>}>
                     <Route path="home" element={<Home/>}/>
@@ -95,8 +101,7 @@ function App() {
 
             <Route element={<RequireOrganizationAuth/>}>
                 <Route element={<OrganizationLayout/>}>
-                    <Route path="organization" element={<OrganizationPage/>}/>
-                    <Route path="community" element={<OrganizationsList/>}/>
+                    {/*<Route path="community" element={<OrganizationsList/>}/>*/}
                     <Route path="card-details/:id" element={<OrganizationCardDetails/>}
                     />
                     <Route path="campaign" element={<Campaigns/>}/>
@@ -109,6 +114,7 @@ function App() {
                     <Route path="doctors" element={<DoctorList/>}/>
                     <Route path="doctor-messages" element={<DoctorMessage/>}/>
                     <Route path="/doctor-info/:id" element={<DoctorInfo/>}/>
+                    <Route path="/organization-info/:id" element={<OrganizationInfo/>}/>
 
                 </Route>
             </Route>
@@ -117,6 +123,8 @@ function App() {
                 <Route element={<UserLayout/>}>
                     <Route path="user" element={<UserPage/>}/>
                     <Route path="services" element={<UserServices/>}/>
+                    <Route path="organizations-home" element={<OrganizationsHome/>}/>
+
                 </Route>
             </Route>
         </Routes>

@@ -1,17 +1,15 @@
-import {useSelector} from "react-redux";
+import React from 'react';
 import {useParams} from "react-router-dom";
-import {BsFillInfoSquareFill} from "react-icons/bs";
-// import {currenOrganizationsList} from "../../features/organizatiosListSlice";
 import {useFetchOrganizationsQuery} from "../../app/apis/organozationApi";
 import Skeleton from "../Skeleton";
-import OrganizationCard from "./OrganizationCard";
+import {BsFillInfoSquareFill} from "react-icons/bs";
 
-const OrganizationCardDetails = ({organization}) => {
-    const {id} = useParams()
-    // console.log(id)
-    let organizationData;
+function OrganizationInfo({organization}) {
+    const {id} = useParams();
+    console.log(id)
     const {data, error, isFetching} = useFetchOrganizationsQuery(organization);
 
+    let organizationData;
     let content;
     if (isFetching) {
         content = <Skeleton times={3} className='h-8 w-8'/>
@@ -23,6 +21,7 @@ const OrganizationCardDetails = ({organization}) => {
 
         const cardDetails = data.data.filter((organization) => organization.id === id)
         organizationData = cardDetails[0];
+        console.log(organizationData)
     }
 
     return (
@@ -32,7 +31,7 @@ const OrganizationCardDetails = ({organization}) => {
             <div className="organization_header h-2/4 border-2"
                  style={{
                      fontSize: `30px`,
-                     backgroundImage: `url(${organizationData.banner})`,
+                     backgroundImage: `url(${organizationData?.banner})`,
                      backgroundRepeat: "no-repeat",
                      backgroundClip: "padding-box",
                      backgroundSize: "cover",
@@ -69,6 +68,6 @@ const OrganizationCardDetails = ({organization}) => {
             </div>
         </div>
     );
-};
+}
 
-export default OrganizationCardDetails;
+export default OrganizationInfo;

@@ -42,14 +42,11 @@ const Login = ({}) => {
     const [password, setPassword] = useState('')
     const [errMsg, setErrMsg] = useState('');
     const [logging, setLogging] = useState(false);
-    const [loading, setLoading] = useState(false);
     const [loginError, setLoginError] = useState(null);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [validateErrMsg, setValidateErrMsg] = useState('');
 
 
     const addError = [];
-
 
     useEffect(() => {
         userRef.current.focus();
@@ -66,10 +63,16 @@ const Login = ({}) => {
     }
 
     const handleLogging = () => {
-        if (errMsg !== '')
+        if (errMsg !== '') {
             setLogging(true)
+        } else {
+            setLogging(false)
+        }
     }
-
+    useEffect(() => {
+        handleLogging()
+        console.log(logging)
+    }, [errMsg])
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -79,6 +82,7 @@ const Login = ({}) => {
             return
         }
         try {
+            setLogging(true);
             if (userState === 'organization') {
                 const data = await login({user, password}).unwrap()
                 // console.log(data)
@@ -94,6 +98,7 @@ const Login = ({}) => {
                 if (error) {
                     dispatch(setError(error))
                     console.log(error)
+                    setLogging(false)
                 }
 
                 setUser('')
@@ -115,6 +120,7 @@ const Login = ({}) => {
                             setLoginError("Access Denied! Invalid username or password");
                             setErrMsg("Access Denied! Invalid username or password")
                         } else {
+                            setLogging(false)
                             setLoginError(res?.error?.message);
                         }
                     }
@@ -129,11 +135,12 @@ const Login = ({}) => {
                         navigate("/user");
                     } else {
                         console.log(res)
-
+                        setLogging(false)
                         if (res?.error?.message === "Request failed with status code 400" || res?.error?.message === "Request failed with status code 401" || res?.error?.message === "Request failed with status code 404") {
                             setErrMsg('Invalid username or password')
                             setLoginError("Access Denied! Invalid username or password");
                         } else {
+                            setErrMsg(res?.error?.message);
                             setLoginError(res?.error?.message);
                         }
                     }
@@ -172,6 +179,7 @@ const Login = ({}) => {
        <span className="text-stone-100"> Processing...</span>
     </span>
 
+
     useEffect(() => {
         setLogging(false)
     }, [userState])
@@ -194,7 +202,8 @@ const Login = ({}) => {
                     className="buttons w-ful mx-auto font-bold my-4 w-f flex flex-row justify-between rounded-t-lg overflow-hidden "
                 >
                     <button
-                        className={` user-login w-[33%] bg-stone-500  py-3 rounded-tl-lg text-stone-100  border-2 shadow-sm text-base`}
+                        className={`${userState === "user" ? "border-blue-500"
+                            : "border-stone-100"} user-login w-[33%] bg-stone-500  py-3 rounded-tl-lg text-stone-100  border-2 shadow-sm text-base`}
                         onClick={() => {
                             dispatch(changeUserState("user"))
                             handleChaneUserAs("user")
@@ -203,7 +212,8 @@ const Login = ({}) => {
                         User
                     </button>
                     <button
-                        className={`doctor-login  w-[33%]  bg-stone-500  py-3 border-2	shadow-sm  text-base text-stone-100`}
+                        className={`${userState === "doctor" ? "border-lime-500"
+                            : "border-stone-100"} doctor-login  w-[33%]  bg-stone-500  py-3 border-2	shadow-sm  text-base text-stone-100`}
                         onClick={() => {
                             dispatch(changeUserState("doctor"))
                             handleChaneUserAs("doctor")
@@ -212,7 +222,8 @@ const Login = ({}) => {
                         Doctor
                     </button>
                     <button
-                        className={` organization-login  bg-stone-500 w-[33%]  py-3 rounded-tr-lg shadow-sm border-2  text-base shadow-sm  text-stone-100`}
+                        className={`${userState === "organization" ? "border-amber-500"
+                            : "border-stone-100"} organization-login  bg-stone-500 w-[33%]  py-3 rounded-tr-lg shadow-sm border-2  text-base shadow-sm   text-stone-100`}
                         onClick={() => {
                             dispatch(changeUserState("organization"))
                             handleChaneUserAs("organization")
@@ -232,7 +243,7 @@ const Login = ({}) => {
                     <div className="user flex flex-row items-baseline p-3 justify-between">
                         <label htmlFor="user"
                                className="w-2/12 text-left">{userState === "doctor" ? "User" : " Email"} </label>
-                        <input type="text" id="user" name="email" value={user} disabled={logging}
+                        <input type="text" id="user" name="email" value={user} disabled={logging && !error}
                                ref={userRef} required={true}
                                placeholder={`${userState === "doctor" ? "email or unique Id" : "email"}`}
                                onChange={handleUserInput}
@@ -242,7 +253,7 @@ const Login = ({}) => {
                     <div className="password  flex flex-row justify-between p-3  items-baseline ">
                         <label htmlFor="password" className="w-2/12 text-left">Password</label>
                         <input type="password" id="password" name="password" required={true}
-                               disabled={logging}
+                               disabled={logging && !error}
                                value={password}
                                onChange={handlePasswordInput}
                                className="block w-8/12 px-3 py-2 border border-stone-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border focus:border-blue-400
@@ -266,7 +277,8 @@ const Login = ({}) => {
                         }}
                     >
 
-                        {error || errMsg !== "" ? 'Login' : logging ? circleSpinner : 'Login'}
+                        {!logging || error || errMsg !== "" ? 'Login' : circleSpinner}
+
                     </button>
                 </form>
             </div>

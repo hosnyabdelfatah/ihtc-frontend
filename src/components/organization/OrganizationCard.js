@@ -2,7 +2,7 @@ import {Link} from 'react-router-dom';
 
 const OrganizationCard = ({organization}) => {
     return (
-        <Link to={`/card-details/${organization.id}`}
+        <Link to={`/card-details/${organization?.id}`}
               className="ml-2 rounded-md w-[22%] mb-5 h-[350px] border px-1 pt-1 pb-3 bg-gray-50
                hover:scale-110 hover:z-30 transition-transform ">
             <div className="organization-header   rounded-md h-4/6  mb-2">
@@ -20,7 +20,7 @@ const OrganizationCard = ({organization}) => {
                     className="organization-country w-[100%] mb-2 border-b py-1 text-left text-md text-[#0657A8]  font-semibold capitalize"
                 >
                     <span className="w-1/4 text-xs mr-3">Country</span>
-                    <span className="font-bold">{organization?.country.title}</span>
+                    <span className="font-bold">{organization?.country?.title}</span>
                 </div>
 
                 <div className='organization.industryField mt-1 text-[#0657A8]   font-semibold capitalize'>

@@ -23,8 +23,7 @@ const DoctorCampaigns = () => {
     const {data, error, isFetching} = useFetchOrganizationsQuery();
 
     let content;
-
-
+    
     const [organizations, setOrganizations] = useState({});
     const [loading, setLoading] = useState(true);
     const [countries, setCountries] = useState([])
@@ -124,14 +123,15 @@ const DoctorCampaigns = () => {
         content = data.data.map((organization) => {
             // console.log(organization)
             return <div className="w-[22%] rounded-lg border-2 overflow-hidden mb-10 pb-2">
+                {/*<Link to={`/organization-info/${organization.id}`}>*/}
                 <div className="organization-data w-full">
                     <div className="organization_logo w-full h-[200px] overflow-hidden">
                         <img className="w-full h-full" src={organization.logo} alt={`${organization.name} logo`}/>
                     </div>
-                    <div className="organization_info">
-                        <h3>{organization.name}</h3>
-                        <h3>{organization.country.title}</h3>
-                        <h3>{organization.industryField}</h3>
+                    <div className="organization_info mt-5  ml-3 capitalize">
+                        <h3 className="text-stone-700 font-semibold">{organization.name.toLowerCase()}</h3>
+                        <h3 className="text-stone-700 font-semibold">{organization.country.title.toLowerCase()}</h3>
+                        <h3 className="text-stone-700 font-semibold">{organization.industryField.toLowerCase()}</h3>
                     </div>
                     <button
                         className="block bg-lime-200 w-11/12 mx-auto border-2 rounded-lg mt-5 py-2 drop-shadow-md active:drop-shadow-none"
@@ -143,14 +143,14 @@ const DoctorCampaigns = () => {
                         message
                     </button>
                 </div>
-
+                {/*</Link>*/}
             </div>
         })
     }
 
 
     return (
-        <div className="w-[90%] mx-auto relative max-h-screen flex flex-col mb-8">
+        <div className="w-[90%] mx-auto relative flex flex-col mb-8">
 
             <div
                 className="search-bar  w-full min-h-8 flex flex-row justify-between items-center ">

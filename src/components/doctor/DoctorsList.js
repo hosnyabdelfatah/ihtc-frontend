@@ -1,8 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import {useSelector, useDispatch} from "react-redux";
-import DoctorCard from './DoctorCard';
-import {useFetchDoctorsQuery} from "../../app/apis/doctorApi";
-import {getCurrentUser} from "../../features/currentUserSlice";
 import useAuth from "../../hooks/useAuth";
 
 import Skeleton from "../Skeleton";
@@ -81,24 +77,6 @@ const DoctorsList = ({doctor}) => {
         }
     }
 
-    const handleSelectAll = () => {
-        const newCheckedItems = {};
-        const doctorsArray = searchDoctorsResult?.length > 0 ? searchDoctorsResult : doctors;
-        if (!isSelectAll) {
-            doctorsArray?.forEach(doctor => {
-                newCheckedItems[doctor?.id] = true; // Mark all items as checked
-            });
-        }
-        setCheckedItems(newCheckedItems);
-        setIsSelectAll(!isSelectAll);
-    };
-
-    const handleSelectAllDoctors = () => {
-        if (!isSelectAll) {
-            const selectedDoctors = searchDoctorsResult?.map(doctor => setAllSelectedDoctors([...allSelectedDoctors, doctor?._id]));
-            setAllSelectedDoctors(Object.keys(checkedItems));
-        }
-    }
 
     const handleCheckboxChange = (id) => {
         setCheckedItems((prevCheckedItems) => ({

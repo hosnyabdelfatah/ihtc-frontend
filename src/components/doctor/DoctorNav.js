@@ -27,7 +27,8 @@ function DoctorNav() {
     return (
         <div
             className="doctor-nav border-b-2 border-b-lime-200  drop-shadow-md flex flex-row justify-between items-center py-1 pr-4 mb-2">
-            <div className="logo w-2/12"><img src={Logo} alt="logo"/></div>
+            <div className="logo w-2/12">
+                <img src={Logo} alt="logo"/></div>
             <div
                 className="title flex justify-between w-5/12 h-[80px] ">
                 <Link to="doctor"

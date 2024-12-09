@@ -15,7 +15,7 @@ function UserNav() {
     const {auth, setAuth} = useAuth();
     const userData = {...auth}
     const dispatch = useDispatch();
-    console.log(userData)
+
     const handleSignout = () => {
         setAuth({});
         dispatch(clearUser())
@@ -39,7 +39,7 @@ function UserNav() {
                 className="navbar w-4/12 px-2 py-1 overflow-hidden flex flex-row items-center justify-between border border-[rgb(30, 144, 255)] rounded-[12px]"
             >
 
-                <Link to="organizations"
+                <Link to="organizations-home"
                       className="organizations  min-w-[3/12] p-1 ml-1 flex flex-row justify-center items-center cursor-pointer rounded-[12px]  hover:bg-amber-200 transition-all">
                     <span className="mr-2  text-2xl text-[#1E90FF]"><SiCloudflareworkers/></span>
                     <span>Organizations</span>
