@@ -26,16 +26,16 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
 
     if (result?.error?.originalStatus === 400) {
         api.dispatch(setError(result?.error?.data))
-        console.log(result)
+        // console.log(result)
     }
-    
+
     if (result?.error?.originalStatus === 403) {
-        console.log(`error?.originalStatus: ${result?.error?.originalStatus}`)
+        // console.log(`error?.originalStatus: ${result?.error?.originalStatus}`)
         //send refresh token to get new access token
         const refreshResult = await baseQuery('organizations/refresh', api, extraOptions)
         if (refreshResult?.data) {
             const user = api.getState().auth.user
-            console.log(user)
+            // console.log(user)
 
             //store the new token
             console.log(refreshResult)

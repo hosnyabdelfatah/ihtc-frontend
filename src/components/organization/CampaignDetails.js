@@ -11,8 +11,8 @@ function CampaignDetails() {
     const type = queryParams.get('type');
 
 
-    console.log(type)
-    console.log(campaignId)
+    // console.log(type)
+    // console.log(campaignId)
 
     const [isLoading, setIsLoading] = useState(false);
     const [campaignDetails, setCampaignDetails] = useState({});
@@ -31,10 +31,10 @@ function CampaignDetails() {
             const result = response?.data?.data;
             // console.log(result)
             setCampaignDetails(result);
-            console.log(campaignDetails)
+            // console.log(campaignDetails)
 
         } catch (err) {
-            console.log(err);
+            // console.log(err);
             setIsLoading(false);
         } finally {
             setIsLoading(false);

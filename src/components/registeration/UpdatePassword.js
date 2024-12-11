@@ -63,7 +63,7 @@ function UpdatePassword() {
             // console.log(response)
             navigate('/login');
         } catch (err) {
-            console.log(err)
+            // console.log(err)
             setErrMsg(err.response.data);
         }
     }

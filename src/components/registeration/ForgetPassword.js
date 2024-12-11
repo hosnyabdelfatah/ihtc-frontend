@@ -54,17 +54,17 @@ function ForgetPassword() {
             const response = await axios.post(`${BASE_URL}/${userState}s/forgetPassword`, {
                 email, url: `${window.location.origin}`, useAs: `${userState}`
             });
-            console.log(response)
+            // console.log(response)
             // console.log(error.response.data.message)
             setEmail('');
-            console.log(`Email is: ${email}`)
+            // console.log(`Email is: ${email}`)
             setErrMsg('');
             setSending(false);
             // console.log(response.status, response.data.message)
             // navigate('/check-email', {state: {from: location}, replace: true});
             window.open('check-email', '_blank')
         } catch (err) {
-            console.log(err)
+            // console.log(err)
             if (err.response.status === 401 || err.response.status === 400 || err.response.data === "You not logged in please login") {
                 setErrMsg("Email is not valid please enter valid email!")
             }

@@ -16,7 +16,7 @@ const OrganizationsList = ({organization}) => {
     if (isFetching) {
         content = <Skeleton times={8} className='h-full w-full'/>
     } else if (error) {
-        console.log(error)
+        // console.log(error)
         content = <div>Error loading organizations.</div>
     } else {
         const organizationCommunity = data.data.filter((organization) => organization.email !== organizationData.email)

@@ -6,7 +6,7 @@ import {BsFillInfoSquareFill} from "react-icons/bs";
 
 function OrganizationInfo({organization}) {
     const {id} = useParams();
-    console.log(id)
+    // console.log(id)
     const {data, error, isFetching} = useFetchOrganizationsQuery(organization);
 
     let organizationData;
@@ -21,7 +21,7 @@ function OrganizationInfo({organization}) {
 
         const cardDetails = data.data.filter((organization) => organization.id === id)
         organizationData = cardDetails[0];
-        console.log(organizationData)
+        // console.log(organizationData)
     }
 
     return (

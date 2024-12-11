@@ -73,15 +73,15 @@ function DoctorPage() {
                             <td>
                                 <Link to="/messages-sent"
                                       className="text-lime-700 font-semibold underline">
-                                    Messages Box
+                                    Messages
                                 </Link>
                             </td>
                             <td>
-                                <td className="in flex flex-row justify-evenly items-center border "><span>in</span>
-                                    <span><IoPaperPlaneOutline className="rotate-180 text-lime-600"/></span>
-                                    <span>{messageInCount}</span>
-                                </td>
-                                <td className="flex flex-row justify-evenly items-center border "><span>Out</span>
+                                {/*<td className="in flex flex-row justify-evenly items-center border "><span>in</span>*/}
+                                {/*    <span><IoPaperPlaneOutline className="rotate-180 text-lime-600"/></span>*/}
+                                {/*    <span>{messageInCount}</span>*/}
+                                {/*</td>*/}
+                                <td className="flex flex-row justify-evenly items-center border "><span>Sent</span>
                                     <span><IoPaperPlaneOutline className="text-red-600"/></span>
                                     <span>{messageOutCount}</span>
                                 </td>

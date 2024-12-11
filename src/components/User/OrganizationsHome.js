@@ -15,7 +15,7 @@ function OrganizationsHome() {
     if (isFetching) {
         content = <Skeleton times={8} className='h-10 w-full'/>
     } else if (error) {
-        console.log(error)
+        // console.log(error)
         content = <div>Error loading organizations.</div>
     } else {
         content = data?.data.map((organization) => {

@@ -130,7 +130,7 @@ const UserSignup = () => {
             const response = await axios.get(`${BASE_URL}/specialties`);
             setSpecialties([...response?.data?.data]);
         } catch (err) {
-            console.log(err)
+            // console.log(err)
         }
     }
 
@@ -140,7 +140,7 @@ const UserSignup = () => {
             const result = response?.data.data
             setLanguages(result);
         } catch (err) {
-            console.log(err)
+            // console.log(err)
             setErrMsg(err.message)
         }
     }
@@ -282,7 +282,7 @@ const UserSignup = () => {
             });
             // console.log(response)
             const result = await response?.data?.data;
-            console.log("Signup successful:", result);
+            // console.log("Signup successful:", result);
             setErrMsg(`Registration is ${response.data.status}`);
             setFormData({
                 avatar: null,
@@ -326,7 +326,7 @@ const UserSignup = () => {
             if (err.response?.status === 409) {
                 setErrMsg("Username taken");
             } else {
-                console.log(`Error is: ${err}`)
+                // console.log(`Error is: ${err}`)
                 // console.log(`Error is: ${(err.response.data)}`)
                 setErrMsg(err?.response)
             }

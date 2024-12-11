@@ -22,7 +22,7 @@ function MessagesBox() {
         try {
 
         } catch (err) {
-            console.log(err)
+            // console.log(err)
         }
     }
 
@@ -35,14 +35,14 @@ function MessagesBox() {
                 const response = await axios.get(`${BASE_URL}/doctor-messages/${doctorId}`);
                 const result = response?.data?.data;
                 const count = response?.data?.count;
-                console.log(response);
-                console.log(result?.length);
-                console.log(count);
+                // console.log(response);
+                // console.log(result?.length);
+                // console.log(count);
                 setSent(result)
                 setSentCount(count)
 
             } catch (err) {
-                console.log(err)
+                // console.log(err)
                 setErrMsg(err.message)
             } finally {
                 setLoading(false);

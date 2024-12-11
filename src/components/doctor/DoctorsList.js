@@ -64,7 +64,7 @@ const DoctorsList = ({doctor}) => {
 
     const handleSelectedDoctor = (e) => {
         const isSelected = allSelectedDoctors.indexOf(e.target.value);
-        console.log(isSelected)
+        // console.log(isSelected)
 
         if (isSelected === -1) {
             setAllSelectedDoctors([...allSelectedDoctors, e.target.value]);
@@ -72,7 +72,7 @@ const DoctorsList = ({doctor}) => {
 
         } else {
             const newSelectedDoctors = allSelectedDoctors.filter(doctor => doctor !== e.target.value)
-            console.log(newSelectedDoctors)
+            // console.log(newSelectedDoctors)
             setAllSelectedDoctors([...newSelectedDoctors]);
         }
     }

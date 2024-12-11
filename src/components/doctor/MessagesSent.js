@@ -30,7 +30,7 @@ function MessagesSent() {
                 setSentCount(count)
                 setLoading(false)
             } catch (err) {
-                console.log(err)
+                // console.log(err)
                 setLoading(false)
             } finally {
                 setLoading(false);

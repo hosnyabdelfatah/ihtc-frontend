@@ -59,7 +59,7 @@ const Login = ({}) => {
 
     const handleChaneUserAs = (value) => {
         setCookie("useAs", value, 1000);
-        console.log(document.cookie)
+        // console.log(document.cookie)
     }
 
     const handleLogging = () => {
@@ -97,13 +97,13 @@ const Login = ({}) => {
                 dispatch(setCurrentUser({...userData}))
                 if (error) {
                     dispatch(setError(error))
-                    console.log(error)
+                    // console.log(error)
                     setLogging(false)
                 }
 
                 setUser('')
                 setPassword('')
-                console.log(error)
+                // console.log(error)
                 navigate('/organization')
             } else if (userState === 'doctor') {
                 dispatch(loginDoctor({user, password})).then((res) => {
@@ -115,7 +115,7 @@ const Login = ({}) => {
                         setPassword("");
                         navigate("/doctor");
                     } else {
-                        console.log(res?.error)
+                        // console.log(res?.error)
                         if (res?.error?.message === "Request failed with status code 401" || res?.error?.message === "Request failed with status code 400") {
                             setLoginError("Access Denied! Invalid username or password");
                             setErrMsg("Access Denied! Invalid username or password")
@@ -135,7 +135,7 @@ const Login = ({}) => {
                         setPassword("");
                         navigate("/user");
                     } else {
-                        console.log(res)
+                        // console.log(res)
                         setLogging(false)
                         if (res?.error?.message === "Network Error") {
                             setErrMsg("Network Error!. Please try again later")
@@ -160,7 +160,7 @@ const Login = ({}) => {
             } else if (err.message ===
                 "Cannot destructure property 'user' of 'action.payload' as it is undefined.") {
                 setErrMsg('Login Failed, please write correct email and password! ');
-                console.log(err)
+                // console.log(err)
             } else {
                 setErrMsg(err.message)
             }

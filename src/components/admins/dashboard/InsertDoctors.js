@@ -28,7 +28,7 @@ function InsertDoctors() {
             setMessage('Error uploading or processing file: ' + error.response?.data?.message || error.message);
 
         }
-        console.log(message)
+        // console.log(message)
     }
 
     return (

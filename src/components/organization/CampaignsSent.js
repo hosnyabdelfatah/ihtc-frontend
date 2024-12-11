@@ -11,7 +11,7 @@ function CampaignsSent() {
     const errRef = useRef();
     const {organizationId} = useParams();
     const type = "campaign";
-    console.log(organizationId);
+    // console.log(organizationId);
     const [isLoading, setIsLoading] = useState(false);
     const [campaigns, setCampaigns] = useState();
     const [campaignsCount, setCampaignsCount] = useState(0);
@@ -23,12 +23,12 @@ function CampaignsSent() {
             const response = await axios.get(`${BASE_URL}/campaigns/${organizationId}`);
 
             const result = response?.data?.data;
-            console.log(response)
+            // console.log(response)
 
             setCampaigns(result.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)))
             setCampaignsCount(response?.data?.count)
         } catch (err) {
-            console.log(err)
+            // console.log(err)
             setErrMsg(err.message);
             setIsLoading(false);
         } finally {

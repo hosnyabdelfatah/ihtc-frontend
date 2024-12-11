@@ -10,7 +10,7 @@ const Modal = ({receivers, onClose}) => {
     const organization = useSelector(getCurrentUser);
     // console.log(organization?.currentUser)
     const sender = organization?.currentUser.id;
-    console.log(sender)
+    // console.log(sender)
 
     const receiversText = receivers.join('-')
 
@@ -91,7 +91,7 @@ const Modal = ({receivers, onClose}) => {
         if (errs.length > 0) {
             errs.map((err) => errorMessage.push(err))
         }
-        console.log(errs)
+        // console.log(errs)
 
         const renderErrMsg = errorMessage.map(error => <span
             className="block text-stone-100 font-bold">{error}</span>);
@@ -100,13 +100,13 @@ const Modal = ({receivers, onClose}) => {
 
     const handleSendCampaign = async () => {
         if (errs.length > 0) {
-            console.log(errs)
+            // console.log(errs)
             handleErrMsg()
             return false;
         } else {
             try {
                 const response = await axios.post(`${BASE_URL}/campaigns`, campaignBodyData);
-                console.log(response)
+                // console.log(response)
                 setMessageTitle('');
                 setFile('');
                 setTextMessage('');
@@ -120,8 +120,8 @@ const Modal = ({receivers, onClose}) => {
 
     useEffect(() => {
         setToReceivers(receiversText);
-        console.log(receivers)
-        console.log(toReceivers)
+        // console.log(receivers)
+        // console.log(toReceivers)
     }, []);
 
 

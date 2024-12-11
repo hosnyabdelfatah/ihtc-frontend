@@ -101,7 +101,7 @@ const MessageModal = ({sender, receiver, onClose}) => {
         if (errs.length > 0) {
             errs.map((err) => errorMessage.push(err))
         }
-        console.log(errs)
+        // console.log(errs)
 
         const renderErrMsg = errorMessage.map(error => <span
             className="block text-stone-100 font-bold">{error}</span>);
@@ -112,7 +112,7 @@ const MessageModal = ({sender, receiver, onClose}) => {
         setIsSending(true);
 
         if (errs.length > 0) {
-            console.log(errs)
+            // console.log(errs)
             handleErrMsg()
             return false;
         } else {
@@ -125,7 +125,7 @@ const MessageModal = ({sender, receiver, onClose}) => {
                 setTextMessage('');
                 onClose();
             } catch (err) {
-                console.log(err)
+                // console.log(err)
                 setIsSending(false)
                 errRef.current.focus();
             }

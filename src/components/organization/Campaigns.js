@@ -35,7 +35,7 @@ const Campaigns = () => {
     const [itemsPerPage, setItemsPerPage] = useState(20);
     //End pagination const
     const currentUser = useSelector(getCurrentUser);
-    console.log(currentUser)
+    // console.log(currentUser)
     const [search, setSearch] = useState('');
 
     const handleClearInput = () => {
@@ -61,7 +61,7 @@ const Campaigns = () => {
 
     const handleSelectedDoctor = (e) => {
         const isSelected = allSelectedDoctors.indexOf(e.target.value);
-        console.log(isSelected)
+        // console.log(isSelected)
 
         if (isSelected === -1) {
             setAllSelectedDoctors([...allSelectedDoctors, e.target.value]);
@@ -69,7 +69,7 @@ const Campaigns = () => {
 
         } else {
             const newSelectedDoctors = allSelectedDoctors.filter(doctor => doctor !== e.target.value)
-            console.log(newSelectedDoctors)
+            // console.log(newSelectedDoctors)
             setAllSelectedDoctors([...newSelectedDoctors]);
         }
     }

@@ -128,7 +128,7 @@ const DoctorSignup = () => {
             const response = await axios.get(`${BASE_URL}/specialties`);
             setSpecialties([...response?.data?.data]);
         } catch (err) {
-            console.log(err)
+            // console.log(err)
         }
     }
 
@@ -138,7 +138,7 @@ const DoctorSignup = () => {
             const result = response?.data.data
             setLanguages(result);
         } catch (err) {
-            console.log(err)
+            // console.log(err)
             setErrMsg(err.message)
         }
     }

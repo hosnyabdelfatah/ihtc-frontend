@@ -57,9 +57,9 @@ function ResetPassword() {
             setNewPassword('');
             setNewPasswordConfirm('');
             setSending(false);
-            console.log(response)
+            // console.log(response)
         } catch (err) {
-            console.log(err)
+            // console.log(err)
             setErrMsg(err.response.data);
         }
     }

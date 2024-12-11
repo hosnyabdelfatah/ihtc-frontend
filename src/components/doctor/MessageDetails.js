@@ -11,8 +11,8 @@ function MessageDetails() {
     const type = queryParams.get('type');
 
 
-    console.log(type)
-    console.log(messageId)
+    // console.log(type)
+    // console.log(messageId)
 
     const [isLoading, setIsLoading] = useState(false);
     const [messageDetails, setMessageDetails] = useState({});
@@ -31,11 +31,11 @@ function MessageDetails() {
 
             const result = response?.data?.data;
 
-            console.log(result)
+            // console.log(result)
             setMessageDetails(result);
             setName(result?.from?.fname + " " + result?.from?.lname);
         } catch (err) {
-            console.log(err);
+            // console.log(err);
             setIsLoading(false);
         } finally {
             setIsLoading(false);
