@@ -74,58 +74,60 @@ function UpdatePassword() {
     }, [currentPassword, newPassword, newPasswordConfirm]);
 
     return (
-        <div className=" mt-12 mx-auto w-[90%]">
+        <div className=" mt-12 mx-auto w-[80%]">
             <p ref={errRef}
                className={`${errMsg ? "errmsg opacity-100" : "opacity-0"} bg-red-700 text-stone-100 font-bold rounded text-center py-1  mb-8 transition-all`}
                aria-live="assertive">
                 {errMsg}
 
             </p>
-            <form onSubmit={(e) => handleSubmit(e)}>
-                <div className="form-group w-[70%] flex flex-row justify-center items-center mb-5 relative ">
+            <form onSubmit={(e) => handleSubmit(e)}
+                  className="w-[50%] mx-auto"
+            >
+                <div className="form-group w-full flex flex-row justify-start items-center mb-5 relative ">
                     <label htmlFor="current-password"
-                           className="max-w-[20%] text-lg text-blue-900 ml-[4.2rem]">
+                           className="max-w-[40%] text-lg text-blue-900 ml-[2.7rem]">
                         Current password
                     </label>
                     <input type={showCurrentPassword ? "text" : "password"} id="current-password"
                            name="current-password"
                            className={`${userState === "user" ? "border-blue-200"
                                : userState === "doctor" ? " border-lime-200" : " border-amber-200"}
-                         ml-5 p-2 border rounded-lg w-[40%] text-lg text-stone-600
+                         ml-5 p-2 border rounded-lg w-[60%] text-lg text-stone-600
                          focus:outline-none
                          `}
                            value={currentPassword}
                            onChange={handleCurrentPassword}
                     />
-                    <span className="inline-block absolute text-gray-400 right-[20%] top-3.5 cursor-pointer"
+                    <span className="inline-block absolute text-gray-400 right-[5%] top-3.5 cursor-pointer"
                           onClick={handleShowCurrentPassword}>{showCurrentPassword ?
                         <FaRegEye/> :
                         <FaRegEyeSlash/>}
                                 </span>
                 </div>
-                <div className="form-group w-[70%] flex flex-row justify-center items-center mb-5 relative ">
+                <div className="form-group w-full flex flex-row justify-start items-center mb-5 relative ">
                     <label htmlFor="new-password"
-                           className="max-w-[20%] text-lg text-blue-900 ml-[4.2rem]">
+                           className="max-w-[40%] text-lg text-blue-900 ml-[4.2rem]">
                         New Password
                     </label>
                     <input type={showPassword ? "text" : "password"} id="new-password" name="new-password"
                            value={newPassword}
                            className={`${userState === "user" ? "border-blue-200"
                                : userState === "doctor" ? " border-lime-200" : " border-amber-200"}
-                         ml-5 p-2 border rounded-lg w-[40%] text-lg text-stone-600
+                         ml-5 p-2 border rounded-lg w-[60%] text-lg text-stone-600
                          focus:outline-none
                          `}
                            onChange={handleNewPassword}/>
-                    <span className="inline-block absolute text-gray-400 right-[20%] top-3.5 cursor-pointer"
+                    <span className="inline-block absolute text-gray-400 right-[5%] top-3.5 cursor-pointer"
                           onClick={handleShowPassword}>{showPassword ?
                         <FaRegEye/> :
                         <FaRegEyeSlash/>}
                                 </span>
                 </div>
 
-                <div className="form-group w-[70%] flex flex-row justify-center items-center mb-5 relative ">
+                <div className="form-group w-full flex flex-row justify-start items-center mb-5 relative ">
                     <label htmlFor="new-password-confirm"
-                           className="max-w-[30%] text-lg text-blue-900"
+                           className="max-w-[40%] text-lg text-blue-900"
                     >
                         Confirm New Password
                     </label>
@@ -133,7 +135,7 @@ function UpdatePassword() {
                            name="new-password-confirm"
                            className={`${userState === "user" ? "border-blue-200"
                                : userState === "doctor" ? " border-lime-200" : " border-amber-200"}
-                         ml-5 p-2 border rounded-lg w-[40%] text-lg text-stone-600
+                         ml-5 p-2 border rounded-lg w-[60%] text-lg text-stone-600
                          focus:outline-none
                          `}
                            value={newPasswordConfirm}
@@ -141,15 +143,14 @@ function UpdatePassword() {
 
                     />
                     <span
-                        className="inline-block absolute text-gray-400  right-[20%] cursor-pointer top-4"
+                        className="inline-block absolute text-gray-400  right-[5%] cursor-pointer top-4"
                         onClick={handleShowPasswordConfirm}>{showPassword ?
                         <FaRegEye/> :
                         <FaRegEyeSlash/>}
                     </span>
                 </div>
                 <button
-                    className={`${userState === "user" ? "bg-blue-400" : userState === "doctor" ? "bg-lime-400" : "bg-yellow-400"}  mx-auto py-2 px-6 rounded-lg text-lg
-                 text-blue-900 font-semibold drop-shadow-md`}>
+                    className={`${userState === "user" ? "bg-blue-400" : userState === "doctor" ? "bg-lime-400" : "bg-yellow-400"} block mt-12 mx-auto py-2 px-10 text-xl text-blue-900 border-2 font-semibold rounded-lg border`}>
                     {errMsg === '' && sending ? <Spinner text="Sending"/> : "Send"}
                 </button>
             </form>

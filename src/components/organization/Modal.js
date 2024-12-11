@@ -8,7 +8,10 @@ import {retry} from "@reduxjs/toolkit/query";
 
 const Modal = ({receivers, onClose}) => {
     const organization = useSelector(getCurrentUser);
-    const sender = organization?.currentUser._id;
+    // console.log(organization?.currentUser)
+    const sender = organization?.currentUser.id;
+    console.log(sender)
+
     const receiversText = receivers.join('-')
 
     const errRef = useRef();

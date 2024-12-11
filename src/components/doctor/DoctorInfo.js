@@ -19,11 +19,13 @@ function DoctorInfo() {
     return (
         <div className="w-[80%]  mx-auto text-stone-700">
 
-            <div className="w-full border-2 flex justify-start items-center mt-3 mb-8">
-                <div className=" w-1/4 border-2 h-[250px] drop-shadow-md rounded-xl overflow-hidden">
-                    {doctor?.profileImage ? <img src={doctor?.profileImage}
-                                                 alt={doctor?.firstName + " " + doctor?.lastName}
-                    /> : <Skeleton className="w-full h-full" times={1}/>}
+            <div className="w-full flex justify-start items-center mt-5 mb-8">
+                <div className=" w-1/4  h-[250px] drop-shadow-md rounded-xl overflow-hidden">
+                    {doctor?.profileImage
+                        ? <img src={doctor?.profileImage}
+                               className="h-full w-full"
+                               alt={doctor?.firstName + " " + doctor?.lastName}
+                        /> : <Skeleton className="w-full h-full" times={1}/>}
                 </div>
                 <div className="doctor_info flex flex-col ml-8">
                     {doctor?.profileImage ? <h2 className="text-3xl font-semibold w-full text-stone-600 mb-8">

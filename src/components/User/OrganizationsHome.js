@@ -13,7 +13,7 @@ function OrganizationsHome() {
 
     let content;
     if (isFetching) {
-        content = <Skeleton times={8} className='h-full w-full'/>
+        content = <Skeleton times={8} className='h-10 w-full'/>
     } else if (error) {
         console.log(error)
         content = <div>Error loading organizations.</div>

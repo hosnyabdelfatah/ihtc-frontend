@@ -3,7 +3,6 @@ import {useSelector, useDispatch} from "react-redux";
 import axios from "axios";
 import Skeleton from "../Skeleton";
 import Pagination from "../Pagination";
-
 import {getCurrentUser} from "../../features/currentUserSlice";
 import DoctorSpecialties from "../doctor/DoctorSpecialties";
 import React, {useEffect, useRef, useState, useMemo} from "react";
@@ -35,7 +34,8 @@ const Campaigns = () => {
     const [totalPages, setTotalPages] = useState(0);
     const [itemsPerPage, setItemsPerPage] = useState(20);
     //End pagination const
-
+    const currentUser = useSelector(getCurrentUser);
+    console.log(currentUser)
     const [search, setSearch] = useState('');
 
     const handleClearInput = () => {

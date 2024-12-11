@@ -14,7 +14,7 @@ const OrganizationNav = () => {
     const organizationData = organization?.currentUser
 
     const dispatch = useDispatch()
-    const handleSingout = () => {
+    const handleSignout = () => {
         dispatch(setCurrentUser({}))
     }
 
@@ -40,7 +40,7 @@ const OrganizationNav = () => {
                 </Link>
 
 
-                <Link to="campaign"
+                <Link to="campaign/"
                       className="mails  w-1/4 py-1 ml-1 flex flex-row justify-center items-center            cursor-pointer rounded-[12px]  hover:bg-indigo-100">
                         <span className="mr-2  text-2xl text-[#ffc907]">
                         <SiAmazonsimpleemailservice/>
@@ -49,7 +49,7 @@ const OrganizationNav = () => {
                 </Link>
                 <div
                     className="logout w-1/4 cursor-pointer mr-1 pl-2 py-1 rounded-[12px] flex flex-row justify-center items-end hover:bg-red-100"
-                    onClick={handleSingout}
+                    onClick={handleSignout}
                 >
 
                     <span> {organizationData?.name ? "Logout" : "Login"}</span>

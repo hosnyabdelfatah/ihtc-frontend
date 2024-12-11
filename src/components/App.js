@@ -35,6 +35,15 @@ import UpdatePassword from "./registeration/UpdatePassword";
 import UnderConstruction from "./UnderConstruction";
 import OrganizationsHome from "./User/OrganizationsHome";
 import OrganizationInfo from "./doctor/OrganizationInfo";
+import MessagesBox from "./doctor/MessagesBox";
+import MessagesBoxLayout from "./doctor/MessagesBoxLayout";
+import MessageDetails from "./doctor/MessageDetails";
+import MessagesSent from "./doctor/MessagesSent";
+import MessagesIn from "./doctor/MessagesIn";
+import CampaignsSent from "./organization/CampaignsSent";
+import CampaignsBoxLayout from "./organization/CampaignBoxLayout";
+import OrganizationMessagesIn from "./organization/OrganizationMessagesIn";
+import CampaignDetails from "./organization/CampaignDetails";
 
 // import InsertDoctors from "./admins/dashboard/InsertDoctors";
 
@@ -70,7 +79,7 @@ function App() {
         dispatch(changeUserState(userType ? userType : "user"));
 
         // console.log(document.cookie)
-        console.log(userType)
+        // console.log(userType)
     }, [])
     return (
         <Routes>
@@ -78,8 +87,6 @@ function App() {
                 <Route path="/" element={<Login/>}/>
                 <Route path="/login" element={<Login/>}/>
                 <Route path="organizations" element={<OrganizationsList/>}/>
-                <Route path="organization" element={<OrganizationPage/>}/>
-                <Route path="/organization-info/:id" element={<OrganizationInfo/>}/>
 
                 <Route path="organization-signup" element={<OrganizationSignup/>}/>
                 <Route path="doctor-signup" element={<DoctorSignup/>}/>
@@ -102,10 +109,25 @@ function App() {
 
             <Route element={<RequireOrganizationAuth/>}>
                 <Route element={<OrganizationLayout/>}>
-                    {/*<Route path="community" element={<OrganizationsList/>}/>*/}
+                    <Route path="community" element={<OrganizationsList/>}/>
+                    <Route path="organization" element={<OrganizationPage/>}/>
                     <Route path="card-details/:id" element={<OrganizationCardDetails/>}
                     />
                     <Route path="campaign" element={<Campaigns/>}/>
+                    <Route element={<CampaignsBoxLayout/>}>
+                        <Route
+                            path="/organization/campaign-box/:organizationId" element={<CampaignsSent/>}
+                        />
+                        <Route path="campaigns-sent/:organizationId" element={<CampaignsSent/>}/>
+                        <Route path="organization-messages-in" element={<OrganizationMessagesIn/>}
+                        />
+
+                        <Route path="/campaign-details/:campaignId"
+                               element={<CampaignDetails/>}/>
+
+                        {/*<Route path="/message-details/:messageId" element={<MessageDetails/>}/>*/}
+                    </Route>
+
                 </Route>
             </Route>
 
@@ -114,8 +136,13 @@ function App() {
                     <Route path="doctor" element={<DoctorPage/>}/>
                     <Route path="doctors" element={<DoctorList/>}/>
                     <Route path="doctor-messages" element={<DoctorMessage/>}/>
+                    {/*<Route path="messages-box" element={<MessagesBox/>}/>*/}
                     <Route path="/doctor-info/:id" element={<DoctorInfo/>}/>
-
+                    <Route element={<MessagesBoxLayout/>}>
+                        <Route path="messages-sent" element={<MessagesSent/>}/>
+                        <Route path="messages-in" element={<MessagesIn/>}/>
+                        <Route path="/message-details/:messageId" element={<MessageDetails/>}/>
+                    </Route>
                 </Route>
             </Route>
 
@@ -124,6 +151,8 @@ function App() {
                     <Route path="user" element={<UserPage/>}/>
                     <Route path="services" element={<UserServices/>}/>
                     <Route path="organizations-home" element={<OrganizationsHome/>}/>
+                    <Route path="/organization-info/:id" element={<OrganizationInfo/>}/>
+
 
                 </Route>
             </Route>

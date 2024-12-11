@@ -71,7 +71,7 @@ const Login = ({}) => {
     }
     useEffect(() => {
         handleLogging()
-        console.log(logging)
+        // console.log(logging)
     }, [errMsg])
 
     const handleSubmit = async (e) => {
@@ -121,6 +121,7 @@ const Login = ({}) => {
                             setErrMsg("Access Denied! Invalid username or password")
                         } else {
                             setLogging(false)
+                            setErrMsg(res?.error?.message + " please try again later!")
                             setLoginError(res?.error?.message);
                         }
                     }

@@ -23,7 +23,7 @@ const DoctorCampaigns = () => {
     const {data, error, isFetching} = useFetchOrganizationsQuery();
 
     let content;
-    
+
     const [organizations, setOrganizations] = useState({});
     const [loading, setLoading] = useState(true);
     const [countries, setCountries] = useState([])
@@ -152,50 +152,50 @@ const DoctorCampaigns = () => {
     return (
         <div className="w-[90%] mx-auto relative flex flex-col mb-8">
 
-            <div
-                className="search-bar  w-full min-h-8 flex flex-row justify-between items-center ">
-                <div className="selected-country_container relative w-[30%]
-                p-2 outline-none active:outline-none flex flex-row items-center
-                ">
-                    <span className="relative mr-3"
-                          onClick={() => {
-                              handleCountriesSelectShow()
-                              handleCountriesClicked()
-                          }}>
+            {/*<div*/}
+            {/*    className="search-bar  w-full min-h-8 flex flex-row justify-between items-center ">*/}
+            {/*    <div className="selected-country_container relative w-[30%]*/}
+            {/*    p-2 outline-none active:outline-none flex flex-row items-center*/}
+            {/*    ">*/}
+            {/*        <span className="relative mr-3"*/}
+            {/*              onClick={() => {*/}
+            {/*                  handleCountriesSelectShow()*/}
+            {/*                  handleCountriesClicked()*/}
+            {/*              }}>*/}
 
-                    <input type="text" className="selected-country_input border-2 z-10
-                    outline-none  text-center hover:cursor-pointer focus:outline-none text-indigo-500 font-semibold"
-                           value={selectedCountryText}
-                           placeholder="Select country"
-                           onChange={(e) => {
-                           }}
-                    />
+            {/*        <input type="text" className="selected-country_input border-2 z-10*/}
+            {/*        outline-none  text-center hover:cursor-pointer focus:outline-none text-indigo-500 font-semibold"*/}
+            {/*               value={selectedCountryText}*/}
+            {/*               placeholder="Select country"*/}
+            {/*               onChange={(e) => {*/}
+            {/*               }}*/}
+            {/*        />*/}
 
-                     <HiChevronDown
-                         className={`${countriesClicked ? "rotate-180" : "rotate-0"} cursor-pointer text-2xl  transition-all duration-400 block absolute top-[1%] right-1 z-10 `}
+            {/*         <HiChevronDown*/}
+            {/*             className={`${countriesClicked ? "rotate-180" : "rotate-0"} cursor-pointer text-2xl  transition-all duration-400 block absolute top-[1%] right-1 z-10 `}*/}
 
-                     />
-                    </span>
+            {/*         />*/}
+            {/*        </span>*/}
 
-                    <div className="search w-[3%] cursor-pointer bg-red ">
-                        <span className="search-icon text-2xl  ">
-                            <IoSearchSharp className="text-red-600 block "
-                                           onClick={() => {
-                                               handleClearInput()
-                                           }}/>
-                        </span>
-                    </div>
+            {/*        <div className="search w-[3%] cursor-pointer bg-red ">*/}
+            {/*            <span className="search-icon text-2xl  ">*/}
+            {/*                <IoSearchSharp className="text-red-600 block "*/}
+            {/*                               onClick={() => {*/}
+            {/*                                   handleClearInput()*/}
+            {/*                               }}/>*/}
+            {/*            </span>*/}
+            {/*        </div>*/}
 
-                    <ul className={`${countriesSelectShow ? "h-[300px] block" : " h-0 hidden"} countries absolute text-center list-none z-30  top-[36px] left-[8px]  w-[88%] cursor-pointer border overflow-y-scroll  bg-stone-100 transition-all
-                    `}>
-                        {
-                            isFetching ? <Skeleton className="h-8 w-30" times={8}/> : countryContent
-                        }
+            {/*        <ul className={`${countriesSelectShow ? "h-[300px] block" : " h-0 hidden"} countries absolute text-center list-none z-30  top-[36px] left-[8px]  w-[88%] cursor-pointer border overflow-y-scroll  bg-stone-100 transition-all*/}
+            {/*        `}>*/}
+            {/*            {*/}
+            {/*                isFetching ? <Skeleton className="h-8 w-30" times={8}/> : countryContent*/}
+            {/*            }*/}
 
-                    </ul>
+            {/*        </ul>*/}
 
-                </div>
-            </div>
+            {/*    </div>*/}
+            {/*</div>*/}
 
             <div
                 className="w-full max-h-[60%] flex flex-row flex-wrap justify-between items-stretch mt-4 v  overflow-y-hidden">

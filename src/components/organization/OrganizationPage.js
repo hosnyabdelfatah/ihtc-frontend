@@ -1,15 +1,11 @@
 import './Organization.css';
-import {useSelector, useDispatch} from "react-redux";
-import useAuth from "../../hooks/useAuth";
-import {selectCurrentUserState} from "../../features/userAsSlice";
-import {selectCurrentUser} from "../../features/auth/authSlice";
+import {useSelector} from "react-redux";
 import {getCurrentUser} from "../../features/currentUserSlice";
 import {BsFillInfoSquareFill} from "react-icons/bs";
 import {Link} from "react-router-dom";
 
 const OrganizationPage = () => {
-    const {auth} = useAuth();
-    console.log(auth);
+
     const organization = useSelector(getCurrentUser)
     const organizationData = organization?.currentUser
     const logo = organizationData?.logo
@@ -32,8 +28,12 @@ const OrganizationPage = () => {
                 {/*<img src={banner} alt="Banner"/>*/}
             </div>
             <div className="update-password mt-4">
-                <Link to="/update-password" className="text-violet-700 font-semibold underline" alt="Update password">Update
-                    password</Link>
+                <Link to="/update-password" className=" mr-5 text-violet-700 font-semibold underline"
+                      alt="Update password">
+                    Update password
+                </Link>
+                <Link to={`campaign-box/${organizationData.id}`}
+                      className=" mr-5 text-violet-700 font-semibold underline">campaign box</Link>
             </div>
             <div className="organization_info-header flex flex-row justify-start items-baseline mt-6 mb-8">
                 <h3 className="text-xl border-2 border-[#ffc907] drop-shadow-md p-2 rounded-md text-violet-700  font-extrabold p2 mr-3">organization_info</h3>
