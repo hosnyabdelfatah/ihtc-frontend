@@ -31,7 +31,7 @@ const useRefreshToken = () => {
     const currentUser = useSelector(selectCurrentUser);
 
     const userType = getCookie("useAs")
-    console.log(userState)
+    // console.log(userState)
     let currentCookie;
     if (userType === 'user') {
         currentCookie = getCookie("userJwt");
@@ -50,7 +50,7 @@ const useRefreshToken = () => {
                 withCredentials: true,
                 withXSRFToken: true
             });
-            console.log(response)
+            // console.log(response)
 
             const result = await response?.data?.data;
             console.log(result)
