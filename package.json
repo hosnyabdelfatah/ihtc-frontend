@@ -2,6 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
+  "proxy": "https://ihtc-backend.vercel.app/",
   "dependencies": {
     "@fvilers/disable-react-devtools": "^1.3.0",
     "@reduxjs/toolkit": "^2.3.0",
