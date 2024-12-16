@@ -7,10 +7,14 @@ export const loginUser = createAsyncThunk(
     async (userCredintial) => {
         const request = await axios.post(
             `${BASE_URL}/users/login`,
-            userCredintial
+            userCredintial,
+            {
+                withCredentials: true,
+                headers: {'Content-Type': 'application/json'}
+            },
         );
 
-        const response = await request.data.user;
+        const response = await request.data.data;
         return response;
     }
 );

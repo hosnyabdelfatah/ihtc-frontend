@@ -3,13 +3,14 @@ import {useEffect} from "react";
 import {useSelector, useDispatch} from "react-redux";
 import {useFetchOrganizationsQuery} from '../store';
 import {selectCurrentUserState, changeUserState} from "../features/userAsSlice";
-import {Routes, Route} from "react-router-dom";
+import {Routes, Route, useNavigate} from "react-router-dom";
 import OrganizationLayout from "./organization/OrganizationLayout";
+import axios from 'axios';
 import Login from './registeration/Login'
 import Home from './Home';
 import Welcome from "./Welcome";
 import Layout from "./Layout";
-import PersistLogin from '../features/auth/PersistLogin';
+import PersistLogin from '../components/registeration/PersistLogin';
 import OrganizationPage from "./organization/OrganizationPage";
 import OrganizationsList from "./organization/OrganizationsList";
 import RequireOrganizationAuth from "../features/auth/RequireOrganizationAuth";
@@ -44,12 +45,13 @@ import CampaignsSent from "./organization/CampaignsSent";
 import CampaignsBoxLayout from "./organization/CampaignBoxLayout";
 import OrganizationMessagesIn from "./organization/OrganizationMessagesIn";
 import CampaignDetails from "./organization/CampaignDetails";
+import BASE_URL from "../app/apis/baseUrl";
+import useAuth from "../hooks/useAuth";
 
 // import InsertDoctors from "./admins/dashboard/InsertDoctors";
 
 
 function App() {
-    const {userState} = useSelector(selectCurrentUserState)
     const dispatch = useDispatch();
 
     function getCookie(name) {
@@ -77,14 +79,14 @@ function App() {
         }
 
         dispatch(changeUserState(userType ? userType : "user"));
-
         // console.log(document.cookie)
         // console.log(userType)
-    }, [])
+    }, []);
+
+
     return (
         <Routes>
-            <Route element={<Layout/>}>
-                <Route path="/" element={<Login/>}/>
+            <Route path="/" element={<Layout/>}>
                 <Route path="/login" element={<Login/>}/>
                 <Route path="organizations" element={<OrganizationsList/>}/>
 
@@ -97,63 +99,60 @@ function App() {
                 <Route path="update-password" element={<UpdatePassword/>}/>
                 <Route path="under-construction" element={<UnderConstruction/>}/>
 
-                <Route element={<PersistLogin/>}>
-                    <Route path="home" element={<Home/>}/>
-                    <Route path="welcome" element={<Welcome/>}/>
-                </Route>
-                {/*<Route path="insert-doctors" element={<InsertDoctors/>}/>*/}
 
+                {/*<Route path="insert-doctors" element={<InsertDoctors/>}/>*/}
             </Route>
 
             {/*Organization Routes*/}
-
-            <Route element={<RequireOrganizationAuth/>}>
-                <Route element={<OrganizationLayout/>}>
-                    <Route path="community" element={<OrganizationsList/>}/>
-                    <Route path="organization" element={<OrganizationPage/>}/>
-                    <Route path="card-details/:id" element={<OrganizationCardDetails/>}
-                    />
-                    <Route path="campaign" element={<Campaigns/>}/>
-                    <Route element={<CampaignsBoxLayout/>}>
-                        <Route
-                            path="/organization/campaign-box/:organizationId" element={<CampaignsSent/>}
+            <Route element={<PersistLogin/>}>
+                <Route index element={<Home/>}/>
+                <Route path="welcome" element={<Welcome/>}/>
+                <Route element={<RequireOrganizationAuth/>}>
+                    <Route element={<OrganizationLayout/>}>
+                        <Route path="community" element={<OrganizationsList/>}/>
+                        <Route path="organization" element={<OrganizationPage/>}/>
+                        <Route path="card-details/:id" element={<OrganizationCardDetails/>}
                         />
-                        <Route path="campaigns-sent/:organizationId" element={<CampaignsSent/>}/>
-                        <Route path="organization-messages-in" element={<OrganizationMessagesIn/>}
-                        />
+                        <Route path="campaign" element={<Campaigns/>}/>
+                        <Route element={<CampaignsBoxLayout/>}>
+                            <Route
+                                path="/organization/campaign-box/:organizationId" element={<CampaignsSent/>}
+                            />
+                            <Route path="campaigns-sent/:organizationId" element={<CampaignsSent/>}/>
+                            <Route path="organization-messages-in" element={<OrganizationMessagesIn/>}
+                            />
 
-                        <Route path="/campaign-details/:campaignId"
-                               element={<CampaignDetails/>}/>
+                            <Route path="/campaign-details/:campaignId"
+                                   element={<CampaignDetails/>}/>
 
-                        {/*<Route path="/message-details/:messageId" element={<MessageDetails/>}/>*/}
-                    </Route>
+                            {/*<Route path="/message-details/:messageId" element={<MessageDetails/>}/>*/}
+                        </Route>
 
-                </Route>
-            </Route>
-
-            <Route element={<RequireDoctorAuth/>}>
-                <Route element={<DoctorLayout/>}>
-                    <Route path="doctor" element={<DoctorPage/>}/>
-                    <Route path="doctors" element={<DoctorList/>}/>
-                    <Route path="doctor-messages" element={<DoctorMessage/>}/>
-                    {/*<Route path="messages-box" element={<MessagesBox/>}/>*/}
-                    <Route path="/doctor-info/:id" element={<DoctorInfo/>}/>
-                    <Route element={<MessagesBoxLayout/>}>
-                        <Route path="messages-sent" element={<MessagesSent/>}/>
-                        <Route path="messages-in" element={<MessagesIn/>}/>
-                        <Route path="/message-details/:messageId" element={<MessageDetails/>}/>
                     </Route>
                 </Route>
-            </Route>
 
-            <Route element={<RequireUserAuth/>}>
-                <Route element={<UserLayout/>}>
-                    <Route path="user" element={<UserPage/>}/>
-                    <Route path="services" element={<UserServices/>}/>
-                    <Route path="organizations-home" element={<OrganizationsHome/>}/>
-                    <Route path="/organization-info/:id" element={<OrganizationInfo/>}/>
+                <Route element={<RequireDoctorAuth/>}>
+                    <Route element={<DoctorLayout/>}>
+                        <Route path="doctor" element={<DoctorPage/>}/>
+                        <Route path="doctors" element={<DoctorList/>}/>
+                        <Route path="doctor-messages" element={<DoctorMessage/>}/>
+                        {/*<Route path="messages-box" element={<MessagesBox/>}/>*/}
+                        <Route path="/doctor-info/:id" element={<DoctorInfo/>}/>
+                        <Route element={<MessagesBoxLayout/>}>
+                            <Route path="messages-sent" element={<MessagesSent/>}/>
+                            <Route path="messages-in" element={<MessagesIn/>}/>
+                            <Route path="/message-details/:messageId" element={<MessageDetails/>}/>
+                        </Route>
+                    </Route>
+                </Route>
 
-
+                <Route element={<RequireUserAuth/>}>
+                    <Route element={<UserLayout/>}>
+                        <Route path="user" element={<UserPage/>}/>
+                        <Route path="services" element={<UserServices/>}/>
+                        <Route path="organizations-home" element={<OrganizationsHome/>}/>
+                        <Route path="/organization-info/:id" element={<OrganizationInfo/>}/>
+                    </Route>
                 </Route>
             </Route>
         </Routes>

@@ -1,24 +1,69 @@
+import {useEffect, useState} from "react";
 import {useSelector} from 'react-redux';
-import {Link} from 'react-router-dom'
-import {selectCurrentToken, selectCurrentUser} from "../features/auth/authSlice";
-
-
+import {Link, useNavigate} from 'react-router-dom'
+import useAuth from '../hooks/useAuth';
+import {selectCurrentUserState} from "../features/userAsSlice";
 import {getCurrentUser} from "../features/currentUserSlice";
+import Logo from '../assets/images/logo-transparent.webp';
+
 
 const Home = () => {
-    const currentUser = useSelector(getCurrentUser)
+    const navigate = useNavigate();
+
+    const {auth} = useAuth();
+    const {userState} = useSelector(selectCurrentUserState);
+    const currentUser = useSelector(getCurrentUser);
+    console.log(auth?.lastName)
     // console.log(currentUser.currentUser)
+    const [name, setName] = useState()
+
+    useEffect(() => {
+        console.log(userState)
+        console.log(Object.keys(auth).length);
+        console.log(`/${userState}`);
+        if (userState === 'user') {
+            setName(auth?.name);
+        } else if (userState === 'doctor') {
+            setName(auth?.firstName + " " + auth?.lastName);
+        } else if (userState === 'organization') {
+            setName(auth?.name);
+        }
+        // console.log(name)
+    }, []);
 
     return (
-        <section className="welcome">
-            <div className="text  mx-auto w-8/12 text-center">
+        <section className="home w-full mx-auto">
+            <div className="w-8/12 text  mx-auto mt-12 text-center ">
+                <div className="mb-6"><img className="mx-auto" src={Logo} alt="logo"/></div>
+                {Object.keys(auth).length !== 0
+                    ? <div className=" flex flex-col justify-center items-center">
+                        <h1 className="mb-3">Welcome <span className="text-lg text-stone-600 font-bold">{name}</span>
+                        </h1>
+                        <span>
+                            Go to your
+                            <Link to={`/${userState}`}
+                                  className="text-lg text-violet-700 font-semibold underline uppercase mx-3"
+                            >
+                                {userState}
+                            </Link>
+                             page
+                        </span>
 
-                <h1>Welcome {currentUser?.currentUser?.name.toUpperCase()}</h1>
+                    </div>
+                    : <>
+                        <h1 className=" mb-5text-stone-600 font-bold">Welcome In IHTC Comunity</h1>
+                        <div>
+                            <Link to="/login"
+                                  className="inline w-8/12 my-6 mx-auto text-blue-700
+                              font-semibold underline block">
+                                Enter
+                            </Link>
+                        </div>
+                    </>
+                }
 
             </div>
 
-            <Link to="/welcome" className=" w-8/12 my-6 mx-auto underline text-blue-700 block">
-                Welcome</Link>
 
         </section>
     )

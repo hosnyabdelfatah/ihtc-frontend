@@ -9,6 +9,7 @@ import {Link} from "react-router-dom";
 function DoctorPage() {
     const {auth} = useAuth();
     const doctor = {...auth};
+    console.log(doctor)
 
     const [loading, setLoading] = useState(false)
     const [messageInCount, setMessageInCount] = useState(0);
@@ -35,8 +36,9 @@ function DoctorPage() {
 
 
     useEffect(() => {
-
-        getMessageOut();
+        if (!auth.token) {
+            getMessageOut();
+        }
     }, []);
 
     return (

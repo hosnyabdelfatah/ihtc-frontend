@@ -7,6 +7,7 @@ import userStateSlice from '../features/userAsSlice';
 import {statusApi} from "../app/apis/statusApi";
 import {apiSlice} from "../app/apiSlice";
 import doctorSlice from "../features/doctorSlice";
+import organizationSlice from "../features/organizationLoginSlice";
 import userSlice from "../features/userSlice";
 import authReducer from "../features/auth/authSlice";
 import currentUserReducer, {setCurrentUser} from '../features/currentUserSlice';
@@ -19,7 +20,9 @@ import {doctorSpecialtyApi} from "../app/apis/doctorSpecialtyApi";
 import {countryApi} from "../app/apis/countryApi";
 
 const rootReducer = combineReducers({
+    user: userSlice,
     doctor: doctorSlice,
+    organization: organizationSlice,
 });
 
 const persistConfig = {

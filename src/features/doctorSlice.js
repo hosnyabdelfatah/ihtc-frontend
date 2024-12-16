@@ -14,7 +14,7 @@ export const loginDoctor = createAsyncThunk(
             },
         );
 
-        const response = await request.data.doctor;
+        const response = await request.data.data;
         return response;
     }
 );

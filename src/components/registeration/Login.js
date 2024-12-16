@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {useSelector, useDispatch} from "react-redux";
+import {loginOrganization} from "../../features/organizationLoginSlice";
 import {loginDoctor} from "../../features/doctorSlice";
 import {loginUser} from "../../features/userSlice";
 
@@ -20,15 +21,15 @@ const setCookie = (name, value, days) => {
 };
 
 
-const Login = ({}) => {
+const Login = () => {
     const {auth, setAuth} = useAuth();
-
+    console.log(auth)
     const [login, {isLoading, isSuccess, isError, data, error}] = useOrganizationLoginMutation()
     const dispatch = useDispatch();
     const navigate = useNavigate()
     const {userState} = useSelector(selectCurrentUserState)
     // const data = useSelector(selectCurrentError);
-    // console.log(userState)
+    console.log(userState)
 
     const signUp = userState === 'organization'
         ? 'organization-signup'
@@ -84,27 +85,27 @@ const Login = ({}) => {
         try {
             setLogging(true);
             if (userState === 'organization') {
-                const data = await login({user, password}).unwrap()
-                // console.log(data)
-                const userData = data?.organization
-                // console.log(userData)
-                const {email, name, tokens} = userData
-                const token = data?.token
-                dispatch(setCredentials({...userData, token}))
 
-                setAuth({...userData})
-                // console.log(auth)
-                dispatch(setCurrentUser({...userData}))
-                if (error) {
-                    dispatch(setError(error))
-                    // console.log(error)
-                    setLogging(false)
-                }
-
-                setUser('')
-                setPassword('')
-                // console.log(error)
-                navigate('/organization')
+                dispatch(loginOrganization({user, password})).then((res) => {
+                    // console.log(res.payload)
+                    // console.log(res.error)
+                    if (res.payload !== undefined) {
+                        setAuth({...res.payload})
+                        setUser("");
+                        setPassword("");
+                        navigate("/organization");
+                    } else {
+                        // console.log(res?.error)
+                        if (res?.error?.message === "Request failed with status code 401" || res?.error?.message === "Request failed with status code 400") {
+                            setLoginError("Access Denied! Invalid username or password");
+                            setErrMsg("Access Denied! Invalid username or password")
+                        } else {
+                            setLogging(false)
+                            setErrMsg(res?.error?.message + " please try again later!")
+                            setLoginError(res?.error?.message);
+                        }
+                    }
+                });
             } else if (userState === 'doctor') {
                 dispatch(loginDoctor({user, password})).then((res) => {
                     // console.log(res.payload)
@@ -166,6 +167,7 @@ const Login = ({}) => {
             }
             errRef.current.focus()
         }
+        console.log(logging)
     }
 
     const handleUserInput = (e) => setUser(e.target.value)
@@ -187,6 +189,7 @@ const Login = ({}) => {
     useEffect(() => {
         setLogging(false)
     }, [userState])
+
 
     return (
         <div className="login mt-12 sm:w-[60%] md:w-[40%] sm:mt-4  mx-auto rounded">
@@ -247,7 +250,8 @@ const Login = ({}) => {
                     <div className="user flex flex-row items-baseline p-3 justify-between">
                         <label htmlFor="user"
                                className="w-2/12 text-left">{userState === "doctor" ? "User" : " Email"} </label>
-                        <input type="text" id="user" name="email" value={user} disabled={logging && !error}
+                        <input type="text" id="user" name="email" value={user}
+
                                ref={userRef} required={true}
                                placeholder={`${userState === "doctor" ? "email or unique Id" : "email"}`}
                                onChange={handleUserInput}
@@ -257,7 +261,7 @@ const Login = ({}) => {
                     <div className="password  flex flex-row justify-between p-3  items-baseline ">
                         <label htmlFor="password" className="w-2/12 text-left">Password</label>
                         <input type="password" id="password" name="password" required={true}
-                               disabled={logging && !error}
+
                                value={password}
                                onChange={handlePasswordInput}
                                className="block w-8/12 px-3 py-2 border border-stone-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border focus:border-blue-400
