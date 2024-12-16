@@ -8,18 +8,20 @@ import Spinner from "../Spinner";
 const PersistLogin = () => {
     const effectRan = useRef(false);
 
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const refresh = useRefreshToken();
     const {auth} = useAuth();
 
     useEffect(() => {
         if (effectRan.current === true) {
             const verifyRefreshToken = async () => {
+                setIsLoading(true)
+
                 try {
                     await refresh();
                 } catch (err) {
                     console.log(err);
-                    // setIsLoading(false);
+                    setIsLoading(false);
                 } finally {
                     setIsLoading(false);
                 }
