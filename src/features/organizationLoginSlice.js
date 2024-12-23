@@ -10,6 +10,7 @@ export const loginOrganization = createAsyncThunk(
             userCredintial,
             {
                 withCredentials: true,
+                withXSRFToken: true,
                 headers: {'Content-Type': 'application/json'}
             },
         );

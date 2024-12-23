@@ -1,6 +1,7 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import BASE_URL from "../app/apis/baseUrl";
 import axios from "axios";
+import useAuth from "../hooks/useAuth";
 
 export const loginDoctor = createAsyncThunk(
     "doctor/loginDoctor",
@@ -10,11 +11,15 @@ export const loginDoctor = createAsyncThunk(
             userCredintial,
             {
                 withCredentials: true,
+                withXSRFToken: true,
                 headers: {'Content-Type': 'application/json'}
             },
         );
-
+        console.log(request)
         const response = await request.data.data;
+        console.log(response)
+
+
         return response;
     }
 );

@@ -2,7 +2,7 @@ import {useFetchDoctorSpecialtiesQuery} from "../../store";
 import React, {useEffect, useState} from "react";
 import Skeleton from "../Skeleton";
 
-const DoctorSpecialties = ({sendParent, clearInput}) => {
+const DoctorSpecialties = ({sendParent, clearInput, clearSpecialty}) => {
     // const [inputValue, setInputValue] = useState('');
     const {data, error, isFetching} = useFetchDoctorSpecialtiesQuery();
     const [search, setSearch] = useState('');
@@ -12,6 +12,10 @@ const DoctorSpecialties = ({sendParent, clearInput}) => {
         if (clearInput)
             setSearch("");
     }, [clearInput]);
+
+    useEffect(() => {
+        sendParent("");
+    }, [clearSpecialty])
 
     let content
     if (isFetching) {

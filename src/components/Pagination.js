@@ -20,7 +20,7 @@ const Pagination = ({currentPage, totalPages, onPageChange}) => {
     }
 
     return (
-        <div className="pagination">
+        <div className="pagination py-1">
             {currentPage > 1 && (
                 <button onClick={() => onPageChange(1)}>&laquo; First</button>
             )}

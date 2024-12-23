@@ -5,7 +5,7 @@ import {Link} from "react-router-dom";
 function UserPage() {
     const {auth} = useAuth();
     const user = {...auth};
-
+    console.log(user)
     return (
         <div className="w-[80%]  mx-auto mb-6">
 

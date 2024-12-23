@@ -12,22 +12,26 @@ import {HiChevronDown} from "react-icons/hi";
 import {IoSearchSharp} from "react-icons/io5";
 
 const Campaigns = () => {
-    const [doctors, setDoctors] = useState({});
+    const [doctors, setDoctors] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [doctorSpecialty, setDoctorSpecialty] = useState('');
     const [countries, setCountries] = useState([]);
     const [selectedDoctorSpecialty, setSelectedDoctorSpecialty] = useState('');
+    const [selectedDoctorSpecialtyResult, setSelectedDoctorSpecialtyResult] = useState('');
     const [selectedCountry, setSelectedCountry] = useState('');
     const [countriesSelectShow, setCountriesSelectShow] = useState(false);
     const [countriesClicked, setCountriesClicked] = useState(false);
     const [selectedCountryText, setSelectedCountryText] = useState('');
+    const [selectedCountryTextResult, setSelectedCountryTextResult] = useState('');
+    const [searchDoctorsResultCount, setSearchDoctorsResultCount] = useState(0)
     const [searchDoctorsResult, setSearchDoctorsResult] = useState([])
     const [allSelectedDoctors, setAllSelectedDoctors] = useState([])
     const [checkedItems, setCheckedItems] = useState({});
     const [isSelectAll, setIsSelectAll] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [clearInput, setClearInput] = useState(false);
+    const [clearSpecialty, setClearSpecialty] = useState(false);
 
     /*Pagination const*/
     const [currentPage, setCurrentPage] = useState(1);
@@ -42,6 +46,10 @@ const Campaigns = () => {
         setClearInput(true)
         setTimeout(() => setClearInput(false), 0);
     }
+    const handleClearSpecialty = () => {
+        setClearSpecialty(true)
+        setTimeout(() => setClearSpecialty(false), 0);
+    }
 
     let countryContent;
     useEffect(() => {
@@ -54,8 +62,16 @@ const Campaigns = () => {
         (async () => await getCountries())();
     }, []);
 
-    const handleSearchDoctors = () => {
+    const handleClearConditions = () => {
+        setSelectedCountry('')
+        setSelectedDoctorSpecialtyResult('')
+        setSelectedCountryTextResult('')
         setSelectedCountryText('');
+        handleClearSpecialty()
+    }
+
+    const handleSearchDoctors = () => {
+        handleSelectedDoctorSpecialtyResult();
         handleClearInput();
     }
 
@@ -74,6 +90,10 @@ const Campaigns = () => {
         }
     }
 
+    const handleSelectedDoctorSpecialtyResult = () => {
+        setSelectedDoctorSpecialtyResult(selectedDoctorSpecialty.title)
+    }
+
     const handleSelectAll = () => {
         const newCheckedItems = {};
         const doctorsArray = searchDoctorsResult?.length > 0 ? searchDoctorsResult : doctors;
@@ -84,6 +104,7 @@ const Campaigns = () => {
         }
         setCheckedItems(newCheckedItems);
         setIsSelectAll(!isSelectAll);
+        console.log(Object.keys(checkedItems).length)
     };
 
     const handleSelectAllDoctors = () => {
@@ -102,6 +123,7 @@ const Campaigns = () => {
     const handleSelectCountry = (id) => {
         setSelectedCountry(id)
         setSelectedCountryText(countries.filter(country => country._id === id)[0].title)
+        setSelectedCountryTextResult(countries.filter(country => country._id === id)[0].title)
     }
 
     const handleCountriesSelectShow = () => {
@@ -116,6 +138,7 @@ const Campaigns = () => {
     const handleChildValue = (value) => {
         // console.log(doctorSpecialty)
         setDoctorSpecialty(value)
+        setSelectedDoctorSpecialtyResult(value.title)
         // console.log(doctorSpecialty._id)
     }
 
@@ -150,7 +173,6 @@ const Campaigns = () => {
             </li>
     })
 
-
     useEffect(() => {
         setSelectedDoctorSpecialty(doctorSpecialty)
     }, [doctorSpecialty]);
@@ -158,17 +180,19 @@ const Campaigns = () => {
 
     const getAllDoctors = async (page) => {
         // console.log(selectedCountry, selectedDoctorSpecialty)
-        setSelectedCountry('');
-        setSelectedDoctorSpecialty('')
+        // setSelectedCountry('');
+        // setSelectedDoctorSpecialty('')
         try {
             setLoading(true);
             const response = await axios.get(`${BASE_URL}/doctors?`, {
                 params: {page, limit: itemsPerPage, country: selectedCountry, specialty: selectedDoctorSpecialty._id}
             });
+
             const result = response?.data.data;
 
             setDoctors(result);
-            setTotalPages(response?.data.pages);
+            setSearchDoctorsResultCount(response?.data?.countResultDocuments);
+            setTotalPages(response?.data?.totalCurrentSearchDoctorsPages);
             // console.log(totalPages)
             // console.log(result)
         } catch (error) {
@@ -189,8 +213,8 @@ const Campaigns = () => {
 
             <div
                 className="search-bar  w-full min-h-8 flex flex-row justify-between items-center ">
-                <div className="selected-country_container relative w-[30%]
-                p-2 outline-none active:outline-none flex flex-row items-center
+                <div className="selected-country_container relative w-[20%]
+                 outline-none active:outline-none flex flex-row items-center
                 ">
                     <span className="relative mr-3"
                           onClick={() => {
@@ -212,9 +236,9 @@ const Campaigns = () => {
                      />
                     </span>
 
-                    <div className="search w-[3%] cursor-pointer bg-red ">
-                        <span className="search-icon text-xl  ">
-                            <IoSearchSharp className="text-red-600 block border-2"
+                    <div className="search w-[3%] cursor-pointer bg-red">
+                        <span className="search-icon  text-2xl  ">
+                            <IoSearchSharp className="text-blue-700 block"
                                            onClick={() => {
                                                handleSearchDoctors()
                                                getAllDoctors()
@@ -232,17 +256,33 @@ const Campaigns = () => {
                     </ul>
 
                 </div>
+                <div className="clear-conditions mr-3 text-sm text-red-700 font-bold cursor-pointer"
+                     onClick={handleClearConditions}>
+                    CLear Conditions
+                </div>
                 <div className="search-data flex flex-row justify-between   border-2 border-stone-100 px-2 w-[69%]">
+
+                    <div className="country-selected w-[20%] ">
+                        <span>Country</span>
+                        <span className="text-indigo-500 font-semibold ml-2">{selectedCountryTextResult}</span>
+                    </div>
+                    <div className="specialty-selected w-6/12 ">
+                        <span>Specialty</span>
+                        <span
+                            className="text-indigo-500 font-semibold mr-2"> {selectedDoctorSpecialtyResult}
+                            </span>
+                    </div>
                     <div>
                         <span
                             className="text-indigo-500 font-semibold mr-2">
                             {Object.keys(allSelectedDoctors).length}
                         </span>
-                        <span>doctors selected</span>
+                        <span>selected</span>
                     </div>
                     <div>
-                        <span>result</span>
-                        <span className="text-indigo-500 font-semibold"> {doctors.length} </span>doctors
+                        result
+                        <span className="text-indigo-500 h-full font-semibold mx-1"> {searchDoctorsResultCount}
+                                     </span>
                     </div>
                 </div>
             </div>
@@ -250,18 +290,22 @@ const Campaigns = () => {
             <div className="w-full max-h-[60%] flex flex-row justify-between items-stretch mt-4 v  overflow-y-hidden">
 
                 <div className="specialty-bar overflow-y-scroll  w-4/12">
-                    {/*<input type="text"*/}
-                    {/*    // onChange={(e) => handleSearch(e)}*/}
-                    {/*       className="border w-full rounded mb-2 text-base  outline-none focus:outline-none p-1"*/}
-                    {/*    // value={search}*/}
-                    {/*/>*/}
-                    <DoctorSpecialties sendParent={handleChildValue} clearInput={clearInput}/>
+                    <DoctorSpecialties
+                        sendParent={handleChildValue}
+                        clearInput={clearInput}
+                        clearSpecialty={clearSpecialty}
+                    />
                 </div>
 
                 <div className="flex flex-col w-10/12 ml-2 overflow-y-scroll ">
                     <div className="data-show flex flex-row flex-wrap justify-center  ml-3 pt-2 mr-2">
                         {/*Pagination*/}
-                        <table className="w-full">
+                        {doctors?.length > 0 &&
+                            <Pagination currentPage={currentPage} totalPages={totalPages}
+                                        onPageChange={setCurrentPage}
+                            />
+                        }
+                        <table className="w-full mt-5">
                             <tbody className="w-full">
                             <tr className="w-full flex justify-start items-baseline">
                                 <td className="mr-3">
@@ -285,6 +329,7 @@ const Campaigns = () => {
                             </tr>
                             {loading && <Skeleton className="h-8 w-30" times={20}/>}
                             {error && <div>Error Loading</div>}
+
                             {
                                 doctors.length > 0 ? doctors?.map((doctor, index) => {
                                     return <tr key={doctor._id}
@@ -319,8 +364,11 @@ const Campaigns = () => {
 
                             </tbody>
                         </table>
-                        {doctors?.length > 0 && <Pagination currentPage={currentPage} totalPages={totalPages}
-                                                            onPageChange={setCurrentPage}/>}
+                        {doctors?.length > 0 &&
+                            <Pagination currentPage={currentPage} totalPages={totalPages}
+                                        onPageChange={setCurrentPage}
+                            />
+                        }
 
                         <div/>
                         {/*End Pagination*/}

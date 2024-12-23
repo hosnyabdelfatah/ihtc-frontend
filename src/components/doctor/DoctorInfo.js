@@ -7,12 +7,15 @@ import Skeleton from "../Skeleton";
 function DoctorInfo() {
     const {id} = useParams();
     const [doctor, setDoctor] = useState();
-
+    // console.log(id)
 
     useEffect(() => {
         const getDoctorInfo = async () => {
-            const response = await axios.get(`${BASE_URL}/doctors/${id}`);
+            const response = await axios.get(`${BASE_URL}/doctors/doctor/${id}`, {doctorId: id}, {
+                withCredentials: true
+            });
             setDoctor(response.data.data);
+            console.log(response.data.data)
         }
         getDoctorInfo();
     }, []);
@@ -33,19 +36,37 @@ function DoctorInfo() {
                         <Skeleton className="w-full h-full" times={1}/>}
                     <table>
                         <tbody>
-                        {doctor?.profileImage ? <tr>
-                            <td className="w-[30px]  pb-4 pr-3">
-                                <span className="border rounded-md px-1 bg-lime-200 font-semibold">Specialty</span>
-                            </td>
-                            <td className="pb-4"><span className="font-semibold">{doctor?.specialty.trim()}</span>
-                            </td>
-                        </tr> : <Skeleton className="w-full h-full" times={1}/>}
+
+                        <tr>{doctor?.profileImage ?
+                            <>
+                                <td className="w-[30px]  pb-4 pr-3">
+                                    <span className="border rounded-md px-1 bg-lime-200 font-semibold">Specialty</span>
+                                </td>
+                                <td className="pb-4"><span
+                                    className="font-semibold">{doctor?.specialty?.title}</span>
+                                </td>
+                            </>
+                            : <Skeleton className="w-full h-full" times={1}/>}
+                        </tr>
                         <tr>
                             {doctor?.profileImage ? <>
-                                <td><span className="border rounded-md px-1 bg-lime-200 font-semibold">Country</span>
+                                <td className="pb-4"><span
+                                    className="border rounded-md px-1 bg-lime-200 font-semibold">Country</span>
                                 </td>
-                                <td><span className="font-semibold">{doctor?.country}</span></td>
+                                <td className="pb-4"><span className="font-semibold">{doctor?.country?.title}</span>
+                                </td>
                             </> : <Skeleton className="w-full h-full" times={1}/>}
+                        </tr>
+                        <tr>{doctor?.profileImage ?
+                            <>
+                                <td className="w-[30px]  pb-4 pr-3">
+                                    <span className="border rounded-md px-1 bg-lime-200 font-semibold">Language</span>
+                                </td>
+                                <td className="pb-4"><span
+                                    className="font-semibold">{doctor?.language?.title}</span>
+                                </td>
+                            </>
+                            : <Skeleton className="w-full h-full" times={1}/>}
                         </tr>
                         </tbody>
                     </table>

@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useRef} from 'react';
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import axios from 'axios';
 import BASE_URL from '../../app/apis/baseUrl';
 import {selectCurrentUserState} from "../../features/userAsSlice";
@@ -149,6 +149,11 @@ function UpdatePassword() {
                         <FaRegEyeSlash/>}
                     </span>
                 </div>
+                <Link to={`/${userState}`}
+                      className="text-violet-700 font-semibold underline"
+                >
+                    {userState.toString().toUpperCase()} page
+                </Link>
                 <button
                     className={`${userState === "user" ? "bg-blue-400" : userState === "doctor" ? "bg-lime-400" : "bg-yellow-400"} block mt-12 mx-auto py-2 px-10 text-xl text-blue-900 border-2 font-semibold rounded-lg border`}>
                     {errMsg === '' && sending ? <Spinner text="Sending"/> : "Send"}

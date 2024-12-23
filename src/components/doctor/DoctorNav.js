@@ -18,8 +18,19 @@ function DoctorNav() {
     const doctorData = {...auth}
     const dispatch = useDispatch();
 
+    const [errMsg, setErrMsg] = useState('');
 
-    const handleSignout = () => {
+    const handleLogout = async () => {
+        try {
+            const response = await axios.get(`${BASE_URL}/doctors/logout`, {
+                headers: {'Content-type': 'application/json'},
+                withCredentials: true,
+            });
+            console.log(response)
+        } catch (err) {
+            console.log(err);
+
+        }
         setAuth({});
         dispatch(clearDoctor())
     }
@@ -61,7 +72,7 @@ function DoctorNav() {
                 </Link>
                 <div
                     className="logout min-w-3/12 cursor-pointer mr-1 pl-2 py-1 rounded-[12px] flex flex-row justify-center items-end hover:bg-red-100"
-                    onClick={handleSignout}
+                    onClick={handleLogout}
                 >
 
                     <span> {doctorData?.lastName ? "Logout" : "Login"}</span>

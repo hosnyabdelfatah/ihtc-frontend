@@ -50,17 +50,19 @@ const useRefreshToken = () => {
                 withCredentials: true,
                 withXSRFToken: true
             });
-            // console.log(response)
+            console.log(response)
+            if (response?.data || Object.keys(response?.data?.data) > 0) {
+                const result = await response?.data?.data;
+                setAuth({...result});
+                dispatch(setCurrentUser({...result}));
+                return {...result};
+            } else {
+                return null;
+            }
 
-            const result = await response?.data?.data;
-            console.log(result)
-
-            setAuth({...result});
-            dispatch(setCurrentUser({...result}));
-            return {...result};
         } catch (err) {
             console.log(err)
-            console.log(err.response.data.message)
+            // console.log(err.response.data.message)
         }
     };
 

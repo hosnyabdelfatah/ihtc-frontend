@@ -13,14 +13,10 @@ const Home = () => {
     const {auth} = useAuth();
     const {userState} = useSelector(selectCurrentUserState);
     const currentUser = useSelector(getCurrentUser);
-    console.log(auth?.lastName)
-    // console.log(currentUser.currentUser)
+
     const [name, setName] = useState()
 
     useEffect(() => {
-        console.log(userState)
-        console.log(Object.keys(auth).length);
-        console.log(`/${userState}`);
         if (userState === 'user') {
             setName(auth?.name);
         } else if (userState === 'doctor') {
@@ -33,13 +29,16 @@ const Home = () => {
 
     return (
         <section className="home w-full mx-auto">
-            <div className="w-8/12 text  mx-auto mt-12 text-center ">
+            <div className="w-8/12 text-stone-400  mx-auto mt-12 text-center ">
                 <div className="mb-6"><img className="mx-auto" src={Logo} alt="logo"/></div>
                 {Object.keys(auth).length !== 0
                     ? <div className=" flex flex-col justify-center items-center">
-                        <h1 className="mb-3">Welcome <span className="text-lg text-stone-600 font-bold">{name}</span>
+                        <h1 className="mb-3 font-semibold">Welcome <span
+                            className="text-2xl text-stone-500 font-bold">
+                            {String(name).toUpperCase()}
+                        </span>
                         </h1>
-                        <span>
+                        <span className="font-semibold">
                             Go to your
                             <Link to={`/${userState}`}
                                   className="text-lg text-violet-700 font-semibold underline uppercase mx-3"

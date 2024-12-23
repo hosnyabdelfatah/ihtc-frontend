@@ -47,6 +47,7 @@ import OrganizationMessagesIn from "./organization/OrganizationMessagesIn";
 import CampaignDetails from "./organization/CampaignDetails";
 import BASE_URL from "../app/apis/baseUrl";
 import useAuth from "../hooks/useAuth";
+import UpdateDoctor from "./doctor/UpdateDoctor";
 
 // import InsertDoctors from "./admins/dashboard/InsertDoctors";
 
@@ -138,6 +139,7 @@ function App() {
                         <Route path="doctor-messages" element={<DoctorMessage/>}/>
                         {/*<Route path="messages-box" element={<MessagesBox/>}/>*/}
                         <Route path="/doctor-info/:id" element={<DoctorInfo/>}/>
+                        <Route path="update-doctor" element={<UpdateDoctor/>}/>
                         <Route element={<MessagesBoxLayout/>}>
                             <Route path="messages-sent" element={<MessagesSent/>}/>
                             <Route path="messages-in" element={<MessagesIn/>}/>

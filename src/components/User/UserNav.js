@@ -30,9 +30,9 @@ function UserNav() {
                 <Link to="user"
                       className="flex flx-row justify-center items-center">
                     <img className="rounded-full mr-3" src={userData?.profileImage}
-                         alt={userData.firstName + " " + userData.lastName}
+                         alt={userData?.firstName + " " + userData?.lastName}
                     />
-                    <span>{userData.firstName + " " + userData.lastName}</span>
+                    <span>{userData?.firstName + " " + userData?.lastName}</span>
                 </Link>
             </div>
             <div
@@ -58,7 +58,7 @@ function UserNav() {
                     onClick={handleSignout}
                 >
 
-                    <span> {userData?.name ? "Logout" : "Login"}</span>
+                    <span> {userData?.firstName ? "Logout" : "Login"}</span>
                     <Link to={userData?.name ? "" : "login"}
                           className="ml-2 text-red-600  text-2xl"
                     >

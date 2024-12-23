@@ -30,7 +30,6 @@ const Nav = () => {
     return (
         <div className="flex flex-row justify-center items-center">
             <img src={Logo} alt="logo"/>
-            <p>Welcome {auth.token && name} in IHTC comunity</p>
         </div>
     );
 };

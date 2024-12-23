@@ -23,13 +23,13 @@ const setCookie = (name, value, days) => {
 
 const Login = () => {
     const {auth, setAuth} = useAuth();
-    console.log(auth)
+    // console.log(auth)
     const [login, {isLoading, isSuccess, isError, data, error}] = useOrganizationLoginMutation()
     const dispatch = useDispatch();
     const navigate = useNavigate()
     const {userState} = useSelector(selectCurrentUserState)
     // const data = useSelector(selectCurrentError);
-    console.log(userState)
+    // console.log(userState)
 
     const signUp = userState === 'organization'
         ? 'organization-signup'
@@ -85,12 +85,13 @@ const Login = () => {
         try {
             setLogging(true);
             if (userState === 'organization') {
-
                 dispatch(loginOrganization({user, password})).then((res) => {
+                    // console.log(res)
                     // console.log(res.payload)
                     // console.log(res.error)
                     if (res.payload !== undefined) {
                         setAuth({...res.payload})
+                        // console.log(auth)
                         setUser("");
                         setPassword("");
                         navigate("/organization");
@@ -108,7 +109,7 @@ const Login = () => {
                 });
             } else if (userState === 'doctor') {
                 dispatch(loginDoctor({user, password})).then((res) => {
-                    // console.log(res.payload)
+                    console.log(res.payload)
                     // console.log(res.error)
                     if (res.payload !== undefined) {
                         setAuth({...res.payload})
