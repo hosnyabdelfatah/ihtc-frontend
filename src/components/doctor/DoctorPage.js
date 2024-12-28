@@ -52,9 +52,7 @@ function DoctorPage() {
 
     useEffect(() => {
         getMessageOut();
-        if (auth?.token) {
-            getDoctorData();
-        }
+        getDoctorData();
     }, []);
 
 
