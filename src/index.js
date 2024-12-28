@@ -8,7 +8,9 @@ import {store} from './store';
 import App from './components/App';
 import reportWebVitals from './reportWebVitals';
 import {AuthProvider} from "./context/AuthProvider";
+import {AlertProvider} from "./context/AlertProvider";
 import {disableReactDevTools} from '@fvilers/disable-react-devtools';
+import Alert from "./components/Alert";
 
 
 if (process.env.NODE_ENV === 'production') disableReactDevTools()
@@ -19,13 +21,16 @@ root.render(
     <React.StrictMode>
         <Provider store={store}>
             <QueryClientProvider client={queryClient}>
-                <AuthProvider>
-                    <BrowserRouter>
-                        <Routes>
-                            <Route path={"/*"} element={<App/>}/>
-                        </Routes>
-                    </BrowserRouter>
-                </AuthProvider>
+                <AlertProvider>
+                    <AuthProvider>
+                        <BrowserRouter>
+                            <Routes>
+                                <Route path={"/*"} element={<App/>}/>
+                            </Routes>
+                            <Alert/>
+                        </BrowserRouter>
+                    </AuthProvider>
+                </AlertProvider>
             </QueryClientProvider>
         </Provider>
     </React.StrictMode>

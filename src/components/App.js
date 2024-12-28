@@ -48,6 +48,11 @@ import CampaignDetails from "./organization/CampaignDetails";
 import BASE_URL from "../app/apis/baseUrl";
 import useAuth from "../hooks/useAuth";
 import UpdateDoctor from "./doctor/UpdateDoctor";
+import UpdateOrganization from "./organization/UpdateOrganization";
+import UpdateBannerLogo from "./organization/UpdateBannerLogo";
+import UpdateDoctorImage from "./doctor/UpdateDoctorImage";
+import UpdateUserData from "./User/UpdateUserData";
+import UpdateUserImage from "./User/UpdateUserImage";
 
 // import InsertDoctors from "./admins/dashboard/InsertDoctors";
 
@@ -112,6 +117,8 @@ function App() {
                     <Route element={<OrganizationLayout/>}>
                         <Route path="community" element={<OrganizationsList/>}/>
                         <Route path="organization" element={<OrganizationPage/>}/>
+                        <Route path="/update-organization" element={<UpdateOrganization/>}/>
+                        <Route path="/update-banner-logo" element={<UpdateBannerLogo/>}/>
                         <Route path="card-details/:id" element={<OrganizationCardDetails/>}
                         />
                         <Route path="campaign" element={<Campaigns/>}/>
@@ -140,6 +147,7 @@ function App() {
                         {/*<Route path="messages-box" element={<MessagesBox/>}/>*/}
                         <Route path="/doctor-info/:id" element={<DoctorInfo/>}/>
                         <Route path="update-doctor" element={<UpdateDoctor/>}/>
+                        <Route path="/update-profile-image" element={<UpdateDoctorImage/>}/>
                         <Route element={<MessagesBoxLayout/>}>
                             <Route path="messages-sent" element={<MessagesSent/>}/>
                             <Route path="messages-in" element={<MessagesIn/>}/>
@@ -154,6 +162,8 @@ function App() {
                         <Route path="services" element={<UserServices/>}/>
                         <Route path="organizations-home" element={<OrganizationsHome/>}/>
                         <Route path="/organization-info/:id" element={<OrganizationInfo/>}/>
+                        <Route path="/update-user-data" element={<UpdateUserData/>}/>
+                        <Route path="/update-user-image" element={<UpdateUserImage/>}/>
                     </Route>
                 </Route>
             </Route>

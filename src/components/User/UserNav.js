@@ -26,13 +26,12 @@ function UserNav() {
             className="user-nav border-b border-b-[rgb(30, 144, 255)]   drop-shadow-md flex flex-row justify-between items-center py-1 pr-4 mb-2">
             <div className="logo w-2/12"><img src={Logo} alt="logo"/></div>
             <div
-                className="title flex justify-center w-[100px]  drop-shadow-md w-2/12">
+                className="title w-3/12  flex justify-center drop-shadow-md">
                 <Link to="user"
                       className="flex flx-row justify-center items-center">
-                    <img className="rounded-full mr-3" src={userData?.profileImage}
-                         alt={userData?.firstName + " " + userData?.lastName}
-                    />
-                    <span>{userData?.firstName + " " + userData?.lastName}</span>
+
+                    <span
+                        className="text-3xl text-violet-900 font-mono font-bold ">{userData?.firstName + " " + userData?.lastName}</span>
                 </Link>
             </div>
             <div

@@ -18,7 +18,7 @@ const Home = () => {
 
     useEffect(() => {
         if (userState === 'user') {
-            setName(auth?.name);
+            setName(auth?.firstName + " " + auth?.lastName);
         } else if (userState === 'doctor') {
             setName(auth?.firstName + " " + auth?.lastName);
         } else if (userState === 'organization') {

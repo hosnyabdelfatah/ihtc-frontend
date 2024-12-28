@@ -7,6 +7,8 @@ import {TbLogout} from "react-icons/tb";
 import {HiOutlineLogin} from "react-icons/hi";
 import {Link} from "react-router-dom";
 import {selectCurrentUser} from "../../features/auth/authSlice";
+import axios from "axios";
+import BASE_URL from "../../app/apis/baseUrl";
 
 // <HiOutlineLogin />
 const OrganizationNav = () => {
@@ -14,7 +16,14 @@ const OrganizationNav = () => {
     const organizationData = organization?.currentUser
 
     const dispatch = useDispatch()
-    const handleSignout = () => {
+    const handleSignout = async () => {
+        try {
+            const response = await axios.get(`${BASE_URL}/organizations/logout`, {
+                withCredentials: true
+            })
+        } catch (err) {
+            console.log(err)
+        }
         dispatch(setCurrentUser({}))
     }
 
@@ -25,8 +34,9 @@ const OrganizationNav = () => {
             <div
                 className="title flex justify-center w-[100px]  drop-shadow-md w-2/12">
                 <Link to="organization"
-                      className="">
-                    <img src={organizationData?.logo} alt={organizationData.name}/>
+                      className="text-3xl text-violet-900  font-bold font-mono ">
+                    {/*<img src={organizationData?.logo} alt={organizationData.name}/>*/}
+                    {organizationData.name.toUpperCase()}
                 </Link>
             </div>
             <div

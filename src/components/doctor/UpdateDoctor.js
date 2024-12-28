@@ -22,6 +22,7 @@ function UpdateDoctor() {
     const [doctorData, setDoctorData] = useState({});
     const [isLoading, setIsLoading] = useState(false);
     const [errMsg, setErrMsg] = useState("");
+    const [doctorId, setDoctorId] = useState("");
     const [fname, setFname] = useState("");
     const [lname, setLname] = useState("");
     const [email, setEmail] = useState("");
@@ -70,6 +71,19 @@ function UpdateDoctor() {
     const handleWorkPlace = (e) => setWorkPlace(e.target.value);
     const handleDescription = (e) => setDescription(e.target.value);
 
+    const circleSpinner = <span className="flex justify-center items-center ">
+        <svg className="mr-3 h-5 w-5 animate-spin text-stone-100"
+             xmlns="http://www.w3.org/2000/svg"
+             fill="none"
+             viewBox="0 0 24 24">
+        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                strokeWidth="4"></circle>
+        <path className="opacity-75" fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+    </svg>
+        {/*<span className="text-sm text-stone-100"> Processing...</span>*/}
+    </span>
+
     if (isFetching) {
         content = <Skeleton className="w-full h-4" times={4}/>
     } else if (error) {
@@ -114,11 +128,12 @@ function UpdateDoctor() {
 
     const getDoctorData = async () => {
         try {
-            const response = await axios.get(`${BASE_URL}/doctors/me`, {
+            const response = await axios.get(`${BASE_URL}/doctors/me/${auth.id}`, {
                 withCredentials: true
             });
             const result = response?.data?.data;
             console.log(result)
+            setDoctorId(result.id);
             setDoctorData(result);
             setFname(result.firstName);
             setLname(result.lastName);
@@ -231,7 +246,7 @@ function UpdateDoctor() {
 
         try {
             setIsLoading(true);
-            const response = await axios.patch(`${BASE_URL}/doctors/updateMe`,
+            const response = await axios.patch(`${BASE_URL}/doctors/updateMe/${doctorId}`,
                 updatedData,
                 {withCredentials: true,}
             );
@@ -485,7 +500,7 @@ function UpdateDoctor() {
                         <div className="mt-6 block w-full flex justify-between rounded-md">
                             <button type="submit" onClick={handleSubmit}
                                     className="w-full flex justify-center py-2 px-4  shadow-sm shadow-lime-400 border border-transparent sm:text-sm font-extrabold rounded-md  text-red-800 border-2 border-stone-400 bg-lime-400 hover:border-indigo-300  transition-all duration-150 ease-in-out">
-                                Update Profile
+                                {isLoading ? circleSpinner : <span>Update</span>}
                             </button>
                         </div>
                     </form>

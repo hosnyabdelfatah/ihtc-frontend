@@ -91,7 +91,7 @@ const Login = () => {
                     // console.log(res.error)
                     if (res.payload !== undefined) {
                         setAuth({...res.payload})
-                        // console.log(auth)
+                        console.log(auth)
                         setUser("");
                         setPassword("");
                         navigate("/organization");

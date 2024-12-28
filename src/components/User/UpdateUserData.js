@@ -2,16 +2,14 @@ import React, {useState, useRef, useEffect} from 'react';
 import {Link, useNavigate} from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import Skeleton from "../Skeleton";
-import {FaRegEyeSlash} from "react-icons/fa";
-import {FaRegEye} from "react-icons/fa";
-import {HiChevronDown} from "react-icons/hi";
-import {useFetchCountriesQuery} from '../../store';
+import {useFetchCountriesQuery} from "../../app/apis/countryApi";
 import axios from "axios";
 import BASE_URL from "../../app/apis/baseUrl";
+import {HiChevronDown} from "react-icons/hi";
 
+function UpdateUserData(props) {
+    const {auth} = useAuth();
 
-const UserSignup = () => {
-    const {setAuth} = useAuth();
     let content;
     let specialtyContent;
 
@@ -21,8 +19,6 @@ const UserSignup = () => {
     const {data, error, isFetching} = useFetchCountriesQuery();
     if (isFetching) {
         content = <Skeleton className="w-full h-4" times={4}/>
-    } else if (error) {
-        content = <div>Data error loading...</div>
     } else {
         content = data.data.map((country) => {
             return <li key={country.id} value={country.id}
@@ -41,16 +37,13 @@ const UserSignup = () => {
         });
     }
 
-
-    const [avatar, setAvatar] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+    const [currentUser, setCurrentUser] = useState({});
     const [fname, setFname] = useState('');
     const [lname, setLname] = useState('');
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('');
-    const [passwordConfirm, setPasswordConfirm] = useState('');
+    const [email, setEmail] = useState('');
     const [whatsapp, setWhatsapp] = useState('');
     const [facebook, setFacebook] = useState('');
-    const [specialty, setSpecialty] = useState('');
     const [jobTitle, setJobTitle] = useState('');
     const [workPlace, setWorkPlace] = useState('');
     const [selectedCountry, setSelectedCountry] = useState('');
@@ -62,23 +55,17 @@ const UserSignup = () => {
     const [selectedCountryText, setSelectedCountryText] = useState('');
     const [selectedLanguage, setSelectedLanguage] = useState('');
     const [selectedLanguageText, setSelectedLanguageText] = useState('');
+    const [description, setDescription] = useState('');
 
-    const [showPassword, setShowPassword] = useState(false);
-    const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
     const [languageClicked, setLanguageClicked] = useState(false);
     const [languages, setLanguages] = useState([]);
     const [languageSelectShow, setLanguageSelectShow] = useState(false);
     const [countriesClicked, setCountriesClicked] = useState(false);
     const [countriesSelectShow, setCountriesSelectShow] = useState(false);
-    const [description, setDescription] = useState('');
 
-    const [preview, setPreview] = useState(null);
     const [errMsg, setErrMsg] = useState("");
     const [success, setSuccess] = useState(false);
 
-
-    const handleShowPassword = () => setShowPassword(!showPassword)
-    const handleShowPasswordConfirm = () => setShowPasswordConfirm(!showPasswordConfirm);
     const handleSelectedLanguage = (lang) => setSelectedLanguage(lang);
     const handleSelectedLanguageText = (lang) => setSelectedLanguageText(lang);
     const handleSelectedCountry = (countryId) => setSelectedCountry(countryId);
@@ -91,25 +78,13 @@ const UserSignup = () => {
     const handleSpecialtyClicked = () => setSpecialtyClicked(!specialtyClicked);
     const handleSpecialtyShow = () => setSpecialtyShow(!specialtyShow);
 
-    const handleImagePreview = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setPreview(reader.result);
-            };
-            reader.readAsDataURL(file);
-        }
-    }
 
-    const handleAvatar = (e) => setAvatar(e.target.files[0])
     const handleFname = (e) => setFname(e.target.value)
     const handleLname = (e) => setLname(e.target.value)
     const handleEmail = (e) => setEmail(e.target.value);
-    const handlePassword = (e) => setPassword(e.target.value);
-    const handlePasswordConfirm = (e) => setPasswordConfirm(e.target.value);
     const handleWhatsapp = (e) => setWhatsapp(e.target.value);
     const handleFacebook = (e) => setFacebook(e.target.value);
+
     const handleSelectedSpecialty = (specialtyId) => setSelectedSpecialty(specialtyId);
     const handleSelectedSpecialtyText = (specialtyText) => {
         setSelectedSpecialtyText(specialtyText);
@@ -137,15 +112,18 @@ const UserSignup = () => {
             setErrMsg(err.message)
         }
     }
-
-    useEffect(() => {
-        getSpecialties();
-        getLanguages();
-    }, []);
-
-    useEffect(() => {
-        setErrMsg('')
-    }, [avatar, fname, lname, email, password, passwordConfirm, whatsapp, facebook, , selectedSpecialty, jobTitle, workPlace, selectedCountry, selectedLanguage, description]);
+    const circleSpinner = <span className="flex justify-center items-center ">
+        <svg className="mr-3 h-5 w-5 animate-spin text-stone-100"
+             xmlns="http://www.w3.org/2000/svg"
+             fill="none"
+             viewBox="0 0 24 24">
+        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                strokeWidth="4"></circle>
+        <path className="opacity-75" fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+    </svg>
+        {/*<span className="text-sm text-stone-100"> Processing...</span>*/}
+    </span>
 
     specialtyContent = specialties?.sort((a, b) => {
             if (a.title < b.title) {
@@ -187,12 +165,9 @@ const UserSignup = () => {
 
     const errors = {}
     const validate = () => {
-        if (!avatar || avatar === '') errors['avatar'] = true;
         if (!fname || fname === '') errors['fname'] = true;
         if (!lname || lname === '') errors['lname'] = true;
         if (!email || email === '') errors['email'] = true;
-        if (!password || password === '') errors['password'] = true;
-        if (!passwordConfirm || passwordConfirm === '') errors['passwordConfirm'] = true;
         if (!whatsapp || whatsapp === '') errors['whatsapp'] = true;
         if (!facebook || facebook === '') errors['facebook'] = true;
         if (!jobTitle || jobTitle === '') errors['jobTitle'] = true;
@@ -201,106 +176,37 @@ const UserSignup = () => {
         if (!selectedLanguage || selectedLanguage === '') errors['selectedLanguage'] = true;
     }
 
-    const [formData, setFormData] = useState({
-        avatar: null,
-        fname: "",
-        lname: "",
-        email: "",
-        password: "",
-        passwordConfirm: "",
-        whatsapp: "",
-        facebook: "",
-        specialty: "",
-        jobTitle: "",
-        workPlace: "",
-        country: "",
-        language: "",
-        description: ""
-    });
+    const updatedData = {
+        fname, lname, email, whatsapp,
+        facebookId: facebook,
+        specialty: selectedSpecialty,
+        jobTitle, workPlace,
+        country: selectedCountry,
+        language: selectedLanguage
+    }
 
-    const handleChange = (e) => {
-        const {name, value} = e.target;
-        setFormData((prevState) => ({
-            ...prevState,
-            [name]: value,
-        }));
-    };
-
-    const handleFileChange = (e) => {
-        setFormData((prevState) => ({
-            ...prevState,
-            avatar: e.target.files[0]
-        }));
-    };
 
     const handleSubmit = async (e) => {
+
         e.preventDefault();
         validate();
-
-        if (password !== passwordConfirm) {
-            setErrMsg('Password not match password confirm');
-            return false
-        }
 
         if (Object.keys(errors).length > 0) {
             setErrMsg('Please fill all require fields!')
             return false;
         }
 
-        const data = new FormData();
-
-
-        data.append("avatar", formData.avatar);
-        data.append("fname", formData.fname);
-        data.append("lname", formData.lname);
-        data.append("email", formData.email);
-        data.append("password", formData.password);
-        data.append("passwordConfirm", formData.passwordConfirm);
-        data.append("whatsapp", formData.whatsapp);
-        data.append("facebook", formData.facebook);
-        data.append("specialty", selectedSpecialty);
-        data.append("jobTitle", formData.jobTitle);
-        data.append("workPlace", formData.workPlace);
-        data.append("country", selectedCountry);
-        data.append("language", selectedLanguage);
-        data.append("description", formData.description);
-
         try {
-            const response = await axios.post(`${BASE_URL}/users/user-signup`, data, {
-                headers: {'Content-Type': 'multipart/form-data'},
-                data: data,
-                transformRequest: [
-                    (data) => data,
-                ]
-            });
-            // console.log(response)
+            setIsLoading(true);
+            const response = await axios.patch(`${BASE_URL}/users/updateMe/${auth.id}`, updatedData);
+
             const result = await response?.data?.data;
-            // console.log("Signup successful:", result);
+
             setErrMsg(`Registration is ${response.data.status}`);
-            setFormData({
-                avatar: null,
-                fname: "",
-                lname: "",
-                email: "",
-                password: "",
-                passwordConfirm: "",
-                whatsapp: "",
-                facebook: "",
-                specialty: "",
-                jobTitle: "",
-                workPlace: "",
-                country: "",
-                language: "",
-                description: ""
-            })
 
             setFname('');
             setLname('');
             setEmail('');
-            setAvatar(null);
-            setPreview(null);
-            setPassword('');
-            setPasswordConfirm('');
             setWhatsapp('');
             setFacebook('');
             setSelectedSpecialty('');
@@ -313,9 +219,13 @@ const UserSignup = () => {
             setSelectedLanguageText('');
             setDescription('')
             setSuccess(true)
-            setAuth({...result});
-            navigate('/user')
+            setIsLoading(false);
+
+            navigate('/user');
+
+
         } catch (err) {
+            setIsLoading(false);
             if (err.response?.status === 409) {
                 setErrMsg("Username taken");
             } else {
@@ -326,6 +236,45 @@ const UserSignup = () => {
             errRef.current.focus();
         }
     }
+
+    const getCurrentUser = async () => {
+        try {
+            const response = await axios.get(`${BASE_URL}/users/me/${auth.id}`, {
+                withCredentials: true
+            });
+
+            const result = response?.data?.data;
+            setCurrentUser(result)
+
+            setFname(result.fname);
+            setLname(result.lname);
+            setEmail(result?.email);
+            setWhatsapp(result?.whatsapp);
+            setFacebook(result?.facebookId);
+            setJobTitle(result?.jobTitle);
+            setWorkPlace(result?.workPlace);
+            setSelectedCountry(result?.country?.id);
+            setSelectedSpecialty(result?.specialty?._id);
+            setSelectedSpecialtyText(result?.specialty?.title);
+            setSelectedCountryText(result?.country?.title);
+            setSelectedLanguage(result?.language?.id);
+            setSelectedLanguageText(result?.language?.title);
+            setDescription(result?.description);
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    useEffect(() => {
+        setErrMsg('')
+    }, [fname, lname, email, whatsapp, facebook, , selectedSpecialty, jobTitle, workPlace, selectedCountry, selectedLanguage, description]);
+
+
+    useEffect(() => {
+        getCurrentUser();
+        getSpecialties();
+        getLanguages();
+    }, []);
 
     return (
         <div className="min-h-screen flex flex-col justify-center  sm:px-6 lg:px-8">
@@ -339,13 +288,13 @@ const UserSignup = () => {
 
                     <div className="registration-title  justify-evenly content-baseline ">
                         <h2 className="mt-3 text-center  text-xl leading-5 font-bold text-gray-500">
-                            User registration.
+                            Update User.
                         </h2>
                         <p className="mt-1 text-center text-sm leading-5 text-gray-500 max-w">
-                            I have an account:<span> </span>
-                            <Link to="/login"
+                            Go to
+                            <Link to="/user"
                                   className="font-medium text-blue-600 hover:text-blue-500 focus:outline-none focus:underline transition ease-in-out duration-150 px-1 border border-b-lime-400 rounded-l  hover:text-lime-600 transition-all">
-                                login
+                                {auth.firstName + " " + auth.lastName}
                             </Link>
                         </p>
                     </div>
@@ -353,62 +302,15 @@ const UserSignup = () => {
                 </div>
                 <div className=" sm:px-10 bg-white mb-8 py-8 px-4 shadow-lg sm:rounded-lg">
                     <form method="POST" onSubmit={handleSubmit} encType="multipart/form-data">
-
-                        <div className="flex items-center justify-center  w-full mb-4">
-                            <label htmlFor="avatar"
-                                   className="flex flex-col items-center justify-center w-6/12 h-[180px]  border-gray-200 border shadow-sm  rounded-full cursor-pointer  dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
-                            >
-
-                                <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                    {preview ? (
-                                        <div>
-                                            <img
-                                                src={preview}
-                                                alt="Profile Preview"
-                                                style={{
-                                                    width: '150px',
-                                                    height: '150px',
-                                                    borderRadius: '50%',
-                                                    objectFit: 'cover'
-                                                }}
-                                            />
-                                        </div>) : (
-                                        <div>
-                                            <svg className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400 mx-auto"
-                                                 aria-hidden="true"
-                                                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                                                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"
-                                                      strokeWidth="2"
-                                                      d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
-                                            </svg>
-                                            <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">Click to upload
-                                                your
-                                                photo *</p>
-                                        </div>
-                                    )}
-                                </div>
-                                <input type="file" id="avatar" name="avatar" className="hidden"
-                                       accept="image/*"
-                                       required
-                                       onChange={(e) => {
-                                           handleAvatar(e)
-                                           handleImagePreview(e)
-                                           handleFileChange(e)
-                                       }}
-                                />
-                            </label>
-                        </div>
-
                         <div className=" full-name mt-1 flex flex-row justify-between relative rounded-md ">
                             <div className="fname w-5/12 mt-1 flex flex-row justify-between relative rounded-md ">
                                 {/*<label htmlFor="fname"*/}
                                 {/*       className="block text-sm font-medium leading-5  text-gray-700">Name</label>*/}
                                 <input id="fname" name="fname" placeholder="First name *" type="text" required
                                        className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-lime focus:border-lime-400 transition duration-150 ease-in-out shadow-sm text-lg sm:leading-5"
-                                       value={formData.fname}
+                                       value={fname}
                                        onChange={(e) => {
                                            handleFname(e);
-                                           handleChange(e)
                                        }
                                        }
                                 />
@@ -418,10 +320,9 @@ const UserSignup = () => {
                                 {/*       className="block text-sm font-medium leading-5  text-gray-700">Name</label>*/}
                                 <input id="lname" name="lname" placeholder="Family name *" type="text" required
                                        className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-lime focus:border-lime-400 transition duration-150 ease-in-out text-lg shadow-sm sm:leading-5"
-                                       value={formData.lname}
+                                       value={lname}
                                        onChange={(e) => {
                                            handleLname(e)
-                                           handleChange(e)
                                        }
                                        }
                                 />
@@ -438,10 +339,9 @@ const UserSignup = () => {
                                        required
                                        className=" block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-lime focus:border-lime-400 transition duration-150
                                        text-lg text-stone-700  ease-in-out  sm:leading-5"
-                                       value={formData.email}
+                                       value={email}
                                        onChange={(e) => {
                                            handleEmail(e)
-                                           handleChange(e)
                                        }}
                                 />
                                 <div
@@ -455,60 +355,12 @@ const UserSignup = () => {
                             </div>
                         </div>
 
-                        <div className="mt-4">
-                            {/*<label htmlFor="password" className="block text-sm font-medium leading-5 text-gray-700">*/}
-                            {/*    Password*/}
-                            {/*</label>*/}
-                            <div className="mt-1 rounded-md shadow-sm relative">
-                                <input id="password" name="password" type={showPassword ? "text" : "password"}
-                                       required
-                                       placeholder="Password"
-                                       className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-lime-400 transition duration-150 ease-in-out text-lg sm:leading-5"
-                                       value={formData.password}
-                                       onChange={(e) => {
-                                           handlePassword(e)
-                                           handleChange(e)
-                                       }}
-                                />
-                                <span className="inline-block absolute text-gray-400 right-2 top-3"
-                                      onClick={handleShowPassword}>{showPassword ?
-                                    <FaRegEye/> :
-                                    <FaRegEyeSlash/>}
-                                </span>
-                            </div>
-                        </div>
-
-                        <div className=" password-confirm mt-4">
-                            {/*<label htmlFor="password-confirmation"*/}
-                            {/*       className="block text-sm font-medium leading-5 text-gray-700">*/}
-                            {/*    Confirm Password*/}
-                            {/*</label>*/}
-                            <div className="mt-1 relative rounded-md shadow-sm">
-                                <input id="passwordConfirm" name="passwordConfirm"
-                                       type={showPasswordConfirm ? "text" : "password"}
-                                       required="" placeholder="Confirm password"
-                                       className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-lime-400 transition duration-150 ease-in-out text-lg sm:leading-5"
-                                       value={formData.passwordConfirm}
-                                       onChange={(e) => {
-                                           handleChange(e)
-                                           handlePasswordConfirm(e)
-                                       }}
-                                />
-                                <span className="inline-block absolute text-gray-400 right-2 top-3"
-                                      onClick={handleShowPasswordConfirm}>{showPasswordConfirm ?
-                                    <FaRegEye/> :
-                                    <FaRegEyeSlash/>}
-                                </span>
-                            </div>
-                        </div>
-
                         <div className="whatsapp mt-4">
                             <input type="text" name="whatsapp" id="whatsapp"
                                    className="appearance-none placeholder-gray-400 block w-full px-3 py-2 border border-gray-300 rounded-md  focus:outline-none focus:shadow-outline-blue focus:border-lime-400 transition duration-150 ease-in-out text-lg sm:leading-5"
                                    placeholder="Whatsapp number"
-                                   value={formData.whatsapp}
+                                   value={whatsapp}
                                    onChange={(e) => {
-                                       handleChange(e)
                                        handleWhatsapp(e)
                                    }}
                             />
@@ -518,9 +370,8 @@ const UserSignup = () => {
                             <input type="text" name="facebook" id="facebook"
                                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-lime-400 transition duration-150 ease-in-out text-lg sm:leading-5"
                                    placeholder="facebook id"
-                                   value={formData.facebook}
+                                   value={facebook}
                                    onChange={(e) => {
-                                       handleChange(e)
                                        handleFacebook(e)
                                    }}
                             />
@@ -560,9 +411,8 @@ const UserSignup = () => {
                             <input type="text" name="jobTitle" id="jobTitle"
                                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-lime-400 transition duration-150 ease-in-out text-lg sm:leading-5"
                                    placeholder="Job title"
-                                   value={formData.jobTitle}
+                                   value={jobTitle}
                                    onChange={(e) => {
-                                       handleChange(e)
                                        handleJobTitle(e)
                                    }}
                             />
@@ -572,9 +422,8 @@ const UserSignup = () => {
                             <input type="text" name="workPlace" id="workPlace" placeholder="Work place"
                                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-lime-400 transition duration-150 ease-in-out text-lg sm:leading-5"
 
-                                   value={formData.workPlace}
+                                   value={workPlace}
                                    onChange={(e) => {
-                                       handleChange(e)
                                        handleWorkPlace(e)
                                    }}
                             />
@@ -590,7 +439,7 @@ const UserSignup = () => {
                                 <input name="countries" id="countries"
                                        className="countries cursor-pointer block w-full px-4 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-lime-400 transition duration-150 ease-in-out text-lg sm:leading-5 "
                                        autoComplete="off"
-                                       value={selectedCountryText ? selectedCountryText : ''}
+                                       value={selectedCountryText}
                                        placeholder="Select Country"
                                        onChange={() => {
                                        }}
@@ -653,9 +502,8 @@ const UserSignup = () => {
                             <textarea name="description" id="description" cols="30" rows="6"
                                       className={`${errors.description === true ? "border-red-600" : "border-gray-300"} appearance-none block w-full mt-4 px-3 py-2 border  rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-lime-400 transition duration-150 ease-in-out text-lg sm:leading-5`}
                                       required
-                                      value={formData.description}
+                                      value={description}
                                       onChange={(e) => {
-                                          handleChange(e)
                                           handleDescription(e)
                                       }}
                                       placeholder="Description *"
@@ -668,7 +516,7 @@ const UserSignup = () => {
                         <div className="mt-6 block w-full flex justify-between rounded-md">
                             <button type="submit" onClick={handleSubmit}
                                     className="w-full flex justify-center py-2 px-4  shadow-sm shadow-lime-400 border border-transparent sm:text-sm font-extrabold rounded-md  text-red-800 border-2 border-stone-400 bg-lime-400 hover:border-indigo-300  transition-all duration-150 ease-in-out">
-                                Register
+                                {isLoading ? circleSpinner : <span>Update</span>}
                             </button>
                         </div>
                     </form>
@@ -677,6 +525,6 @@ const UserSignup = () => {
             </div>
         </div>
     );
-};
+}
 
-export default UserSignup;
+export default UpdateUserData;

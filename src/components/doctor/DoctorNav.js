@@ -23,7 +23,6 @@ function DoctorNav() {
     const handleLogout = async () => {
         try {
             const response = await axios.get(`${BASE_URL}/doctors/logout`, {
-                headers: {'Content-type': 'application/json'},
                 withCredentials: true,
             });
             console.log(response)
@@ -41,14 +40,13 @@ function DoctorNav() {
             <div className="logo w-2/12">
                 <img src={Logo} alt="logo"/></div>
             <div
-                className="title flex justify-between w-5/12 h-[80px] ">
+                className="title flex justify-between w-5/12 ">
                 <Link to="doctor"
                       className="w-3/6 flex flex-row justify-center items-center h-[100%] overflow-hidden">
-                    <img className="w-2/4  h-[100%] rounded-full  mr-4" src={doctorData?.profileImage}
-                         alt={doctorData.firstName + " " + doctorData.lastName}
-                    />
-                    <span><span>Welcome </span> <span
-                        className="text-stone-600 font-bold"> {doctorData.firstName + " " + doctorData.lastName}</span></span>
+                        <span className="text-3xl font-mono text-violet-900 font-bold">
+                        {doctorData.firstName + " " + doctorData.lastName}
+                        </span>
+
                 </Link>
 
             </div>

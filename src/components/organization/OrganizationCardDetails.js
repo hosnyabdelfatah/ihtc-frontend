@@ -29,13 +29,13 @@ const OrganizationCardDetails = ({organization}) => {
         <div
             className="organization-page h-screen mt-4 border-red-700 mb-6 mx-4"
         >
-            <div className="organization_header h-2/4 border-2"
+            <div className="organization_header h-2/4 "
                  style={{
                      fontSize: `30px`,
                      backgroundImage: `url(${organizationData.banner})`,
                      backgroundRepeat: "no-repeat",
                      backgroundClip: "padding-box",
-                     backgroundSize: "cover",
+                     backgroundSize: "100%",
                      backgroundPosition: "center center",
                      backgroundAttachment: "fixed",
                  }}>

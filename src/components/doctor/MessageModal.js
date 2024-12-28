@@ -17,7 +17,7 @@ const MessageModal = ({sender, receiver, onClose}) => {
     const [textMessage, setTextMessage] = useState('');
     const [isSending, setIsSending] = useState(false);
     const [errs, setErrs] = useState([]);
-    const [errMsg, setErrMsg] = useState('');
+    const [errMsg, setErrMsg] = useState([]);
 
 
     let errorMessage = [];
@@ -42,13 +42,12 @@ const MessageModal = ({sender, receiver, onClose}) => {
     messageBodyData.append("attach", file);
     messageBodyData.append("messageText", textMessage);
 
-    // const messageBody = {
-    //     subject: messageTitle,
-    //     from: sender.lastName,
-    //     to: receiver.id,
-    //     attach: file,
-    //     campaignText: textMessage
-    // }
+    const messageBody = {
+        subject: messageTitle,
+        from: sender.id,
+        to: receiver.id,
+        messageText: textMessage
+    }
 
     const handleTextMessage = (e) => {
         setTextMessage(e.target.value)
@@ -105,6 +104,8 @@ const MessageModal = ({sender, receiver, onClose}) => {
 
         const renderErrMsg = errorMessage.map(error => <span
             className="block text-stone-100 font-bold">{error}</span>);
+
+        setErrMsg(renderErrMsg);
         return renderErrMsg;
     }
 
@@ -112,12 +113,12 @@ const MessageModal = ({sender, receiver, onClose}) => {
         setIsSending(true);
 
         if (errs.length > 0) {
-            // console.log(errs)
             handleErrMsg()
             return false;
         } else {
             try {
-                const response = await axios.post(`${BASE_URL}/doctor-messages`, messageBodyData);
+                const messageData = file ? messageBodyData : messageBody;
+                const response = await axios.post(`${BASE_URL}/doctor-messages`, messageData);
 
                 setIsSending(false)
                 setMessageTitle('');
@@ -135,7 +136,7 @@ const MessageModal = ({sender, receiver, onClose}) => {
     useEffect(() => {
         if (receiver) {
             setFromId(sender.id);
-            setFromText(sender.lastName);
+            setFromText(sender.firstName + " " + sender.lastName);
             setReceiverId(receiver?.id)
             setReceiverText(receiver?.name);
         }

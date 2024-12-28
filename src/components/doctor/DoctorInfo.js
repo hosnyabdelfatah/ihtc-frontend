@@ -11,11 +11,10 @@ function DoctorInfo() {
 
     useEffect(() => {
         const getDoctorInfo = async () => {
-            const response = await axios.get(`${BASE_URL}/doctors/doctor/${id}`, {doctorId: id}, {
-                withCredentials: true
-            });
+            const response = await axios.get(`${BASE_URL}/doctors/${id}`,
+                {withCredentials: true});
             setDoctor(response.data.data);
-            console.log(response.data.data)
+            // console.log(response.data.data)
         }
         getDoctorInfo();
     }, []);

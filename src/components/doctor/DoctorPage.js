@@ -30,7 +30,6 @@ function DoctorPage() {
 
             setMessageOutCount(response?.data?.count)
             // setMessageOutCount()
-            console.log(response)
         } catch (err) {
             console.log(err)
         } finally {
@@ -40,13 +39,11 @@ function DoctorPage() {
 
     const getDoctorData = async () => {
         try {
-            const response = await axios.get(`${BASE_URL}/doctors/me`, {
+            const response = await axios.get(`${BASE_URL}/doctors/me/${doctor.id}`, {
                 withCredentials: true
             });
             const result = response?.data?.data;
-            console.log(result)
             setDoctorData(result);
-            // setAuth(result)
         } catch (err) {
             console.log(err);
         }
@@ -84,15 +81,15 @@ function DoctorPage() {
                                 Messages
                             </Link>
                         </span>
-                        <span className="w-7/12 ">
+                        <span className="w-5/12 text-lime-700">
                              <span
-                                 className="w-full flex flex-row justify-between items-center border"><span
+                                 className="w-full px-2 flex flex-row justify-between items-center border rounded"><span
                                  className="flex items-center">
                                  <span className="text-stone-600 font-bold">Sent</span>
-                                 <IoPaperPlaneOutline className="text-red-600 ml-3"/>
+                                 <IoPaperPlaneOutline className="text-red-700 ml-3"/>
                              </span>
 
-                             <span>{messageOutCount}</span>
+                             <span className="text-red-700 font-bold">{messageOutCount}</span>
                             </span>
                             {/*<td className="in flex flex-row justify-evenly items-center border "><span>in</span>*/}
                             {/*    <span><IoPaperPlaneOutline className="rotate-180 text-lime-600"/></span>*/}
@@ -111,9 +108,12 @@ function DoctorPage() {
                         {/*:TODO Update image*/}
                         {/*<Link to="/doctorData-page" className="font-semibold text-violet-700 underline mr-5">Change Image</Link>*/}
                         <Link to="/update-doctor"
-                              className="text-violet-700 font-semibold underline cursor-pointer">
+                              className="mr-5 text-violet-700 font-semibold underline cursor-pointer">
                             Update Profile
                         </Link>
+                        <Link to="/update-profile-image"
+                              className="text-violet-700 font-semibold underline cursor-pointer">Update Profile
+                            Imge</Link>
                     </div>
                 </div>
             </div>
