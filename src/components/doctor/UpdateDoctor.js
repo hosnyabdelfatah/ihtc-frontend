@@ -155,18 +155,6 @@ function UpdateDoctor() {
     }
 
 
-    useEffect(() => {
-        getSpecialties();
-        getLanguages();
-        if (auth?.token) {
-            getDoctorData();
-        }
-    }, []);
-
-    useEffect(() => {
-        setErrMsg('')
-    }, [fname, lname, email, whatsapp, facebook, selectedSpecialty, jobTitle, workPlace, selectedCountry, selectedLanguage, description]);
-
     specialtyContent = specialties?.sort((a, b) => {
             if (a.title < b.title) {
                 return -1
@@ -294,6 +282,17 @@ function UpdateDoctor() {
         }
     }
 
+
+    useEffect(() => {
+        setErrMsg('')
+    }, [fname, lname, email, whatsapp, facebook, selectedSpecialty, jobTitle, workPlace, selectedCountry, selectedLanguage, description]);
+
+
+    useEffect(() => {
+        getSpecialties();
+        getLanguages();
+        getDoctorData();
+    }, [])
 
     return (
         <div className="min-h-screen flex flex-col justify-center  sm:px-6 lg:px-8">
