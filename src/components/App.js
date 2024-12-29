@@ -53,6 +53,7 @@ import UpdateBannerLogo from "./organization/UpdateBannerLogo";
 import UpdateDoctorImage from "./doctor/UpdateDoctorImage";
 import UpdateUserData from "./User/UpdateUserData";
 import UpdateUserImage from "./User/UpdateUserImage";
+import ResetPasswordSuccess from "./registeration/ResetPasswordSuccess";
 
 // import InsertDoctors from "./admins/dashboard/InsertDoctors";
 
@@ -103,6 +104,7 @@ function App() {
                 <Route path="check-email" element={<CheckEmail/>}/>
                 <Route path="reset-password" element={<ResetPassword/>}/>
                 <Route path="update-password" element={<UpdatePassword/>}/>
+                <Route path="/reset-password-success" element={<ResetPasswordSuccess/>}/>
                 <Route path="under-construction" element={<UnderConstruction/>}/>
 
 

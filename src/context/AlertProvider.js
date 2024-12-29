@@ -5,18 +5,21 @@ const AlertContext = createContext();
 export const useAlert = () => useContext(AlertContext);
 
 export const AlertProvider = ({children}) => {
-    const [alert, setAlert] = useState({message: "", visible: false});
+    const [alert, setAlert] = useState({message: "", type: "success", visible: false});
 
-    const showAlert = (message, duration = 5000) => {
-        setAlert({message, visible: true});
+    const showAlert = (message, type = "success", duration = 5000) => {
+        setAlert({message, type, visible: true});
 
         setTimeout(() => {
-            setAlert({message: "", visible: false});
+            setAlert({message: "", type: "success", visible: false});
         }, duration);
     };
 
+    const hideAlert = () => {
+        setAlert(({message: "", type: "success", visible: false}));
+    }
     return (
-        <AlertContext.Provider value={{alert, showAlert}}>
+        <AlertContext.Provider value={{alert, showAlert, hideAlert}}>
             {children}
         </AlertContext.Provider>
     );

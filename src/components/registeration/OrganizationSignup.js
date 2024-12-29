@@ -8,11 +8,6 @@ import {HiChevronDown} from "react-icons/hi";
 import axios from "axios";
 import BASE_URL from "../../app/apis/baseUrl";
 
-// import English from "../../assets/images/flags/english.jpeg";
-// import Egypt from "../../assets/images/flags/egypt.jpg";
-// import Turkish from "../../assets/images/flags/turkish.jpg";
-// import French from "../../assets/images/flags/french.jpg";
-// import ProgressBar from "../ProgressBar";
 
 const OrganizationSignup = () => {
     const navigate = useNavigate();
@@ -21,6 +16,7 @@ const OrganizationSignup = () => {
     let content;
     const [bannerPreview, setBannerPreview] = useState(null);
     const [logoPreview, setLogoPreview] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
 
     const [success, setSuccess] = useState(false)
 
@@ -44,6 +40,20 @@ const OrganizationSignup = () => {
     const [country, setCountry] = useState('');
     const [selectedCountryText, setSelectedCountryText] = useState();
     const [description, setDescription] = useState('');
+
+    const circleSpinner = <span className="flex justify-center items-center ">
+        <svg className="mr-3 h-5 w-5 animate-spin text-stone-100"
+             xmlns="http://www.w3.org/2000/svg"
+             fill="none"
+             viewBox="0 0 24 24">
+        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                strokeWidth="4"></circle>
+        <path className="opacity-75" fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+    </svg>
+        {/*<span className="text-sm text-stone-100"> Processing...</span>*/}
+    </span>
+
 
     const {data, error, isFetching} = useFetchCountriesQuery();
 
@@ -188,6 +198,8 @@ const OrganizationSignup = () => {
         formData.append("description", description);
 
         try {
+            setIsLoading(true);
+
             const response = await axios.post(`${BASE_URL}/organizations/organization-signup`, formData, {
                 headers: {'Content-Type': 'multipart/form-data'},
                 data: formData,
@@ -210,9 +222,10 @@ const OrganizationSignup = () => {
             setDescription('');
 
             setSuccess(true);
-
+            setIsLoading(false)
             navigate('/login')
         } catch (err) {
+            setIsLoading(false)
             if (err.response?.status === 409) {
                 setErrMsg("Username taken");
             } else {
@@ -477,7 +490,8 @@ const OrganizationSignup = () => {
                             <button type="submit"
                                     onClick={handleSubmit}
                                     className="w-full flex justify-center py-2 px-4  shadow-sm shadow-lime-400 border border-transparent sm:text-lg font-bold rounded-md  text-red-800 border-2 border-stone-400 bg-lime-400 hover:border-indigo-300  transition-all duration-150 ease-in-out">
-                                Register
+                                {isLoading ? circleSpinner : <span>Register</span>}
+
                             </button>
                         </div>
                     </form>

@@ -1,12 +1,13 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {useSelector, useDispatch} from "react-redux";
-import {useParams, useSearchParams} from "react-router-dom";
+import {useNavigate, useSearchParams} from "react-router-dom";
 import axios from 'axios';
 import BASE_URL from '../../app/apis/baseUrl';
 import {selectCurrentUserState} from "../../features/userAsSlice";
 import {FaRegEyeSlash} from "react-icons/fa";
 import {FaRegEye} from "react-icons/fa";
 import {changeUserState, setCurrentUser} from "../../store";
+import {useAlert} from "../../context/AlertProvider";
 import Spinner from '../Spinner';
 
 const setCookie = (name, value, days) => {
@@ -17,7 +18,15 @@ const setCookie = (name, value, days) => {
 };
 
 function ResetPassword() {
+    const navigate = useNavigate();
     const errRef = useRef();
+    const {showAlert, hideAlert} = useAlert();
+
+    const handleProcess = async (message, type) => {
+        showAlert(message, type);
+        await new Promise((resolve) => setTimeout(resolve, 5000));
+        hideAlert();
+    }
 
     const dispatch = useDispatch();
     const {userState} = useSelector(selectCurrentUserState)
@@ -49,6 +58,7 @@ function ResetPassword() {
         try {
             setSending(true);
             const response = await axios.patch(`${BASE_URL}/${userState}s/resetPassword/${token}`, {
+                    url: `${window.location.origin}`,
                     newPassword,
                     newPasswordConfirm
                 }
@@ -57,10 +67,14 @@ function ResetPassword() {
             setNewPassword('');
             setNewPasswordConfirm('');
             setSending(false);
+            handleProcess("Reset password success. Please check you email messages");
+            navigate('/reset-password-success');
             // console.log(response)
+
         } catch (err) {
             // console.log(err)
-            setErrMsg(err.response.data);
+            // setErrMsg(err.response.data);
+            handleProcess(err.response.data, "error");
         }
     }
 

@@ -18,6 +18,20 @@ const UserSignup = () => {
     const errRef = useRef(false);
     const navigate = useNavigate();
 
+    const circleSpinner = <span className="flex justify-center items-center ">
+        <svg className="mr-3 h-5 w-5 animate-spin text-stone-100"
+             xmlns="http://www.w3.org/2000/svg"
+             fill="none"
+             viewBox="0 0 24 24">
+        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                strokeWidth="4"></circle>
+        <path className="opacity-75" fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+    </svg>
+        {/*<span className="text-sm text-stone-100"> Processing...</span>*/}
+    </span>
+
+
     const {data, error, isFetching} = useFetchCountriesQuery();
     if (isFetching) {
         content = <Skeleton className="w-full h-4" times={4}/>
@@ -41,7 +55,7 @@ const UserSignup = () => {
         });
     }
 
-
+    const [isLoading, setIsLoading] = useState(false);
     const [avatar, setAvatar] = useState('');
     const [fname, setFname] = useState('');
     const [lname, setLname] = useState('');
@@ -266,6 +280,7 @@ const UserSignup = () => {
         data.append("description", formData.description);
 
         try {
+            setIsLoading(true);
             const response = await axios.post(`${BASE_URL}/users/user-signup`, data, {
                 headers: {'Content-Type': 'multipart/form-data'},
                 data: data,
@@ -302,6 +317,7 @@ const UserSignup = () => {
             setPassword('');
             setPasswordConfirm('');
             setWhatsapp('');
+            setWorkPlace('')
             setFacebook('');
             setSelectedSpecialty('');
             setSelectedSpecialtyText('');
@@ -314,8 +330,10 @@ const UserSignup = () => {
             setDescription('')
             setSuccess(true)
             setAuth({...result});
+            setIsLoading(false);
             navigate('/user')
         } catch (err) {
+            setIsLoading(false);
             if (err.response?.status === 409) {
                 setErrMsg("Username taken");
             } else {
@@ -667,8 +685,9 @@ const UserSignup = () => {
                         {/*Button*/}
                         <div className="mt-6 block w-full flex justify-between rounded-md">
                             <button type="submit" onClick={handleSubmit}
-                                    className="w-full flex justify-center py-2 px-4  shadow-sm shadow-lime-400 border border-transparent sm:text-sm font-extrabold rounded-md  text-red-800 border-2 border-stone-400 bg-lime-400 hover:border-indigo-300  transition-all duration-150 ease-in-out">
-                                Register
+                                    className="w-full flex justify-center py-2 px-4  shadow-sm shadow-lime-400 border border-transparent sm:text-sm font-extrabold rounded-md  text-red-800 border-2 border-stone-400 bg-blue-400 hover:border-indigo-300  transition-all duration-150 ease-in-out">
+
+                                {isLoading ? circleSpinner : <span>Register</span>}
                             </button>
                         </div>
                     </form>

@@ -303,9 +303,13 @@ function UpdateUserData(props) {
                 <div className=" sm:px-10 bg-white mb-8 py-8 px-4 shadow-lg sm:rounded-lg">
                     <form method="POST" onSubmit={handleSubmit} encType="multipart/form-data">
                         <div className=" full-name mt-1 flex flex-row justify-between relative rounded-md ">
-                            <div className="fname w-5/12 mt-1 flex flex-row justify-between relative rounded-md ">
-                                {/*<label htmlFor="fname"*/}
-                                {/*       className="block text-sm font-medium leading-5  text-gray-700">Name</label>*/}
+                            <div
+                                className="fname w-5/12 mt-1 flex flex-row justify-between relative rounded-md relative">
+                                <label htmlFor="fname"
+                                       className="block text-sm font-medium leading-5
+                                         text-xs text-blue-700 absolute top-[-18px] left-[-8px]">
+                                    First Name
+                                </label>
                                 <input id="fname" name="fname" placeholder="First name *" type="text" required
                                        className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-lime focus:border-lime-400 transition duration-150 ease-in-out shadow-sm text-lg sm:leading-5"
                                        value={fname}
@@ -316,8 +320,11 @@ function UpdateUserData(props) {
                                 />
                             </div>
                             <div className="lname w-5/12 mt-1 flex flex-row justify-between relative rounded-md ">
-                                {/*<label htmlFor="lname"*/}
-                                {/*       className="block text-sm font-medium leading-5  text-gray-700">Name</label>*/}
+                                <label htmlFor="lname"
+                                       className="block text-sm font-medium leading-5
+                                         text-xs text-blue-700 absolute top-[-18px] left-[-8px]">
+                                    Last Name
+                                </label>
                                 <input id="lname" name="lname" placeholder="Family name *" type="text" required
                                        className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-lime focus:border-lime-400 transition duration-150 ease-in-out text-lg shadow-sm sm:leading-5"
                                        value={lname}
@@ -329,10 +336,12 @@ function UpdateUserData(props) {
                             </div>
                         </div>
 
-                        <div className="mt-4">
-                            {/*<label htmlFor="email" className="block text-sm font-medium leading-5 text-gray-700">*/}
-                            {/*    Email*/}
-                            {/*</label>*/}
+                        <div className="mt-4 relative">
+                            <label htmlFor="email"
+                                   className="block text-sm font-medium leading-5
+                                         text-xs text-blue-700 absolute top-[-18px] left-[-8px]">
+                                Email
+                            </label>
                             <div className="mt-1 relative rounded-md shadow-sm">
                                 <input id="email" name="email" placeholder="Email: user@example.com *" type="email"
                                        autoComplete="off"
@@ -355,7 +364,12 @@ function UpdateUserData(props) {
                             </div>
                         </div>
 
-                        <div className="whatsapp mt-4">
+                        <div className="whatsapp mt-4 relative">
+                            <label htmlFor="whatsapp"
+                                   className="block text-sm font-medium leading-5
+                                         text-xs text-blue-700 absolute top-[-18px] left-[-8px]">
+                                Whatsapp
+                            </label>
                             <input type="text" name="whatsapp" id="whatsapp"
                                    className="appearance-none placeholder-gray-400 block w-full px-3 py-2 border border-gray-300 rounded-md  focus:outline-none focus:shadow-outline-blue focus:border-lime-400 transition duration-150 ease-in-out text-lg sm:leading-5"
                                    placeholder="Whatsapp number"
@@ -366,7 +380,12 @@ function UpdateUserData(props) {
                             />
                         </div>
 
-                        <div className="facebook-id mt-4">
+                        <div className="facebook-id mt-4 relative">
+                            <label htmlFor="facebook"
+                                   className="block text-sm font-medium leading-5
+                                         text-xs text-blue-700 absolute top-[-18px] left-[-8px]">
+                                Facebook
+                            </label>
                             <input type="text" name="facebook" id="facebook"
                                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-lime-400 transition duration-150 ease-in-out text-lg sm:leading-5"
                                    placeholder="facebook id"
@@ -379,6 +398,11 @@ function UpdateUserData(props) {
 
                         <div className="specialty mt-4 relative"
                         >
+                            <label htmlFor="specialty"
+                                   className="block text-sm font-medium leading-5
+                                         text-xs text-blue-700 absolute top-[-18px] left-[-8px]">
+                                Specialty
+                            </label>
                             <input name="specialty" type="hidden" value={selectedSpecialty} onChange={() => {
                             }}/>
                             <input type="text" id="specialty"
@@ -407,7 +431,12 @@ function UpdateUserData(props) {
                             </ul>
                         </div>
 
-                        <div className="job-title mt-4">
+                        <div className="job-title mt-4 relative">
+                            <label htmlFor="jobTitle"
+                                   className="block text-sm font-medium leading-5
+                                         text-xs text-blue-700 absolute top-[-18px] left-[-8px]">
+                                Job Title
+                            </label>
                             <input type="text" name="jobTitle" id="jobTitle"
                                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-lime-400 transition duration-150 ease-in-out text-lg sm:leading-5"
                                    placeholder="Job title"
@@ -418,7 +447,12 @@ function UpdateUserData(props) {
                             />
                         </div>
 
-                        <div className="work-place mt-4">
+                        <div className="work-place mt-4 relative">
+                            <label htmlFor="workPlace"
+                                   className="block text-sm font-medium leading-5
+                                         text-xs text-blue-700 absolute top-[-18px] left-[-8px]">
+                                Work Place
+                            </label>
                             <input type="text" name="workPlace" id="workPlace" placeholder="Work place"
                                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-lime-400 transition duration-150 ease-in-out text-lg sm:leading-5"
 
@@ -428,8 +462,13 @@ function UpdateUserData(props) {
                                    }}
                             />
                         </div>
-                        <div className="countries-div mt-4"
+                        <div className="countries-div mt-4 relative"
                         >
+                            <label htmlFor="country"
+                                   className="block text-sm font-medium leading-5
+                                         text-xs text-blue-700 absolute top-[-18px] left-[-8px]">
+                                Country
+                            </label>
                             <div onClick={(e) => {
                                 handleCountriesClicked()
                             }}
@@ -468,6 +507,11 @@ function UpdateUserData(props) {
                         </div>
 
                         <div className="language-div mt-4 relative ">
+                            <label htmlFor="language"
+                                   className="block text-sm font-medium leading-5
+                                         text-xs text-blue-700 absolute top-[-18px] left-[-8px]">
+                                Language
+                            </label>
                             <input name="language" type="hidden" value={selectedLanguage} onChange={() => {
                             }}/>
                             <input type="text"
@@ -498,7 +542,12 @@ function UpdateUserData(props) {
                             </ul>
                         </div>
 
-                        <div className="description">
+                        <div className="description relative">
+                            <label htmlFor="description"
+                                   className="block text-sm font-medium leading-5
+                                         text-xs text-blue-700 absolute top-[-18px] left-[-8px]">
+                                Description
+                            </label>
                             <textarea name="description" id="description" cols="30" rows="6"
                                       className={`${errors.description === true ? "border-red-600" : "border-gray-300"} appearance-none block w-full mt-4 px-3 py-2 border  rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-lime-400 transition duration-150 ease-in-out text-lg sm:leading-5`}
                                       required
@@ -515,7 +564,7 @@ function UpdateUserData(props) {
                         {/*Button*/}
                         <div className="mt-6 block w-full flex justify-between rounded-md">
                             <button type="submit" onClick={handleSubmit}
-                                    className="w-full flex justify-center py-2 px-4  shadow-sm shadow-lime-400 border border-transparent sm:text-sm font-extrabold rounded-md  text-red-800 border-2 border-stone-400 bg-lime-400 hover:border-indigo-300  transition-all duration-150 ease-in-out">
+                                    className="w-full flex justify-center py-2 px-4  shadow-sm shadow-lime-400 border border-transparent sm:text-sm font-extrabold rounded-md  text-red-800 border-2 border-stone-400 bg-blue-400 hover:border-indigo-300  transition-all duration-150 ease-in-out">
                                 {isLoading ? circleSpinner : <span>Update</span>}
                             </button>
                         </div>

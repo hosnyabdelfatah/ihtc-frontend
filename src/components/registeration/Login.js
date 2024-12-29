@@ -3,7 +3,6 @@ import {useSelector, useDispatch} from "react-redux";
 import {loginOrganization} from "../../features/organizationLoginSlice";
 import {loginDoctor} from "../../features/doctorSlice";
 import {loginUser} from "../../features/userSlice";
-
 import {Link, useNavigate} from 'react-router-dom';
 import {setCredentials, setError} from "../../features/auth/authSlice";
 import {changeUserState, setCurrentUser} from "../../store";
@@ -11,6 +10,7 @@ import {selectCurrentUserState} from "../../features/userAsSlice";
 import {useOrganizationLoginMutation} from "../../store";
 import axios from "axios";
 import useAuth from "../../hooks/useAuth";
+import {useAlert} from "../../context/AlertProvider";
 import BASE_URL from "../../app/apis/baseUrl";
 
 const setCookie = (name, value, days) => {
@@ -24,7 +24,13 @@ const setCookie = (name, value, days) => {
 const Login = () => {
     const {auth, setAuth} = useAuth();
     // console.log(auth)
-    const [login, {isLoading, isSuccess, isError, data, error}] = useOrganizationLoginMutation()
+    const {showAlert, hideAlert} = useAlert();
+    const handleProcess = async (message, type) => {
+        showAlert(message, type);
+        await new Promise((resolve) => setTimeout(resolve, 5000));
+        hideAlert();
+    }
+
     const dispatch = useDispatch();
     const navigate = useNavigate()
     const {userState} = useSelector(selectCurrentUserState)
@@ -43,9 +49,19 @@ const Login = () => {
     const [password, setPassword] = useState('')
     const [errMsg, setErrMsg] = useState('');
     const [logging, setLogging] = useState(false);
-    const [loginError, setLoginError] = useState(null);
-    const [validateErrMsg, setValidateErrMsg] = useState('');
 
+    const circleSpinner = <span className="flex justify-center items-center ">
+        <svg className="mr-3 h-5 w-5 animate-spin text-stone-100"
+             xmlns="http://www.w3.org/2000/svg"
+             fill="none"
+             viewBox="0 0 24 24">
+        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                strokeWidth="4"></circle>
+        <path className="opacity-75" fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+    </svg>
+        {/*<span className="text-sm text-stone-100"> Processing...</span>*/}
+    </span>
 
     const addError = [];
 
@@ -63,22 +79,23 @@ const Login = () => {
         // console.log(document.cookie)
     }
 
-    const handleLogging = () => {
-        if (errMsg !== '') {
-            setLogging(true)
-        } else {
-            setLogging(false)
-        }
-    }
-    useEffect(() => {
-        handleLogging()
-        // console.log(logging)
-    }, [errMsg])
+    // const handleLogging = () => {
+    //     if (errMsg !== '') {
+    //         setLogging(true)
+    //     } else {
+    //         setLogging(false)
+    //     }
+    // }
+    // useEffect(() => {
+    //     handleLogging()
+    //     // console.log(logging)
+    // }, [errMsg, logging])
 
     const handleSubmit = async (e) => {
         e.preventDefault()
         if (user === '' || password === '') {
-            setErrMsg('User and password is require');
+            // setErrMsg('User and password is require');
+            handleProcess('User and password is require', "error");
             setLogging(false)
             return
         }
@@ -86,67 +103,75 @@ const Login = () => {
             setLogging(true);
             if (userState === 'organization') {
                 dispatch(loginOrganization({user, password})).then((res) => {
-                    // console.log(res)
-                    // console.log(res.payload)
-                    // console.log(res.error)
+
                     if (res.payload !== undefined) {
                         setAuth({...res.payload})
                         console.log(auth)
                         setUser("");
                         setPassword("");
+                        handleProcess(`Welcome back ${auth.name}`, "error");
+                        setLogging(false);
                         navigate("/organization");
                     } else {
-                        // console.log(res?.error)
+                        setLogging(false);
                         if (res?.error?.message === "Request failed with status code 401" || res?.error?.message === "Request failed with status code 400") {
-                            setLoginError("Access Denied! Invalid username or password");
-                            setErrMsg("Access Denied! Invalid username or password")
+                            // setErrMsg("Access Denied! Invalid username or password")
+                            handleProcess("Invalid username or password", "error");
+                            setLogging(false);
                         } else {
                             setLogging(false)
                             setErrMsg(res?.error?.message + " please try again later!")
-                            setLoginError(res?.error?.message);
+                            handleProcess(`${res?.error?.message}, please try again later. `, "error")
                         }
                     }
                 });
             } else if (userState === 'doctor') {
                 dispatch(loginDoctor({user, password})).then((res) => {
-                    console.log(res.payload)
-                    // console.log(res.error)
                     if (res.payload !== undefined) {
                         setAuth({...res.payload})
                         setUser("");
                         setPassword("");
+                        console.log(res.payload)
+                        handleProcess(`Welcome ${res.payload.firstName} ${res.payload.lastName}`);
+                        setLogging(false);
                         navigate("/doctor");
                     } else {
-                        // console.log(res?.error)
+                        setLogging(false);
+                        console.log(res.error)
                         if (res?.error?.message === "Request failed with status code 401" || res?.error?.message === "Request failed with status code 400") {
-                            setLoginError("Access Denied! Invalid username or password");
-                            setErrMsg("Access Denied! Invalid username or password")
+                            // setErrMsg("Access Denied! Invalid username or password")
+                            handleProcess("Invalid username or password", "error");
+                        } else if (res?.error?.message === "Request failed with status code 404") {
+                            setLogging(false);
+                            // setErrMsg("There is no doctor with this email!");
+                            handleProcess("There is no doctor with this email!", "error");
                         } else {
                             setLogging(false)
-                            setErrMsg(res?.error?.message + " please try again later!")
-                            setLoginError(res?.error?.message);
+                            handleProcess("Net work error please try again later!", "error")
+                            // setErrMsg("Net work error please try again later!");
                         }
                     }
                 });
             } else if (userState === 'user') {
                 dispatch(loginUser({user, password})).then((res) => {
-                    // console.log(res.payload)
                     if (res.payload !== undefined) {
                         setAuth({...res.payload})
                         setUser("");
                         setPassword("");
+                        handleProcess(`Welcome back  ${auth.firstName} ${auth.lastName}`);
+                        setLogging(false);
                         navigate("/user");
                     } else {
-                        // console.log(res)
                         setLogging(false)
                         if (res?.error?.message === "Network Error") {
-                            setErrMsg("Network Error!. Please try again later")
+                            // setErrMsg("Network Error!. Please try again later");
+                            handleProcess("Network Error!. Please try again later", "error");
                         } else if (res?.error?.message === "Request failed with status code 400" || res?.error?.message === "Request failed with status code 401" || res?.error?.message === "Request failed with status code 404") {
-                            setErrMsg('Invalid username or password')
-                            setLoginError("Access Denied! Invalid username or password");
+                            // setErrMsg('Invalid username or password');
+                            handleProcess('Invalid username or password', "error");
                         } else {
-                            setErrMsg(res?.error?.message);
-                            setLoginError(res?.error?.message);
+                            // setErrMsg(res?.error?.message);
+                            handleProcess(res?.error?.message, "error");
 
                         }
                     }
@@ -154,17 +179,21 @@ const Login = () => {
             }
 
         } catch (err) {
-            if (err) setLogging(false)
+            setLogging(false)
             if (err?.response?.status === 400) {
-                setErrMsg('Missing Username or Password');
+                // setErrMsg('Missing Username or Password');
+                handleProcess('Missing Username or Password', "error")
             } else if (err?.response?.status === 401) {
-                setErrMsg('Unauthorized');
+                // setErrMsg('Unauthorized');
+                handleProcess('Unauthorized', 'error');
             } else if (err.message ===
                 "Cannot destructure property 'user' of 'action.payload' as it is undefined.") {
-                setErrMsg('Login Failed, please write correct email and password! ');
+                // setErrMsg('Login Failed, please write correct email and password! ');
+                handleProcess('Login Failed, please write correct email and password! ', 'error');
                 // console.log(err)
             } else {
-                setErrMsg(err.message)
+                // setErrMsg(err.message)
+                handleProcess(err.message, 'error');
             }
             errRef.current.focus()
         }
@@ -173,18 +202,6 @@ const Login = () => {
 
     const handleUserInput = (e) => setUser(e.target.value)
     const handlePasswordInput = (e) => setPassword(e.target.value)
-    const circleSpinner = <span className="flex justify-center items-center ">
-        <svg className="mr-3 h-5 w-5 animate-spin text-stone-100"
-             xmlns="http://www.w3.org/2000/svg"
-             fill="none"
-             viewBox="0 0 24 24">
-        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                strokeWidth="4"></circle>
-        <path className="opacity-75" fill="currentColor"
-              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-    </svg>
-       <span className="text-stone-100"> Processing...</span>
-    </span>
 
 
     useEffect(() => {
@@ -281,12 +298,13 @@ const Login = () => {
                           hover:font-extrabold hover:bg-stone-300 hover:text-stone-700
                           focus:text-stone-600 font-bold focus:shadow visited:shadow-xl
                            transition-all"
-                        onClick={() => {
-                            handleLogging()
-                        }}
+                        // onClick={() => {
+                        //     handleLogging()
+                        // }}
                     >
 
-                        {!logging || error || errMsg !== "" ? 'Login' : circleSpinner}
+                        {/*{!logging || error || errMsg !== "" ? 'Login' : circleSpinner}*/}
+                        {logging ? circleSpinner : <span>Login</span>}
 
                     </button>
                 </form>

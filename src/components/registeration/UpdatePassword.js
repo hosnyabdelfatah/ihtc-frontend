@@ -5,20 +5,28 @@ import BASE_URL from '../../app/apis/baseUrl';
 import {selectCurrentUserState} from "../../features/userAsSlice";
 import {FaRegEyeSlash} from "react-icons/fa";
 import {FaRegEye} from "react-icons/fa";
-import Spinner from '../Spinner';
 import {useSelector} from "react-redux";
 import useAuth from "../../hooks/useAuth";
+import {useAlert} from "../../context/AlertProvider";
 
 // import {auth} from '../../app/apis/'
 
 function UpdatePassword() {
     const {auth} = useAuth();
-
     const {userState} = useSelector(selectCurrentUserState);
-
+    // console.log(userState)
     const errRef = useRef();
     const navigate = useNavigate();
 
+    //Alert
+    const {showAlert, hideAlert} = useAlert();
+    const handleProcess = async (message, type) => {
+        showAlert(message, type);
+        await new Promise((resolve) => setTimeout(resolve, 5000));
+        hideAlert();
+    }
+
+    const [isLoading, setIsLoading] = useState(false);
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [newPasswordConfirm, setNewPasswordConfirm] = useState('');
@@ -39,6 +47,19 @@ function UpdatePassword() {
     const handleShowPassword = () => setShowPassword(!showPassword)
     const handleShowPasswordConfirm = () => setShowPasswordConfirm(!showPasswordConfirm);
 
+    const circleSpinner = <span className="flex justify-center items-center ">
+        <svg className="mr-3 h-5 w-5 animate-spin text-stone-100"
+             xmlns="http://www.w3.org/2000/svg"
+             fill="none"
+             viewBox="0 0 24 24">
+        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                strokeWidth="4"></circle>
+        <path className="opacity-75" fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+    </svg>
+        {/*<span className="text-sm text-stone-100"> Processing...</span>*/}
+    </span>
+
     const formData = new FormData();
     formData.append("id", auth.id);
     formData.append("currentPassword", currentPassword);
@@ -48,10 +69,14 @@ function UpdatePassword() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (newPassword !== newPasswordConfirm) {
-            setErrMsg("New password not match new password confirm!")
+            handleProcess("New password not match new password confirm!", "error");
+
+            // setErrMsg("New password not match new password confirm!");
+
             return;
         }
         try {
+            setIsLoading(true);
             setSending(true);
             const response = await axios.patch(`${BASE_URL}/${userState}s/updatePassword`,
                 formData
@@ -64,11 +89,14 @@ function UpdatePassword() {
             setNewPassword('');
             setNewPasswordConfirm('');
             setSending(false);
-            // console.log(response)
-            navigate('/login');
+            setIsLoading(false);
+            handleProcess("Password update success", "success");
+            navigate(`/${userState}`);
         } catch (err) {
-            // console.log(err)
-            setErrMsg(err.response.data);
+            console.log(err)
+            setIsLoading(false);
+            handleProcess(err?.response?.data, "error");
+            // setErrMsg(err.response.data);
         }
     }
 
@@ -86,18 +114,18 @@ function UpdatePassword() {
 
             </p>
             <form onSubmit={(e) => handleSubmit(e)}
-                  className="w-[50%] mx-auto"
+                  className="w-[40%] mx-auto  flex flex-col justify-start items-center "
             >
-                <div className="form-group w-full flex flex-row justify-start items-center mb-5 relative ">
+                <div className="form-group w-full  flex flex-row justify-start items-center mb-8 relative ">
                     <label htmlFor="current-password"
-                           className="max-w-[40%] text-lg text-blue-900 ml-[2.7rem]">
+                           className="text-base text-blue-900 font-semibold absolute top-[-24px] left-0">
                         Current password
                     </label>
                     <input type={showCurrentPassword ? "text" : "password"} id="current-password"
                            name="current-password"
                            className={`${userState === "user" ? "border-blue-200"
                                : userState === "doctor" ? " border-lime-200" : " border-amber-200"}
-                         ml-5 p-2 border rounded-lg w-[60%] text-lg text-stone-600
+                          p-2 border rounded-lg w-full text-lg text-stone-600
                          focus:outline-none
                          `}
                            value={currentPassword}
@@ -109,16 +137,16 @@ function UpdatePassword() {
                         <FaRegEyeSlash/>}
                                 </span>
                 </div>
-                <div className="form-group w-full flex flex-row justify-start items-center mb-5 relative ">
+                <div className="form-group w-full mb-8 flex flex-row justify-start items-center mb-5 relative ">
                     <label htmlFor="new-password"
-                           className="max-w-[40%] text-lg text-blue-900 ml-[4.2rem]">
+                           className="text-base text-blue-900 font-semibold absolute top-[-24px] left-0">
                         New Password
                     </label>
                     <input type={showPassword ? "text" : "password"} id="new-password" name="new-password"
                            value={newPassword}
                            className={`${userState === "user" ? "border-blue-200"
                                : userState === "doctor" ? " border-lime-200" : " border-amber-200"}
-                         ml-5 p-2 border rounded-lg w-[60%] text-lg text-stone-600
+                         p-2 border rounded-lg w-full text-lg text-stone-600
                          focus:outline-none
                          `}
                            onChange={handleNewPassword}/>
@@ -129,9 +157,9 @@ function UpdatePassword() {
                                 </span>
                 </div>
 
-                <div className="form-group w-full flex flex-row justify-start items-center mb-5 relative ">
+                <div className="form-group w-full mb-8 flex flex-row justify-start items-center mb-5 relative  ">
                     <label htmlFor="new-password-confirm"
-                           className="max-w-[40%] text-lg text-blue-900"
+                           className=" text-base text-blue-900 font-semibold absolute top-[-24px] left-0"
                     >
                         Confirm New Password
                     </label>
@@ -139,7 +167,7 @@ function UpdatePassword() {
                            name="new-password-confirm"
                            className={`${userState === "user" ? "border-blue-200"
                                : userState === "doctor" ? " border-lime-200" : " border-amber-200"}
-                         ml-5 p-2 border rounded-lg w-[60%] text-lg text-stone-600
+                         p-2 border rounded-lg w-full text-lg text-stone-600
                          focus:outline-none
                          `}
                            value={newPasswordConfirm}
@@ -160,7 +188,8 @@ function UpdatePassword() {
                 </Link>
                 <button
                     className={`${userState === "user" ? "bg-blue-400" : userState === "doctor" ? "bg-lime-400" : "bg-yellow-400"} block mt-12 mx-auto py-2 px-10 text-xl text-blue-900 border-2 font-semibold rounded-lg border`}>
-                    {errMsg === '' && sending ? <Spinner text="Sending"/> : "Send"}
+                    {/*{errMsg === '' && sending ? <Spinner text="Sending"/> : "Send"}*/}
+                    {isLoading ? circleSpinner : <span>Send</span>}
                 </button>
             </form>
         </div>
