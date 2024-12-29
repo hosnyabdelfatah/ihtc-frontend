@@ -5,20 +5,35 @@ import Skeleton from "../Skeleton";
 import {FaRegEyeSlash} from "react-icons/fa";
 import {FaRegEye} from "react-icons/fa";
 import {HiChevronDown} from "react-icons/hi";
-import {HiChevronUp} from "react-icons/hi";
-import logo from '../../assets/images/logo-transparent.webp';
-import Egypt from '../../assets/images/flags/egypt.jpg';
-import Turkish from '../../assets/images/flags/turkish.jpg';
-import English from '../../assets/images/flags/english.jpeg';
-import French from '../../assets/images/flags/french.jpg';
 import {useFetchCountriesQuery} from '../../store';
 import axios from "axios";
 import BASE_URL from "../../app/apis/baseUrl";
-
+import {useAlert} from "../../context/AlertProvider";
 
 const DoctorSignup = () => {
     let content;
     let specialtyContent;
+
+    const {showAlert, hideAlert} = useAlert();
+    const handleProcess = async (message, type) => {
+        showAlert(message, type);
+        await new Promise((resolve) => setTimeout(resolve, 5000));
+        hideAlert();
+    }
+
+    const circleSpinner = <span className="flex justify-center items-center ">
+        <svg className="mr-3 h-5 w-5 animate-spin text-stone-100"
+             xmlns="http://www.w3.org/2000/svg"
+             fill="none"
+             viewBox="0 0 24 24">
+        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                strokeWidth="4"></circle>
+        <path className="opacity-75" fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+    </svg>
+        {/*<span className="text-sm text-stone-100"> Processing...</span>*/}
+    </span>
+
 
     const errRef = useRef(false);
     const navigate = useNavigate();
@@ -46,7 +61,7 @@ const DoctorSignup = () => {
         });
     }
 
-
+    const [logging, setLogging] = useState(false);
     const [image, setImage] = useState('');
     const [fname, setFname] = useState('');
     const [lname, setLname] = useState('');
@@ -240,6 +255,7 @@ const DoctorSignup = () => {
         // console.log(data)
 
         try {
+            setLogging(true);
             const response = await axios.post(`${BASE_URL}/doctors/doctor-signup`,
                 data, {
                     headers: {'Content-Type': 'multipart/form-data'},
@@ -260,6 +276,7 @@ const DoctorSignup = () => {
             setPassword('');
             setPasswordConfirm('');
             setWhatsapp('');
+            setWorkPlace('');
             setFacebook('');
             setSelectedSpecialty('');
             setSelectedSpecialtyText('');
@@ -270,20 +287,26 @@ const DoctorSignup = () => {
             setSelectedLanguage('');
             setSelectedLanguageText('');
             setDescription('')
-            setSuccess(true)
-            // navigate('/login')
+            setSuccess(true);
+            setLogging(false);
+            handleProcess("Welcome in IHTC community, please check your email");
+            navigate('/home')
 
 
         } catch (err) {
+            setLogging(false);
             if (err?.response?.status === 400) {
-                setErrMsg(err.response?.data)
+                // setErrMsg(err.response?.data)
+                handleProcess(err.response?.data, "error");
             } else if (err.response?.status === 409) {
-                setErrMsg("Username taken");
+                // setErrMsg("Username taken");
+                handleProcess("Username taken", "error");
             } else {
                 // console.log(`Error code is: ${err.code}`)
                 // console.log(`Error is: ${(err?.response?.data)}`)
-                console.log(err)
+                // console.log(err)
                 // setErrMsg(err?.response.data)
+                handleProcess(err?.response.data, "error");
             }
             errRef.current.focus();
         }
@@ -586,7 +609,9 @@ const DoctorSignup = () => {
                         <div className="mt-6 block w-full flex justify-between rounded-md">
                             <button type="submit" onClick={handleSubmit}
                                     className="w-full flex justify-center py-2 px-4  shadow-sm shadow-lime-400 border border-transparent sm:text-sm font-extrabold rounded-md  text-red-800 border-2 border-stone-400 bg-lime-400 hover:border-indigo-300  transition-all duration-150 ease-in-out">
-                                Register
+
+                                {logging ? circleSpinner : <span>Register</span>}
+
                             </button>
                         </div>
                     </form>

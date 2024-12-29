@@ -8,12 +8,20 @@ import {HiChevronDown} from "react-icons/hi";
 import {useFetchCountriesQuery} from '../../store';
 import axios from "axios";
 import BASE_URL from "../../app/apis/baseUrl";
+import {useAlert} from "../../context/AlertProvider";
 
 
 const UserSignup = () => {
     const {setAuth} = useAuth();
     let content;
     let specialtyContent;
+
+    const {showAlert, hideAlert} = useAlert();
+    const handleProcess = async (message, type) => {
+        showAlert(message, type);
+        await new Promise((resolve) => setTimeout(resolve, 5000));
+        hideAlert();
+    }
 
     const errRef = useRef(false);
     const navigate = useNavigate();
@@ -331,15 +339,18 @@ const UserSignup = () => {
             setSuccess(true)
             setAuth({...result});
             setIsLoading(false);
+            handleProcess("Welcome in IHTC community, please check your email");
             navigate('/user')
         } catch (err) {
             setIsLoading(false);
             if (err.response?.status === 409) {
-                setErrMsg("Username taken");
+                // setErrMsg("Username taken");
+                handleProcess("Username taken", "error");
             } else {
                 // console.log(`Error is: ${err}`)
                 // console.log(`Error is: ${(err.response.data)}`)
                 setErrMsg(err?.response)
+                handleProcess(err?.response, "error");
             }
             errRef.current.focus();
         }
