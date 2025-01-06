@@ -61,7 +61,7 @@ const OrganizationSignup = () => {
     const [country, setCountry] = useState('');
     const [selectedCountryText, setSelectedCountryText] = useState();
     const [description, setDescription] = useState('');
-    
+
     const {data, error, isFetching} = useFetchCountriesQuery();
 
     const handleShowPassword = () => setShowPassword(!showPassword);
@@ -187,6 +187,10 @@ const OrganizationSignup = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (password !== passwordConfirm) {
+            handleProcess("Password not match password confirm!", 'error');
+            return
+        }
         if (!validate()) return false;
         if (Object.keys(errors) > 0) return false;
 
@@ -206,7 +210,6 @@ const OrganizationSignup = () => {
 
         try {
             setIsLoading(true);
-
             const response = await axios.post(`${BASE_URL}/organizations/organization-signup`, formData, {
                 headers: {'Content-Type': 'multipart/form-data'},
                 data: formData,

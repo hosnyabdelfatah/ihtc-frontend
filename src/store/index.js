@@ -12,7 +12,7 @@ import userSlice from "../features/userSlice";
 import authReducer from "../features/auth/authSlice";
 import currentUserReducer, {setCurrentUser} from '../features/currentUserSlice';
 import currentOrganizationsListReducer, {setOrganizationsList} from '../features/organizatiosListSlice';
-import {authOrganizationApi} from '../features/auth/authOrganizationApi';
+// import {authOrganizationApi} from '../features/auth/authOrganizationApi';
 import {organizationsApi} from '../app/apis/organozationApi';
 import {languageApi} from "../app/apis/languageApi";
 import {doctorApi} from "../app/apis/doctorApi";
@@ -41,7 +41,7 @@ export const store = configureStore({
         currentUser: currentUserReducer,
         currentOrganizationsList: currentOrganizationsListReducer,
         [statusApi.reducerPath]: statusApi.reducer,
-        [authOrganizationApi.reducerPath]: authOrganizationApi.reducer,
+        // [authOrganizationApi.reducerPath]: authOrganizationApi.reducer,
         [organizationsApi.reducerPath]: organizationsApi.reducer,
         [languageApi.reducerPath]: languageApi.reducer,
         [doctorApi.reducerPath]: doctorApi.reducer,
@@ -52,7 +52,7 @@ export const store = configureStore({
         return getDefaultMiddleware()
             .concat([
                 statusApi.middleware,
-                authOrganizationApi.middleware,
+                // authOrganizationApi.middleware,
                 organizationsApi.middleware,
                 languageApi.middleware,
                 doctorApi.middleware,
@@ -69,7 +69,7 @@ export {changeUserState}
 export {setCurrentUser}
 export {setOrganizationsList}
 export {useFetchUserUseStatusQuery, useAddUserStatusMutation} from '../app/apis/statusApi';
-export {useOrganizationLoginMutation} from '../features/auth/authOrganizationApi';
+// export {useOrganizationLoginMutation} from '../features/auth/authOrganizationApi';
 export {useFetchOrganizationsQuery,} from '../app/apis/organozationApi';
 export {useFetchLanguagesQuery} from '../app/apis/languageApi';
 export {useFetchDoctorsQuery} from '../app/apis/doctorApi';

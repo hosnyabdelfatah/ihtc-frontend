@@ -8,7 +8,7 @@ import {FaRegEyeSlash} from "react-icons/fa";
 import {FaRegEye} from "react-icons/fa";
 import {changeUserState, setCurrentUser} from "../../store";
 import {useAlert} from "../../context/AlertProvider";
-import Spinner from '../Spinner';
+// import Spinner from '../Spinner';
 
 const setCookie = (name, value, days) => {
     const date = new Date();
@@ -21,6 +21,19 @@ function ResetPassword() {
     const navigate = useNavigate();
     const errRef = useRef();
     const {showAlert, hideAlert} = useAlert();
+
+    const circleSpinner = <span className="flex justify-center items-center ">
+        <svg className="mr-3 h-5 w-5 animate-spin text-stone-100"
+             xmlns="http://www.w3.org/2000/svg"
+             fill="none"
+             viewBox="0 0 24 24">
+        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                strokeWidth="4"></circle>
+        <path className="opacity-75" fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+    </svg>
+        {/*<span className="text-sm text-stone-100"> Processing...</span>*/}
+    </span>
 
     const handleProcess = async (message, type) => {
         showAlert(message, type);
@@ -67,13 +80,14 @@ function ResetPassword() {
             setNewPassword('');
             setNewPasswordConfirm('');
             setSending(false);
-            handleProcess("Reset password success. Please check you email messages");
-            navigate('/reset-password-success');
+            handleProcess("Reset password success. Please login");
+            navigate('/login');
             // console.log(response)
 
         } catch (err) {
             // console.log(err)
             // setErrMsg(err.response.data);
+            setSending(false);
             handleProcess(err.response.data, "error");
         }
     }
@@ -92,7 +106,7 @@ function ResetPassword() {
     }, [newPassword, newPasswordConfirm]);
 
     return (
-        <div className=" mt-12 mx-auto w-[90%]">
+        <div className=" mt-12 mx-auto w-[40%]">
             <p ref={errRef}
                className={`${errMsg ? "errmsg opacity-100" : "opacity-0"} bg-red-700 text-stone-100 font-bold rounded text-center py-1  mb-8 transition-all`}
                aria-live="assertive">
@@ -100,31 +114,32 @@ function ResetPassword() {
 
             </p>
             <form onSubmit={(e) => handleSubmit(e)}
-                  className="w-full flex flex-col justify-center items-center"
+                  className="w-full flex flex-col justify-center items-center "
             >
-                <div className="form-group w-[70%] flex flex-row justify-center items-center mb-5 relative ">
+                <div className="form-group w-full flex flex-row justify-center items-center mb-10 relative ">
                     <label htmlFor="new-password"
-                           className="max-w-[20%] text-lg text-blue-900 ml-[4.2rem]">
+                           className="text-base text-blue-900 absolute
+                           top-[-20px] left-2">
                         New Password
                     </label>
                     <input type={showPassword ? "text" : "password"} id="new-password" name="new-password"
                            value={newPassword}
                            className={`${userState === "user" ? "border-blue-200"
                                : userState === "doctor" ? " border-lime-200" : " border-amber-200"}
-                         ml-5 p-2 border rounded-lg w-[40%] text-lg text-stone-600
+                         p-2 border rounded-lg w-full text-lg text-stone-600
                          focus:outline-none
                          `}
                            onChange={handleNewPassword}/>
-                    <span className="inline-block absolute text-gray-400 right-[20%] top-3.5 cursor-pointer"
+                    <span className="inline-block absolute text-gray-400 right-[10%] top-3.5 cursor-pointer"
                           onClick={handleShowPassword}>{showPassword ?
                         <FaRegEye/> :
                         <FaRegEyeSlash/>}
                                 </span>
                 </div>
 
-                <div className="form-group w-[70%] flex flex-row justify-center items-center mb-5 relative ">
+                <div className="form-group w-full flex flex-row justify-center items-center mb-5 relative ">
                     <label htmlFor="new-password-confirm"
-                           className="max-w-[30%] text-lg text-blue-900"
+                           className="text-base text-blue-900 absolute top-[-20px] left-2"
                     >
                         Confirm New Password
                     </label>
@@ -132,14 +147,14 @@ function ResetPassword() {
                            name="new-password-confirm"
                            className={`${userState === "user" ? "border-blue-200"
                                : userState === "doctor" ? " border-lime-200" : " border-amber-200"}
-                         ml-5 p-2 border rounded-lg w-[40%] text-lg text-stone-600
+                         p-2 border rounded-lg w-full text-lg text-stone-600
                          focus:outline-none
                          `}
                            value={newPasswordConfirm}
                            onChange={handleNewPasswordConfirm}
 
                     />
-                    <span className="inline-block absolute text-gray-400  right-[20%] cursor-pointer top-4"
+                    <span className="inline-block absolute text-gray-400  right-[10%] cursor-pointer top-4"
                           onClick={handleShowPasswordConfirm}>{showPassword ?
                         <FaRegEye/> :
                         <FaRegEyeSlash/>}
@@ -148,7 +163,7 @@ function ResetPassword() {
                 <button
                     className={`${userState === "user" ? "bg-blue-400" : userState === "doctor" ? "bg-lime-400" : "bg-yellow-400"}  mx-auto py-2 px-6 rounded-lg text-lg
                  text-blue-900 font-semibold drop-shadow-md`}>
-                    {errMsg === '' && sending ? <Spinner text="Sending"/> : "Send"}
+                    {sending ? circleSpinner : "Send"}
                 </button>
             </form>
         </div>

@@ -1,7 +1,6 @@
 import './Organization.css';
 import {useState, useEffect} from "react";
-import {useSelector} from "react-redux";
-import {getCurrentUser} from "../../features/currentUserSlice";
+import useAuth from "../../hooks/useAuth";
 import {BsFillInfoSquareFill} from "react-icons/bs";
 import {Link} from "react-router-dom";
 import axios from "axios";
@@ -9,30 +8,33 @@ import BASE_URL from "../../app/apis/baseUrl";
 import Skeleton from "../Skeleton";
 
 const OrganizationPage = () => {
-    const organization = useSelector(getCurrentUser)
-    // const organizationData = organization?.currentUser
+    const {auth} = useAuth();
+
+    const organization = {...auth};
     const [organizationData, setOrganizationData] = useState({});
-    console.log(organization?.currentUser)
-    // console.log(organizationData)
+
 
     const logo = organizationData?.logo
     const banner = organizationData?.banner
-    // console.log(`Banner: ${banner}`)
 
     const getOrganizationData = async () => {
         try {
-            const response = await axios.get(`${BASE_URL}/organizations/organizationGetMe/${organization?.currentUser.id}`,
-                {withCredentials: true})
+            const response = await axios.get(`${BASE_URL}/organizations/organizationGetMe/${organization.id}`,
+                {
+                    withCredentials: true
+                });
             console.log(response);
-            setOrganizationData(response?.data?.data)
+            const result = response?.data?.data;
+
+            setOrganizationData(result)
         } catch (err) {
             console.log(err)
         }
     }
 
     useEffect(() => {
-        getOrganizationData()
-    }, [])
+        getOrganizationData();
+    }, []);
 
     return (
         <div
@@ -43,15 +45,19 @@ const OrganizationPage = () => {
                      backgroundImage: `url(${banner})`,
                      backgroundRepeat: "no-repeat",
                      backgroundClip: "border-box",
-                     backgroundSize: "contain",
+                     backgroundSize: "cover",
                      backgroundPosition: "center center ",
                      backgroundAttachment: "fixed",
                  }}>
+                <div className="logo fixed top-[90px] left-[30px] h-[130px] w-[130px] border-2
+                 drop-shadow-md border-amber-400 rounded">
+                    {Object.keys(organizationData).length > 0
+                        ? <img src={logo} className="h-full w-full"
+                               alt="Logo"/> :
+                        <Skeleton className="w-full h-full" times={1}/>}
+                </div>
 
-                {Object.keys(organizationData).length > 0 ? <img src={logo} className="fixed top-[90px] left-[30px] w-[130px] border-2
-                 drop-shadow-md border-amber-400 rounded"
-                                                                 alt="Logo"/> :
-                    <Skeleton className="w-full h-full" times={1}/>}
+
             </div>
             <div className="update-password mt-4 mx-4">
                 <Link to="/update-password" className=" mr-5 text-violet-700 font-semibold underline"

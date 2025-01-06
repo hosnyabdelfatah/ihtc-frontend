@@ -260,12 +260,14 @@ const UserSignup = () => {
         validate();
 
         if (password !== passwordConfirm) {
-            setErrMsg('Password not match password confirm');
+            // setErrMsg('Password not match password confirm');
+            handleProcess('Password not match password confirm', 'error');
             return false
         }
 
         if (Object.keys(errors).length > 0) {
-            setErrMsg('Please fill all require fields!')
+            // setErrMsg('Please fill all require fields!');
+            handleProcess('Please fill all require fields!', 'error');
             return false;
         }
 

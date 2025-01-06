@@ -7,11 +7,11 @@ import {Link, useNavigate} from 'react-router-dom';
 import {setCredentials, setError} from "../../features/auth/authSlice";
 import {changeUserState, setCurrentUser} from "../../store";
 import {selectCurrentUserState} from "../../features/userAsSlice";
-import {useOrganizationLoginMutation} from "../../store";
-import axios from "axios";
+// import {useOrganizationLoginMutation} from "../../store";
+// import axios from "axios";
 import useAuth from "../../hooks/useAuth";
 import {useAlert} from "../../context/AlertProvider";
-import BASE_URL from "../../app/apis/baseUrl";
+// import BASE_URL from "../../app/apis/baseUrl";
 
 const setCookie = (name, value, days) => {
     const date = new Date();
@@ -79,18 +79,6 @@ const Login = () => {
         // console.log(document.cookie)
     }
 
-    // const handleLogging = () => {
-    //     if (errMsg !== '') {
-    //         setLogging(true)
-    //     } else {
-    //         setLogging(false)
-    //     }
-    // }
-    // useEffect(() => {
-    //     handleLogging()
-    //     // console.log(logging)
-    // }, [errMsg, logging])
-
     const handleSubmit = async (e) => {
         e.preventDefault()
         if (user === '' || password === '') {
@@ -103,15 +91,13 @@ const Login = () => {
             setLogging(true);
             if (userState === 'organization') {
                 dispatch(loginOrganization({user, password})).then((res) => {
-
                     if (res.payload !== undefined) {
                         setAuth({...res.payload})
-                        console.log(auth)
                         setUser("");
                         setPassword("");
-                        handleProcess(`Welcome back ${auth.name}`, "error");
+                        handleProcess(`Welcome back ${res?.payload?.name}`);
                         setLogging(false);
-                        navigate("/organization");
+                        navigate("/");
                     } else {
                         setLogging(false);
                         if (res?.error?.message === "Request failed with status code 401" || res?.error?.message === "Request failed with status code 400") {
@@ -120,7 +106,7 @@ const Login = () => {
                             setLogging(false);
                         } else {
                             setLogging(false)
-                            setErrMsg(res?.error?.message + " please try again later!")
+                            // setErrMsg(res?.error?.message + " please try again later!")
                             handleProcess(`${res?.error?.message}, please try again later. `, "error")
                         }
                     }
@@ -134,7 +120,7 @@ const Login = () => {
                         console.log(res.payload)
                         handleProcess(`Welcome ${res.payload.firstName} ${res.payload.lastName}`);
                         setLogging(false);
-                        navigate("/doctor");
+                        navigate("/");
                     } else {
                         setLogging(false);
                         console.log(res.error)
@@ -160,7 +146,7 @@ const Login = () => {
                         setPassword("");
                         handleProcess(`Welcome back  ${auth.firstName} ${auth.lastName}`);
                         setLogging(false);
-                        navigate("/user");
+                        navigate("/");
                     } else {
                         setLogging(false)
                         if (res?.error?.message === "Network Error") {

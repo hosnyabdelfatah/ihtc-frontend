@@ -4,6 +4,7 @@ import axios from "axios";
 import Skeleton from "../Skeleton";
 import Pagination from "../Pagination";
 import {getCurrentUser} from "../../features/currentUserSlice";
+import {useAlert} from "../../context/AlertProvider";
 import DoctorSpecialties from "../doctor/DoctorSpecialties";
 import React, {useEffect, useRef, useState, useMemo} from "react";
 import BASE_URL from "../../app/apis/baseUrl";
@@ -12,8 +13,17 @@ import {HiChevronDown} from "react-icons/hi";
 import {IoSearchSharp} from "react-icons/io5";
 
 const Campaigns = () => {
+    const {showAlert, hideAlert} = useAlert();
+    const handleProcess = async (message, type) => {
+        showAlert(message, type);
+        await new Promise((resolve) => setTimeout(resolve, 5000));
+        hideAlert();
+    }
+
+
     const [doctors, setDoctors] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [countryLoading, setCountryLoading] = useState(true);
     const [error, setError] = useState(null);
     const [doctorSpecialty, setDoctorSpecialty] = useState('');
     const [countries, setCountries] = useState([]);
@@ -25,13 +35,17 @@ const Campaigns = () => {
     const [selectedCountryText, setSelectedCountryText] = useState('');
     const [selectedCountryTextResult, setSelectedCountryTextResult] = useState('');
     const [searchDoctorsResultCount, setSearchDoctorsResultCount] = useState(0)
-    const [searchDoctorsResult, setSearchDoctorsResult] = useState([])
-    const [allSelectedDoctors, setAllSelectedDoctors] = useState([])
+    const [searchDoctorsResult, setSearchDoctorsResult] = useState([]);
+    const [selectedDoctors, setSelectedDoctors] = useState({});
+    const [selectedReceivers, setSelectedReceivers] = useState([]);
+    const [allSelectedDoctors, setAllSelectedDoctors] = useState([]);
+    const [selectAllResult, setSelectAllResult] = useState();
     const [checkedItems, setCheckedItems] = useState({});
     const [isSelectAll, setIsSelectAll] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [clearInput, setClearInput] = useState(false);
     const [clearSpecialty, setClearSpecialty] = useState(false);
+
 
     /*Pagination const*/
     const [currentPage, setCurrentPage] = useState(1);
@@ -52,15 +66,7 @@ const Campaigns = () => {
     }
 
     let countryContent;
-    useEffect(() => {
-        const getCountries = async () => {
-            const response = await axios.get(`${BASE_URL}/countries`)
-            const result = response?.data?.data
-            setCountries(result)
-        }
 
-        (async () => await getCountries())();
-    }, []);
 
     const handleClearConditions = () => {
         setSelectedCountry('')
@@ -75,37 +81,82 @@ const Campaigns = () => {
         handleClearInput();
     }
 
-    const handleSelectedDoctor = (e) => {
-        const isSelected = allSelectedDoctors.indexOf(e.target.value);
-        // console.log(isSelected)
-
-        if (isSelected === -1) {
-            setAllSelectedDoctors([...allSelectedDoctors, e.target.value]);
-
-
-        } else {
-            const newSelectedDoctors = allSelectedDoctors.filter(doctor => doctor !== e.target.value)
-            // console.log(newSelectedDoctors)
-            setAllSelectedDoctors([...newSelectedDoctors]);
-        }
-    }
+    // const handleSelectedDoctor = (e) => {
+    //     const isSelected = allSelectedDoctors.indexOf(e.target.value);
+    //     // console.log(isSelected)
+    //
+    //     if (isSelected === -1) {
+    //         setAllSelectedDoctors([...allSelectedDoctors, e.target.value]);
+    //
+    //
+    //     } else {
+    //         const newSelectedDoctors = allSelectedDoctors.filter(doctor => doctor !== e.target.value)
+    //         // console.log(newSelectedDoctors)
+    //         setAllSelectedDoctors([...newSelectedDoctors]);
+    //     }
+    // }
 
     const handleSelectedDoctorSpecialtyResult = () => {
         setSelectedDoctorSpecialtyResult(selectedDoctorSpecialty.title)
     }
+////////Start New Select one and All //////
+    const isSelected = (id) => id in selectedDoctors
+
+    const handleChecked = (id) => {
+        if (id in selectedDoctors) {
+            const {[id]: _, ...rest} = selectedDoctors;
+            setSelectedDoctors(rest);
+        } else {
+            setSelectedDoctors({...selectedDoctors, [id]: true});
+        }
+    };
+
+    const handleSelectAllChecked = () => setIsSelectAll(!isSelectAll);
 
     const handleSelectAll = () => {
-        const newCheckedItems = {};
-        const doctorsArray = searchDoctorsResult?.length > 0 ? searchDoctorsResult : doctors;
+        console.log(isSelectAll)
         if (!isSelectAll) {
-            doctorsArray?.forEach(doctor => {
-                newCheckedItems[doctor?.id] = true; // Mark all items as checked
-            });
+            // setSelectedDoctors((prev) => ({...prev, ...selectAllResult}))
+            setSelectedDoctors({...selectedDoctors, ...selectAllResult})
+            // console.log(selectedDoctors)
+            // console.log(selectAllResult)
+            console.log(Object.keys(selectedDoctors).length);
+        } else {
+            setSelectedDoctors({})
+            setSelectedReceivers([])
+            console.log(Object.keys(selectedDoctors).length);
+
         }
-        setCheckedItems(newCheckedItems);
-        setIsSelectAll(!isSelectAll);
-        console.log(Object.keys(checkedItems).length)
-    };
+
+        // console.log(isSelectAll)
+        // console.log(Object.keys(selectedDoctors).length);
+    }
+
+    const handleClearSelectedDoctors = () => {
+
+        setSelectedDoctors({})
+        setIsSelectAll(false)
+        setCurrentPage(1)
+    }
+
+    const handleSelectedReceivers = (id) => {
+        const receivers = [];
+
+        for (let key of Object.keys(selectedDoctors)) {
+            receivers.push(key)
+        }
+        setSelectedReceivers([...receivers]);
+        console.log(receivers)
+    }
+    const handleValidateCreateCampaign = () => {
+        if (selectedReceivers.length <= 0) {
+            handleProcess("You have to select at least one doctor to send campaign!", "error");
+            return
+        }
+    }
+
+
+////////End New Sellect All //////
 
     const handleSelectAllDoctors = () => {
         if (!isSelectAll) {
@@ -160,7 +211,7 @@ const Campaigns = () => {
             return 0
         }
     ).map(country => {
-        return loading ? <Skeleton className="w-5 h-5" times={5}/>
+        return countryLoading ? <Skeleton className="w-5 h-5" times={5}/>
             : <li value={country._id} key={country._id}
                   className="py-1.5 border-b-[1px] border-b-amber-400 cursor-pointer hover:bg-yellow-200"
                   onClick={() => {
@@ -173,15 +224,8 @@ const Campaigns = () => {
             </li>
     })
 
-    useEffect(() => {
-        setSelectedDoctorSpecialty(doctorSpecialty)
-    }, [doctorSpecialty]);
-
 
     const getAllDoctors = async (page) => {
-        // console.log(selectedCountry, selectedDoctorSpecialty)
-        // setSelectedCountry('');
-        // setSelectedDoctorSpecialty('')
         try {
             setLoading(true);
             const response = await axios.get(`${BASE_URL}/doctors?`, {
@@ -189,12 +233,13 @@ const Campaigns = () => {
             });
 
             const result = response?.data.data;
-
+            console.log(response)
             setDoctors(result);
             setSearchDoctorsResultCount(response?.data?.countResultDocuments);
             setTotalPages(response?.data?.totalCurrentSearchDoctorsPages);
+            setSelectAllResult(response?.data?.selectAllSearchResult);
             // console.log(totalPages)
-            // console.log(result)
+            console.log(response?.data?.selectAllSearchResult)
         } catch (error) {
             // console.error('Fetch error:', error);
             setError(`Fetch error: ${error.message}`);
@@ -204,9 +249,34 @@ const Campaigns = () => {
     };
 
     useEffect(() => {
+        setSelectedDoctorSpecialty(doctorSpecialty)
+    }, [doctorSpecialty]);
+
+
+    useEffect(() => {
         getAllDoctors(currentPage);
     }, [currentPage, searchDoctorsResult]);
 
+    const getCountries = async () => {
+        try {
+            setCountryLoading(true);
+            const response = await axios.get(`${BASE_URL}/countries`)
+            const result = response?.data?.data
+            // console.log(result)
+            setCountryLoading(false);
+            setCountries(result)
+
+        } catch (err) {
+            setCountryLoading(false);
+            console.log(err);
+            // handleProcess
+        }
+    }
+
+    useEffect(() => {
+        getCountries();
+        getAllDoctors();
+    }, []);
 
     return (
         <div className="w-[90%] mx-auto relative max-h-screen flex flex-col mb-8">
@@ -240,6 +310,7 @@ const Campaigns = () => {
                         <span className="search-icon  text-2xl  ">
                             <IoSearchSharp className="text-blue-700 block"
                                            onClick={() => {
+                                               handleClearSelectedDoctors()
                                                handleSearchDoctors()
                                                getAllDoctors()
                                                handleClearInput()
@@ -250,18 +321,18 @@ const Campaigns = () => {
                     <ul className={`${countriesSelectShow ? "h-auto block" : " h-0 hidden"} countries absolute text-center list-none z-30  top-[36px] left-[8px]  w-[88%] cursor-pointer border overflow-y-scroll  bg-stone-100 transition-all
                     `}>
                         {
-                            loading ? <Skeleton className="h-8 w-30" times={8}/> : countryContent
+                            countryLoading ? <Skeleton className="h-8 w-30" times={8}/> : countryContent
                         }
 
                     </ul>
 
                 </div>
-                <div className="clear-conditions mr-3 text-sm text-red-700 font-bold cursor-pointer"
+                <div className="clear-conditions ml-12 text-sm text-red-700 font-bold cursor-pointer"
                      onClick={handleClearConditions}>
-                    CLear Conditions
+                    CLear
                 </div>
-                <div className="search-data flex flex-row justify-between   border-2 border-stone-100 px-2 w-[69%]">
-
+                <div className="search-data flex flex-row justify-between border-2 border-stone-100 px-2 w-[69%]"
+                >
                     <div className="country-selected w-[20%] ">
                         <span>Country</span>
                         <span className="text-indigo-500 font-semibold ml-2">{selectedCountryTextResult}</span>
@@ -275,14 +346,14 @@ const Campaigns = () => {
                     <div>
                         <span
                             className="text-indigo-500 font-semibold mr-2">
-                            {Object.keys(allSelectedDoctors).length}
+                            {Object.keys(selectedDoctors).length}
                         </span>
                         <span>selected</span>
                     </div>
                     <div>
                         result
                         <span className="text-indigo-500 h-full font-semibold mx-1"> {searchDoctorsResultCount}
-                                     </span>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -311,19 +382,24 @@ const Campaigns = () => {
                                 <td className="mr-3">
                                     <input type="checkbox" className=" w-[20px] h-[20px]"
                                            checked={isSelectAll}
+
                                            onChange={() => {
                                                handleSelectAll();
-                                               handleSelectAllDoctors()
+                                               handleSelectAllChecked()
+                                               // handleSelectAllDoctors()
                                            }}
                                     />
                                 </td>
                                 <td>Select all</td>
                                 <td className="  w-[60%] flex flex-row justify-center">
-                                    <button onClick={handleShowModal}
+                                    <button onClick={() => {
+                                        handleSelectedReceivers()
+                                        handleValidateCreateCampaign()
+                                        handleShowModal()
+                                    }}
                                             className="block p-1 border border-amber-400
                                             rounded-full text-violet-700 font-bold">
-                                        Create
-                                        campaign
+                                        Create campaign
                                     </button>
                                 </td>
                             </tr>
@@ -337,13 +413,15 @@ const Campaigns = () => {
                                         <td key={doctor._id} className="w-[5%] flex flex-row justify-start relative  ">
                                             <input type="checkbox" value={doctor._id} id={doctor._id}
                                                    className="w-[20px] h-[20px] "
-                                                // checked={!!checkedItems[doctor._id]}
-                                                   checked={!!checkedItems[doctor._id]}
+                                                   checked={isSelected(doctor._id)}
+                                                //    checked={!!checkedItems[doctor._id]}
                                                 // onClick={(e) => handleSelectedDoctor(e)}
                                                    onChange={
                                                        (e) => {
-                                                           handleCheckboxChange(doctor._id)
-                                                           handleSelectedDoctor(e)
+                                                           handleChecked(doctor._id)
+                                                           // handleSelectedReceivers(doctor._id)
+                                                           // handleCheckboxChange(doctor._id)
+                                                           // handleSelectedDoctor(e)
                                                        }
                                                    }
                                             />
@@ -376,7 +454,7 @@ const Campaigns = () => {
 
                 </div>
             </div>
-            {showModal && <Modal receivers={[...allSelectedDoctors]} onClose={handleCloseModal}/>}
+            {showModal && <Modal receivers={[...selectedReceivers]} onClose={handleCloseModal}/>}
         </div>
     );
 }

@@ -45,8 +45,9 @@ function ForgetPassword() {
     }, [])
 
     const handleSubmit = async (e) => {
-        setSending(true);
         try {
+            setSending(true);
+
             e.preventDefault();
 
             if (!email || email === '') return setErrMsg('You must enter email')
@@ -64,7 +65,10 @@ function ForgetPassword() {
             // navigate('/check-email', {state: {from: location}, replace: true});
             window.open('check-email', '_blank')
         } catch (err) {
-            console.log(err)
+            setSending(false);
+            if (err?.code === "ERR_NETWORK") {
+                setErrMsg("Network connection error !, please try again later");
+            }
             if (err.response.status === 401 || err.response.status === 400 || err.response.data === "You not logged in please login") {
                 setErrMsg("Email is not valid please enter valid email!")
             }
@@ -77,19 +81,22 @@ function ForgetPassword() {
     }, [email]);
 
     return (
-        <div className=" mt-12 mx-auto max-w-[80%]">
+        <div className=" mt-12 mx-auto max-w-[40%]">
             <p ref={errRef}
                className={`${errMsg ? "errmsg opacity-100" : "opacity-0"} bg-red-700 text-stone-100 font-bold rounded text-center py-1  mb-8 transition-all`}
                aria-live="assertive">
                 {errMsg}
-
             </p>
             <form className="w-full flex flex-col justify-center items-center" onSubmit={handleSubmit}>
-                <div className="form-group min-w-full flex flex-row justify-center items-center">
-                    <label className="max-w-[10%] text-2xl text-blue-900" htmlFor="email">Email</label>
+                <div className="form-group w-full relative">
+                    <label
+                        className=" text-2xl text-blue-900 absolute left-[-8px] top-[-30px]"
+                        htmlFor="email">
+                        Email
+                    </label>
                     <input className={`${userState === "user" ? "border-blue-200"
                         : userState === "doctor" ? " border-lime-200" : " border-amber-200"}
-                         ml-5 p-2 border rounded-lg w-[40%] text-xl text-stone-600
+                          p-2 border rounded-lg w-full text-xl text-stone-600 
                          focus:outline-none
                          `}
                            type="email"
@@ -111,10 +118,10 @@ function ForgetPassword() {
                         handleLogging()
                     }}
                 >
-
-                    {errMsg !== "" ? 'Reset password'
-                        : sending ? circleSpinner
-                            : 'Reset password'}
+                    {sending ? circleSpinner : 'Send'}
+                    {/*{errMsg !== "" ? 'Reset password'*/}
+                    {/*    : sending ? circleSpinner*/}
+                    {/*        : 'Reset password'}*/}
                 </button>
             </form>
         </div>

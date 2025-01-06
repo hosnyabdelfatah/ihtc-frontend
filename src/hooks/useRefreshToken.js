@@ -50,7 +50,7 @@ const useRefreshToken = () => {
                 withCredentials: true,
                 withXSRFToken: true
             });
-            console.log(response)
+            // console.log(response)
             if (response?.data || Object.keys(response?.data?.data) > 0) {
                 const result = await response?.data?.data;
                 setAuth({...result});

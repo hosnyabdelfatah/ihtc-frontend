@@ -1,7 +1,6 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import BASE_URL from "../app/apis/baseUrl";
 import axios from "axios";
-import useAuth from "../hooks/useAuth";
 
 export const loginDoctor = createAsyncThunk(
     "doctor/loginDoctor",

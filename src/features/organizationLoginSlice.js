@@ -15,7 +15,7 @@ export const loginOrganization = createAsyncThunk(
             },
         );
 
-        const response = await request.data.data;
+        const response = await request?.data?.data;
         return response;
     }
 );

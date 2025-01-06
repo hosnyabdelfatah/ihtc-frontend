@@ -155,7 +155,7 @@ const DoctorsList = ({doctor}) => {
             setDoctors(result);
             setTotalPages(response?.data.pages);
             // console.log(totalPages)
-            // console.log(result)
+            console.log(result)
         } catch (error) {
             // console.error('Fetch error:', error);
             setError(`Fetch error: ${error.message}`);
