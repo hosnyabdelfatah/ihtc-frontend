@@ -117,7 +117,7 @@ function App() {
                 <Route path="welcome" element={<Welcome/>}/>
                 <Route element={<RequireOrganizationAuth/>}>
                     <Route element={<OrganizationLayout/>}>
-                        <Route path="organization" element={<OrganizationPage/>}/>
+                        <Route path="/organization" element={<OrganizationPage/>}/>
                         <Route path="community" element={<OrganizationsList/>}/>
                         <Route path="/update-organization" element={<UpdateOrganization/>}/>
                         <Route path="/update-banner-logo" element={<UpdateBannerLogo/>}/>
