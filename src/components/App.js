@@ -11,6 +11,7 @@ import Home from './Home';
 import Welcome from "./Welcome";
 import Layout from "./Layout";
 import PersistLogin from '../components/registeration/PersistLogin';
+import Organization from "./organization/Organization";
 import OrganizationPage from "./organization/OrganizationPage";
 import OrganizationsList from "./organization/OrganizationsList";
 import RequireOrganizationAuth from "../features/auth/RequireOrganizationAuth";
@@ -116,7 +117,7 @@ function App() {
                 <Route path="welcome" element={<Welcome/>}/>
                 <Route element={<RequireOrganizationAuth/>}>
                     <Route element={<OrganizationLayout/>}>
-                        <Route path="organization-page" element={<OrganizationPage/>}/>
+                        <Route path="organization" element={<Organization/>}/>
                         <Route path="community" element={<OrganizationsList/>}/>
                         <Route path="/update-organization" element={<UpdateOrganization/>}/>
                         <Route path="/update-banner-logo" element={<UpdateBannerLogo/>}/>

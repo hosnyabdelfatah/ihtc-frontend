@@ -40,7 +40,7 @@ const Home = () => {
                         </h1>
                         <span className="font-semibold">
                             Go to your
-                            <Link to={userState === "organization" ? `/${userState}-page` : `/${userState}-page`}
+                            <Link to={`/${userState}`}
                                   className="text-lg text-violet-700 font-semibold underline uppercase mx-3"
                             >
                                 {userState}
@@ -50,7 +50,7 @@ const Home = () => {
 
                     </div>
                     : <>
-                        <h1 className=" mb-5text-stone-600 font-bold">Welcome In IHTC Comunity</h1>
+                        <h1 className=" mb-5text-stone-600 font-bold">Welcome In IHTC Community</h1>
                         <div>
                             <Link to="/login"
                                   className="inline w-8/12 my-6 mx-auto text-blue-700

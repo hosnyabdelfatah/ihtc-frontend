@@ -90,39 +90,27 @@ const Login = () => {
         try {
             setLogging(true);
             if (userState === 'organization') {
-                const response = await axios.post(`${BASE_URL}/organizations/login`, {user, password}, {
-                    withCredentials: true,
-                    withXSRFToken: true
+                dispatch(loginOrganization({user, password})).then((res) => {
+                    if (res.payload !== undefined) {
+                        setAuth({...res.payload})
+                        setUser("");
+                        setPassword("");
+                        handleProcess(`Welcome back ${res?.payload?.name}`);
+                        setLogging(false);
+                        navigate("/");
+                    } else {
+                        setLogging(false);
+                        if (res?.error?.message === "Request failed with status code 401" || res?.error?.message === "Request failed with status code 400") {
+                            // setErrMsg("Access Denied! Invalid username or password")
+                            handleProcess("Invalid username or password", "error");
+                            setLogging(false);
+                        } else {
+                            setLogging(false)
+                            // setErrMsg(res?.error?.message + " please try again later!")
+                            handleProcess(`Network error please try again later. `, "error")
+                        }
+                    }
                 });
-                console.log(response);
-                const result = response?.data?.data;
-                setAuth({...result})
-                setUser("");
-                setPassword("");
-                handleProcess(`Welcome back ${result.name}`);
-                setLogging(false);
-                navigate("/");
-                // dispatch(loginOrganization({user, password})).then((res) => {
-                //     if (res.payload !== undefined) {
-                //         setAuth({...res.payload})
-                //         setUser("");
-                //         setPassword("");
-                //         handleProcess(`Welcome back ${res?.payload?.name}`);
-                //         setLogging(false);
-                //         navigate("/");
-                //     } else {
-                //         setLogging(false);
-                //         if (res?.error?.message === "Request failed with status code 401" || res?.error?.message === "Request failed with status code 400") {
-                //             // setErrMsg("Access Denied! Invalid username or password")
-                //             handleProcess("Invalid username or password", "error");
-                //             setLogging(false);
-                //         } else {
-                //             setLogging(false)
-                //             // setErrMsg(res?.error?.message + " please try again later!")
-                //             handleProcess(`Network error please try again later. `, "error")
-                //         }
-                //     }
-                // });
             } else if (userState === 'doctor') {
                 dispatch(loginDoctor({user, password})).then((res) => {
                     if (res.payload !== undefined) {
