@@ -11,7 +11,6 @@ import Home from './Home';
 import Welcome from "./Welcome";
 import Layout from "./Layout";
 import PersistLogin from '../components/registeration/PersistLogin';
-import Organization from "./organization/Organization";
 import OrganizationPage from "./organization/OrganizationPage";
 import OrganizationsList from "./organization/OrganizationsList";
 import RequireOrganizationAuth from "../features/auth/RequireOrganizationAuth";
@@ -97,6 +96,7 @@ function App() {
             <Route path="/" element={<Layout/>}>
                 <Route path="/login" element={<Login/>}/>
                 <Route path="organizations" element={<OrganizationsList/>}/>
+
                 <Route path="organization-signup" element={<OrganizationSignup/>}/>
                 <Route path="doctor-signup" element={<DoctorSignup/>}/>
                 <Route path="user-signup" element={<UserSignup/>}/>
@@ -117,7 +117,7 @@ function App() {
                 <Route path="welcome" element={<Welcome/>}/>
                 <Route element={<RequireOrganizationAuth/>}>
                     <Route element={<OrganizationLayout/>}>
-                        <Route path="organization" element={<Organization/>}/>
+                        <Route path="organization" element={<OrganizationPage/>}/>
                         <Route path="community" element={<OrganizationsList/>}/>
                         <Route path="/update-organization" element={<UpdateOrganization/>}/>
                         <Route path="/update-banner-logo" element={<UpdateBannerLogo/>}/>
@@ -125,12 +125,19 @@ function App() {
                         />
                         <Route path="campaign" element={<Campaigns/>}/>
                         <Route element={<CampaignsBoxLayout/>}>
-                            <Route path="campaign-box/:organizationId" element={<CampaignsSent/>}/>
+                            <Route
+                                path="campaign-box/:organizationId" element={<CampaignsSent/>}
+                            />
                             <Route path="campaigns-sent/:organizationId" element={<CampaignsSent/>}/>
-                            <Route path="organization-messages-in" element={<OrganizationMessagesIn/>}/>
-                            <Route path="/campaign-details/:campaignId" element={<CampaignDetails/>}/>
+                            <Route path="organization-messages-in" element={<OrganizationMessagesIn/>}
+                            />
+
+                            <Route path="/campaign-details/:campaignId"
+                                   element={<CampaignDetails/>}/>
+
                             {/*<Route path="/message-details/:messageId" element={<MessageDetails/>}/>*/}
                         </Route>
+
                     </Route>
                 </Route>
 
