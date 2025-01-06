@@ -288,13 +288,11 @@ const DoctorSignup = () => {
             setSelectedCountryText('');
             setSelectedLanguage('');
             setSelectedLanguageText('');
-            setDescription('')
+            setDescription('');
             setSuccess(true);
             setLogging(false);
             handleProcess("Welcome in IHTC community, please check your email");
-            navigate('/home')
-
-
+            navigate('/');
         } catch (err) {
             setLogging(false);
             if (err?.response?.status === 400) {

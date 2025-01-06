@@ -107,7 +107,7 @@ const Login = () => {
                         } else {
                             setLogging(false)
                             // setErrMsg(res?.error?.message + " please try again later!")
-                            handleProcess(`${res?.error?.message}, please try again later. `, "error")
+                            handleProcess(`Network error please try again later. `, "error")
                         }
                     }
                 });
