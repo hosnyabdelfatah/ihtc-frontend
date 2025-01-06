@@ -40,7 +40,7 @@ const Home = () => {
                         </h1>
                         <span className="font-semibold">
                             Go to your
-                            <Link to={`/${userState}`}
+                            <Link to={`${userState}`}
                                   className="text-lg text-violet-700 font-semibold underline uppercase mx-3"
                             >
                                 {userState}

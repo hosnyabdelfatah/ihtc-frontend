@@ -51,8 +51,8 @@ function DoctorPage() {
 
 
     useEffect(() => {
-        getMessageOut();
         getDoctorData();
+        getMessageOut();
     }, []);
 
 
