@@ -1,46 +1,16 @@
 import './Organization.css';
-import {useState, useEffect} from "react";
 import {useSelector, useDispatch} from "react-redux";
 import {selectCurrentUserState} from "../../features/userAsSlice";
 import {selectCurrentUser} from "../../features/auth/authSlice";
 import {getCurrentUser} from "../../features/currentUserSlice";
 import {BsFillInfoSquareFill} from "react-icons/bs";
-import axios from 'axios';
-import BASE_URL from "../../app/apis/baseUrl";
-import {useAlert} from "../../context/AlertProvider";
 
 const OrganizationPage = () => {
-    const {showAlert, hideAlert} = useAlert();
-    const handleProcess = async (message, type) => {
-        showAlert(message, type);
-        await new Promise((resolve) => setTimeout(resolve, 5000));
-        hideAlert();
-    }
-
     const organization = useSelector(getCurrentUser)
     const organizationData = organization?.currentUser
-    // const logo = organizationData?.logo
-    // const banner = organizationData?.banner
+    const logo = organizationData?.logo
+    const banner = organizationData?.banner
     // console.log(`Banner: ${banner}`)
-
-    const [organizationInfo, setOrganizationInfo] = useState({});
-
-
-    const getOrganizationData = async () => {
-        try {
-            const response = await axios.get(`${BASE_URL}/organizations/me/${organizationData.id}`);
-            const result = response?.data?.data;
-            console.log(result)
-            setOrganizationInfo({...result});
-        } catch (err) {
-            console.log(err);
-            // handleProcess(err)
-        }
-    }
-
-    useEffect(() => {
-        getOrganizationData()
-    }, [])
 
     return (
         <div
@@ -48,7 +18,7 @@ const OrganizationPage = () => {
         >
             <div className="organization_header h-3/6 border"
                  style={{
-                     backgroundImage: `url(${organizationInfo?.banner})`,
+                     backgroundImage: `url(${banner})`,
                      backgroundRepeat: "no-repeat",
                      backgroundClip: "border-box",
                      backgroundSize: "auto",
@@ -67,14 +37,14 @@ const OrganizationPage = () => {
                         <div className="organization_info-country mb-3 flex flex-row justify-start items-center">
                         <span
                             className="px-2 border border-[#ffc907] shadow-[#0657A8]  rounded-xl text-[#0657A8] font-bold mr-2">
-                            {organizationInfo?.country?.title}
+                            {organizationData?.country?.title}
                         </span>
                         </div>
                         <div
                             className="organization_info-industry organization_info-country mb-3 flex flex-row justify-start items-center  ">
                         <span
                             className="px-2 border border-[#ffc907] shadow-[#0657A8]  rounded-xl text-[#0657A8] font-bold mr-2">
-                            {organizationInfo?.industryField}
+                            {organizationData?.industryField}
                         </span>
 
                         </div>
@@ -83,7 +53,7 @@ const OrganizationPage = () => {
 
                 <div className="organization_description  flex flex-col items-start ml-8  w-3/4">
                     <h3 className="px-2 border border-[#ffc907] shadow-[#0657A8]  rounded-xl text-[#0657A8] font-bold mb-2">Description</h3>
-                    <p className="text-md text-stone-900">{organizationInfo?.description}</p>
+                    <p className="text-md text-stone-900">{organizationData?.description}</p>
                 </div>
             </div>
         </div>
