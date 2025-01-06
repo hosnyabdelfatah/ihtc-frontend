@@ -8,10 +8,10 @@ import {setCredentials, setError} from "../../features/auth/authSlice";
 import {changeUserState, setCurrentUser} from "../../store";
 import {selectCurrentUserState} from "../../features/userAsSlice";
 // import {useOrganizationLoginMutation} from "../../store";
-// import axios from "axios";
+import axios from "axios";
 import useAuth from "../../hooks/useAuth";
 import {useAlert} from "../../context/AlertProvider";
-// import BASE_URL from "../../app/apis/baseUrl";
+import BASE_URL from "../../app/apis/baseUrl";
 
 const setCookie = (name, value, days) => {
     const date = new Date();
@@ -90,27 +90,39 @@ const Login = () => {
         try {
             setLogging(true);
             if (userState === 'organization') {
-                dispatch(loginOrganization({user, password})).then((res) => {
-                    if (res.payload !== undefined) {
-                        setAuth({...res.payload})
-                        setUser("");
-                        setPassword("");
-                        handleProcess(`Welcome back ${res?.payload?.name}`);
-                        setLogging(false);
-                        navigate("/");
-                    } else {
-                        setLogging(false);
-                        if (res?.error?.message === "Request failed with status code 401" || res?.error?.message === "Request failed with status code 400") {
-                            // setErrMsg("Access Denied! Invalid username or password")
-                            handleProcess("Invalid username or password", "error");
-                            setLogging(false);
-                        } else {
-                            setLogging(false)
-                            // setErrMsg(res?.error?.message + " please try again later!")
-                            handleProcess(`Network error please try again later. `, "error")
-                        }
-                    }
+                const response = await axios.post(`${BASE_URL}/organizations/login`, {user, password}, {
+                    withCredentials: true,
+                    withXSRFToken: true
                 });
+                console.log(response);
+                const result = response?.data?.data;
+                setAuth({...result})
+                setUser("");
+                setPassword("");
+                handleProcess(`Welcome back ${result.name}`);
+                setLogging(false);
+                navigate("/");
+                // dispatch(loginOrganization({user, password})).then((res) => {
+                //     if (res.payload !== undefined) {
+                //         setAuth({...res.payload})
+                //         setUser("");
+                //         setPassword("");
+                //         handleProcess(`Welcome back ${res?.payload?.name}`);
+                //         setLogging(false);
+                //         navigate("/");
+                //     } else {
+                //         setLogging(false);
+                //         if (res?.error?.message === "Request failed with status code 401" || res?.error?.message === "Request failed with status code 400") {
+                //             // setErrMsg("Access Denied! Invalid username or password")
+                //             handleProcess("Invalid username or password", "error");
+                //             setLogging(false);
+                //         } else {
+                //             setLogging(false)
+                //             // setErrMsg(res?.error?.message + " please try again later!")
+                //             handleProcess(`Network error please try again later. `, "error")
+                //         }
+                //     }
+                // });
             } else if (userState === 'doctor') {
                 dispatch(loginDoctor({user, password})).then((res) => {
                     if (res.payload !== undefined) {
@@ -168,7 +180,7 @@ const Login = () => {
             setLogging(false)
             if (err?.response?.status === 400) {
                 // setErrMsg('Missing Username or Password');
-                handleProcess('Missing Username or Password', "error")
+                handleProcess('Email or password not correct', "error")
             } else if (err?.response?.status === 401) {
                 // setErrMsg('Unauthorized');
                 handleProcess('Unauthorized', 'error');
