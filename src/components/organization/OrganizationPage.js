@@ -64,7 +64,7 @@ const OrganizationPage = () => {
                       alt="Update password">
                     Update password
                 </Link>
-                <Link to={`campaign-box/${organizationData.id}`}
+                <Link to={`/campaign-box/${organizationData.id}`}
                       className=" mr-5 text-violet-700 font-semibold underline">
                     campaign box
                 </Link>

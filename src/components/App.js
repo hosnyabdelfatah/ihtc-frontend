@@ -126,7 +126,7 @@ function App() {
                         <Route path="campaign" element={<Campaigns/>}/>
                         <Route element={<CampaignsBoxLayout/>}>
                             <Route
-                                path="/organization/campaign-box/:organizationId" element={<CampaignsSent/>}
+                                path="campaign-box/:organizationId" element={<CampaignsSent/>}
                             />
                             <Route path="campaigns-sent/:organizationId" element={<CampaignsSent/>}/>
                             <Route path="organization-messages-in" element={<OrganizationMessagesIn/>}
