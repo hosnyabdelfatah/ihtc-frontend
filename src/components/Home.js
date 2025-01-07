@@ -24,7 +24,8 @@ const Home = () => {
         } else if (userState === 'organization') {
             setName(auth?.name);
         }
-        // console.log(name)
+        console.log(name)
+        console.log(currentUser.currentUser)
     }, []);
 
     return (
