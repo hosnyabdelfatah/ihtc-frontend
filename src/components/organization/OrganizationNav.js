@@ -13,7 +13,7 @@ import useAuth from "../../hooks/useAuth";
 
 // <HiOutlineLogin />
 const OrganizationNav = () => {
-    const {auth} = useAuth();
+    const {auth, setAuth} = useAuth();
     const organization = useSelector(getCurrentUser)
     const organizationData = {...auth}
 
@@ -26,7 +26,8 @@ const OrganizationNav = () => {
         } catch (err) {
             console.log(err)
         }
-        dispatch(setCurrentUser({}))
+        dispatch(setCurrentUser({}));
+        setAuth({});
     }
 
     return (

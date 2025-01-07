@@ -3,14 +3,17 @@ import {useFetchOrganizationsQuery} from '../../store';
 import {getCurrentUser} from "../../features/currentUserSlice";
 import Skeleton from "../Skeleton";
 import OrganizationCard from "./OrganizationCard";
+import useAuth from '../../hooks/useAuth';
 
 
 const OrganizationsList = ({organization}) => {
+    const {auth} = useAuth();
+
     const dispatch = useDispatch();
     const {data, error, isFetching} = useFetchOrganizationsQuery(organization);
 
     const result = useSelector(getCurrentUser)
-    const organizationData = result?.currentUser
+    const organizationData = {...auth};
 
     let content;
     if (isFetching) {
