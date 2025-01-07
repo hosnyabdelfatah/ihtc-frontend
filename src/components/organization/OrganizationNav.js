@@ -9,11 +9,13 @@ import {Link} from "react-router-dom";
 import {selectCurrentUser} from "../../features/auth/authSlice";
 import axios from "axios";
 import BASE_URL from "../../app/apis/baseUrl";
+import useAuth from "../../hooks/useAuth";
 
 // <HiOutlineLogin />
 const OrganizationNav = () => {
+    const {auth} = useAuth();
     const organization = useSelector(getCurrentUser)
-    const organizationData = organization?.currentUser
+    const organizationData = {...auth}
 
     const dispatch = useDispatch()
     const handleSignout = async () => {
