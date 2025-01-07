@@ -95,6 +95,7 @@ const Login = () => {
                         setAuth({...res.payload})
                         setUser("");
                         setPassword("");
+                        console.log(res.payload)
                         handleProcess(`Welcome back ${res?.payload?.name}`);
                         setLogging(false);
                         navigate("/");
