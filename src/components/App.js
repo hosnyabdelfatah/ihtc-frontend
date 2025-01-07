@@ -106,6 +106,7 @@ function App() {
                 <Route path="update-password" element={<UpdatePassword/>}/>
                 <Route path="/reset-password-success" element={<ResetPasswordSuccess/>}/>
                 <Route path="under-construction" element={<UnderConstruction/>}/>
+                <Route path="organization" element={<OrganizationPage/>}/>
 
 
                 {/*<Route path="insert-doctors" element={<InsertDoctors/>}/>*/}
@@ -117,7 +118,6 @@ function App() {
                 <Route path="welcome" element={<Welcome/>}/>
                 <Route element={<RequireOrganizationAuth/>}>
                     <Route element={<OrganizationLayout/>}>
-                        <Route path="organization" element={<OrganizationPage/>}/>
                         <Route path="community" element={<OrganizationsList/>}/>
                         <Route path="/update-organization" element={<UpdateOrganization/>}/>
                         <Route path="/update-banner-logo" element={<UpdateBannerLogo/>}/>
