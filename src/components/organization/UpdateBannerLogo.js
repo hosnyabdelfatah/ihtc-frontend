@@ -46,7 +46,7 @@ function UpdateBannerLogo() {
 
     const handleGetCurrentOrganizationData = async () => {
         try {
-            const response = await axios.get(`${BASE_URL}/organizations/organizationGetMe/${auth.id}`, {
+            const response = await axios.get(`${BASE_URL}/organizations/me/${auth.id}`, {
                 withCredentials: true
             })
 

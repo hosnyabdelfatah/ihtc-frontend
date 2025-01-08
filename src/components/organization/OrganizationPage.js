@@ -34,17 +34,19 @@ const OrganizationPage = () => {
 
     return (
         <div
-            className="organization-page h-screen mt-2 w-[90%] border-red-700 mb-6 mx-auto"
+            className="organization-page  mt-2 mb-12 w-[90%] pb-20  mx-auto"
         >
-            <div className="organization_header h-3/6"
+            <div className="organization_header border-2"
                  style={{
-                     backgroundImage: `url(${organizationData?.banner})`,
-                     backgroundRepeat: "no-repeat",
-                     backgroundClip: "border-box",
-                     backgroundSize: "cover",
-                     backgroundPosition: "center center ",
-                     backgroundAttachment: "fixed",
+                     height: "20%",
+                     // backgroundImage: `url(${organizationData?.banner})`,
+                     // backgroundRepeat: "no-repeat",
+                     // backgroundClip: "border-box",
+                     // backgroundSize: "cover",
+                     // backgroundPosition: "center center ",
+                     // backgroundAttachment: "fixed",
                  }}>
+                <img src={organizationData?.banner} className="w-full h-[300px]"/>
                 <div className="logo fixed top-[90px] left-[30px] h-[130px] w-[130px] border-2
                  drop-shadow-md border-amber-400 rounded">
                     {Object.keys(organizationData).length > 0

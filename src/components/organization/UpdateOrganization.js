@@ -134,7 +134,7 @@ function UpdateOrganization(props) {
 
     const currentOrganizationData = async () => {
         try {
-            const response = await axios.get(`${BASE_URL}/organizations/organizationGetMe/${organizationData.id}`, {
+            const response = await axios.get(`${BASE_URL}/organizations/me/${organizationData.id}`, {
                 withCredentials: true
             });
             const result = response?.data?.data
@@ -205,12 +205,12 @@ function UpdateOrganization(props) {
                 <div className="sm:mx-auto sm:w-full sm:max-w-md">
                     <div className="registration-title  justify-evenly content-baseline ">
                         <h2 className="mt-3 text-center  text-xl leading-5 font-bold text-gray-500">
-                            Organization registration.
+                            Update Organization Profile.
                         </h2>
-                        <p className="mt-1 text-center text-sm leading-5 text-gray-500 max-w">
-                            I have an account:<span> </span>
+                        <p className="my-3 text-left text-sm leading-5 text-gray-500 max-w">
+
                             <Link to="/organization"
-                                  className="font-medium text-blue-600 hover:text-blue-500 focus:outline-none focus:underline transition ease-in-out duration-150 px-1 border border-b-lime-400 rounded-l  hover:text-lime-600 transition-all">
+                                  className="font-medium text-blue-600 hover:text-blue-500 focus:outline-none focus:underline transition ease-in-out duration-150 px-1 border border-b-amber-400 rounded-l  hover:text-lime-600 transition-all">
                                 Organization Page
                             </Link>
                         </p>

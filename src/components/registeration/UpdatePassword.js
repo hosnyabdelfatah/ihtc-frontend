@@ -33,15 +33,11 @@ function UpdatePassword() {
     const [showCurrentPassword, setShowCurrentPassword] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
-    const [sending, setSending] = useState(false);
     const [errMsg, setErrMsg] = useState('');
 
     const handleCurrentPassword = (e) => setCurrentPassword(e.target.value);
     const handleNewPassword = (e) => setNewPassword(e.target.value);
-
-
     const handleNewPasswordConfirm = (e) => setNewPasswordConfirm(e.target.value);
-
 
     const handleShowCurrentPassword = () => setShowCurrentPassword(!showCurrentPassword)
     const handleShowPassword = () => setShowPassword(!showPassword)
@@ -60,6 +56,7 @@ function UpdatePassword() {
         {/*<span className="text-sm text-stone-100"> Processing...</span>*/}
     </span>
 
+
     const formData = new FormData();
     formData.append("id", auth.id);
     formData.append("currentPassword", currentPassword);
@@ -68,16 +65,24 @@ function UpdatePassword() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!currentPassword || currentPassword === '') {
+            handleProcess("Current password is required!", "error");
+            setIsLoading(false);
+            return;
+        }
+        if (!newPassword || !newPasswordConfirm || newPassword === '' || newPasswordConfirm === '') {
+            handleProcess("New password and new password confirm is require!", "error");
+            setIsLoading(false);
+            return;
+        }
+
         if (newPassword !== newPasswordConfirm) {
             handleProcess("New password not match new password confirm!", "error");
-
-            // setErrMsg("New password not match new password confirm!");
-
+            setIsLoading(false);
             return;
         }
         try {
             setIsLoading(true);
-            setSending(true);
             const response = await axios.patch(`${BASE_URL}/${userState}s/updatePassword`,
                 formData
                 , {
@@ -88,7 +93,6 @@ function UpdatePassword() {
             setCurrentPassword('');
             setNewPassword('');
             setNewPasswordConfirm('');
-            setSending(false);
             setIsLoading(false);
             handleProcess("Password update success", "success");
             navigate(`/${userState}`);
@@ -102,7 +106,7 @@ function UpdatePassword() {
 
     useEffect(() => {
         setErrMsg('');
-        setSending(false);
+        setIsLoading(false);
     }, [currentPassword, newPassword, newPasswordConfirm]);
 
     return (
