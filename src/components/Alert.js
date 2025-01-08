@@ -29,7 +29,7 @@ function Alert() {
         background: "none",
         color: alert.type === "success" ? "#155724" : "#721c24",
         border: `1px solid ${alert.type === "success" ? "#155724" : "#721c24"} `,
-        borderRadius: "10px",
+        borderRadius: "4px",
         fontSize: "16px",
         cursor: "pointer",
     };
