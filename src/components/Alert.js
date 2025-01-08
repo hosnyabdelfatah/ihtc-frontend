@@ -8,24 +8,26 @@ function Alert() {
     if (!alert.visible) return null;
     const alertStyle = {
         position: "fixed",
-        top: "30px",
-        left: "30px",
-        background: alert.type === "success" ? "#d4edda" : "#f8d7da",
-        color: "#155724",
-        padding: "25px",
-        border: `1px solid ${alert.type === "success" ? "#c3e6cb" : "#f5c6cb"} `,
+        top: "20px",
+        right: "20px",
+        backgroundColor: alert.type === "success" ? "#d4edda" : "#f8d7da",
+        color: alert.type === "success" ? "#155724" : "#721c24",
+        padding: "15px 40px 15px 15px", // Add padding for the close button
+        border: `1px solid ${alert.type === "success" ? "#c3e6cb" : "#f5c6cb"}`,
         borderRadius: "5px",
         fontSize: "16px",
-        fontWeight: "bold",
         zIndex: 1000,
-        transition: "opacity 0,5s ease-in-out",
+        transition: "opacity 0.5s ease-in-out",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
     };
 
     const closeButtonStyle = {
         position: "absolute",
         top: "5px",
         right: "10px",
-        padding: "2px",
+        padding: "1px",
         background: "none",
         color: alert.type === "success" ? "#155724" : "#721c24",
         border: `1px solid ${alert.type === "success" ? "#155724" : "#721c24"} `,
