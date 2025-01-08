@@ -1,15 +1,12 @@
 import ReactDom from 'react-dom';
 import React, {useEffect, useState, useRef} from "react";
-import {useSelector} from "react-redux";
-import {getCurrentUser} from "../../features/currentUserSlice";
 import axios from "axios";
 import BASE_URL from "../../app/apis/baseUrl";
-import {retry} from "@reduxjs/toolkit/query";
+import useAuth from "../../hooks/useAuth";
 
 const Modal = ({receivers, onClose}) => {
-    const organization = useSelector(getCurrentUser);
-    // console.log(organization?.currentUser)
-    const sender = organization?.currentUser.id;
+    const {auth} = useAuth();
+    const sender = auth?.id;
     // console.log(sender)
 
     const receiversText = receivers.join('-')
