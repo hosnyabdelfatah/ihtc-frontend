@@ -3,7 +3,7 @@ import {useAlert} from "../context/AlertProvider";
 import {IoClose} from "react-icons/io5";
 
 function Alert() {
-    const {alert} = useAlert();
+    const {alert, setAlert} = useAlert();
 
     if (!alert.visible) return null;
     const alertStyle = {
@@ -21,7 +21,8 @@ function Alert() {
         transition: "opacity 0,5s ease-in-out",
     };
 
-    const handleCloseAlert = () => alert.hideAlert();
+    const handleCloseAlert = () => setAlert(({message: "", type: "success", visible: false}));
+    ;
 
     return (
         <div style={alertStyle} className="alert relative">
