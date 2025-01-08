@@ -8,7 +8,13 @@ import {useAlert} from "../../context/AlertProvider";
 function UpdateBannerLogo() {
     const {auth} = useAuth();
     const navigate = useNavigate();
-    const {showAlert} = useAlert();
+
+    const {showAlert, hideAlert} = useAlert();
+    const handleProcess = async (message, type) => {
+        showAlert(message, type);
+        await new Promise((resolve) => setTimeout(resolve, 5000));
+        hideAlert();
+    }
 
     const [isLoading, setIsLoading] = useState(false);
     const [currentData, setCurrentData] = useState({});
@@ -68,17 +74,16 @@ function UpdateBannerLogo() {
             const response = await axios.patch(`${BASE_URL}/organizations/updateBannerLogo/${auth?.id}`, updatedData, {
                 withCredentials: true
             });
-            setIsLoading(false);
             setBannerPreview(null);
             setLogoPreview(null);
             setBanner('');
             setLogo('');
+            setIsLoading(false);
             navigate('/organization')
 
         } catch (err) {
             console.log(err);
             setIsLoading(false);
-
         }
     }
 

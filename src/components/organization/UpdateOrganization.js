@@ -6,16 +6,25 @@ import Skeleton from "../Skeleton";
 import axios from "axios";
 import BASE_URL from "../../app/apis/baseUrl";
 import {HiChevronDown} from "react-icons/hi";
+import {useAlert} from "../../context/AlertProvider";
 
 function UpdateOrganization(props) {
     const {auth} = useAuth();
     const navigate = useNavigate();
     const errRef = useRef(false);
 
+    const {showAlert, hideAlert} = useAlert();
+    const handleProcess = async (message, type) => {
+        showAlert(message, type);
+        await new Promise((resolve) => setTimeout(resolve, 5000));
+        hideAlert();
+    }
+
     let content;
 
 
     const [success, setSuccess] = useState(false)
+    const [loading, setLoading] = useState(false);
 
     const [selectedCountry, setSelectedCountry] = useState('');
     const [countriesClicked, setCountriesClicked] = useState(false);
@@ -41,6 +50,18 @@ function UpdateOrganization(props) {
     const handleCountriesSelectShow = () => setCountriesSelectShow(!countriesSelectShow);
     const handleCountriesClicked = () => setCountriesClicked(!countriesClicked);
 
+    const circleSpinner = <span className="flex justify-center items-center ">
+        <svg className="mr-3 h-5 w-5 animate-spin text-stone-100"
+             xmlns="http://www.w3.org/2000/svg"
+             fill="none"
+             viewBox="0 0 24 24">
+        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                strokeWidth="4"></circle>
+        <path className="opacity-75" fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+    </svg>
+        {/*<span className="text-sm text-stone-100"> Processing...</span>*/}
+    </span>
 
     if (isFetching) {
         content = <Skeleton className="w-full h-4" times={4}/>
@@ -142,7 +163,6 @@ function UpdateOrganization(props) {
             setSelectedCountry(result?.country.id);
             setSelectedCountryText(result?.country.title);
             setDescription(result?.description);
-            console.log(result)
 
         } catch (err) {
             console.log(err)
@@ -158,6 +178,7 @@ function UpdateOrganization(props) {
         if (Object.keys(errors) > 0) return false;
 
         try {
+            setLoading(true);
             const response = await axios.patch(`${BASE_URL}/organizations/updateOrganization/${organizationData.id}`, updatedOrganizationData, {
                 withCredentials: true,
             });
@@ -171,11 +192,11 @@ function UpdateOrganization(props) {
             setSelectedCountryText('');
             setDescription('');
 
-            setSuccess(true);
-
+            setLoading(false);
             navigate('/organization')
         } catch (err) {
             if (err.response?.status === 409) {
+
                 setErrMsg("Username taken");
             } else {
                 setErrMsg(err?.response?.data.message);
@@ -325,7 +346,8 @@ function UpdateOrganization(props) {
                             <button type="submit"
                                     onClick={handleSubmit}
                                     className="w-full flex justify-center py-2 px-4  shadow-sm shadow-lime-400 border border-transparent sm:text-lg font-bold rounded-md  text-red-800 border-2 border-stone-400 bg-lime-400 hover:border-indigo-300  transition-all duration-150 ease-in-out">
-                                Register
+                                {loading ? circleSpinner : <span>Update</span>}
+
                             </button>
                         </div>
                     </form>
