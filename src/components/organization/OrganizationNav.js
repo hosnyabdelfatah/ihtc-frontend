@@ -10,9 +10,10 @@ import {selectCurrentUser} from "../../features/auth/authSlice";
 import axios from "axios";
 import BASE_URL from "../../app/apis/baseUrl";
 import useAuth from "../../hooks/useAuth";
-
+import {useNavigate} from "react-router-dom";
 // <HiOutlineLogin />
 const OrganizationNav = () => {
+    const navigate = useNavigate();
     const {auth, setAuth} = useAuth();
     const organization = useSelector(getCurrentUser)
     const organizationData = {...auth}
@@ -23,6 +24,8 @@ const OrganizationNav = () => {
             const response = await axios.get(`${BASE_URL}/organizations/logout`, {
                 withCredentials: true
             })
+
+            navigate("/");
         } catch (err) {
             console.log(err)
         }
