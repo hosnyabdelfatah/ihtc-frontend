@@ -12,7 +12,7 @@ function Alert() {
         left: "30px",
         background: alert.type === "success" ? "#d4edda" : "#f8d7da",
         color: "#155724",
-        padding: "20px 15px 15px 15px",
+        padding: "25px",
         border: `1px solid ${alert.type === "success" ? "#c3e6cb" : "#f5c6cb"} `,
         borderRadius: "5px",
         fontSize: "16px",
