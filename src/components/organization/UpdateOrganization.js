@@ -1,19 +1,14 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Link, useNavigate} from "react-router-dom";
 import {useFetchCountriesQuery} from "../../app/apis/countryApi";
-import {getCurrentUser} from "../../features/currentUserSlice";
 import useAuth from "../../hooks/useAuth";
 import Skeleton from "../Skeleton";
 import axios from "axios";
 import BASE_URL from "../../app/apis/baseUrl";
-import {FaRegEye, FaRegEyeSlash} from "react-icons/fa";
 import {HiChevronDown} from "react-icons/hi";
-import {useSelector} from "react-redux";
 
 function UpdateOrganization(props) {
-    const organization = useSelector(getCurrentUser)
-    const organizationData = organization.currentUser
-    // console.log(organizationData)
+    const {auth} = useAuth();
     const navigate = useNavigate();
     const errRef = useRef(false);
 
@@ -134,7 +129,7 @@ function UpdateOrganization(props) {
 
     const currentOrganizationData = async () => {
         try {
-            const response = await axios.get(`${BASE_URL}/organizations/me/${organizationData.id}`, {
+            const response = await axios.get(`${BASE_URL}/organizations/me/${auth.id}`, {
                 withCredentials: true
             });
             const result = response?.data?.data
