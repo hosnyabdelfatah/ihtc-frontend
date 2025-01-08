@@ -1,6 +1,6 @@
 import React from 'react';
 import {useDispatch} from "react-redux";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import {clearUser} from "../../features/userSlice";
 import Logo from "../../assets/images/logo-transparent.webp";
@@ -9,16 +9,29 @@ import {GrGroup} from "react-icons/gr";
 import {SiAmazonsimpleemailservice} from "react-icons/si";
 import {TbLogout} from "react-icons/tb";
 import {HiOutlineLogin} from "react-icons/hi";
+import axios from "axios";
+import BASE_URL from "../../app/apis/baseUrl";
+import {setCurrentUser} from "../../features/currentUserSlice";
 
 
 function UserNav() {
+    const navigate = useNavigate();
     const {auth, setAuth} = useAuth();
     const userData = {...auth}
     const dispatch = useDispatch();
 
-    const handleSignout = () => {
-        setAuth({});
-        dispatch(clearUser())
+
+    const handleSignout = async () => {
+        try {
+            const response = await axios.get(`${BASE_URL}/users/logout`, {
+                withCredentials: true
+            })
+            dispatch(setCurrentUser({}));
+            setAuth({});
+            navigate("/");
+        } catch (err) {
+            console.log(err)
+        }
     }
 
     return (

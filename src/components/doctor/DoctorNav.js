@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch} from "react-redux";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import {clearDoctor} from "../../features/doctorSlice";
 import Logo from "../../assets/images/logo-transparent.webp";
@@ -14,6 +14,7 @@ import {IoPaperPlaneOutline} from "react-icons/io5";
 
 
 function DoctorNav() {
+    const navigate = useNavigate();
     const {auth, setAuth} = useAuth();
     const doctorData = {...auth}
     const dispatch = useDispatch();
@@ -25,13 +26,14 @@ function DoctorNav() {
             const response = await axios.get(`${BASE_URL}/doctors/logout`, {
                 withCredentials: true,
             });
-            console.log(response)
+
+            setAuth({});
+            dispatch(clearDoctor())
+            navigate("/");
         } catch (err) {
             console.log(err);
 
         }
-        setAuth({});
-        dispatch(clearDoctor())
     }
 
     return (

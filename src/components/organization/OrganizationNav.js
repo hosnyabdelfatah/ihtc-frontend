@@ -23,14 +23,14 @@ const OrganizationNav = () => {
         try {
             const response = await axios.get(`${BASE_URL}/organizations/logout`, {
                 withCredentials: true
-            })
+            });
 
+            dispatch(setCurrentUser({}));
+            setAuth({});
             navigate("/");
         } catch (err) {
             console.log(err)
         }
-        dispatch(setCurrentUser({}));
-        setAuth({});
     }
 
     return (
