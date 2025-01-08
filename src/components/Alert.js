@@ -3,7 +3,7 @@ import {useAlert} from "../context/AlertProvider";
 import {IoClose} from "react-icons/io5";
 
 function Alert() {
-    const {alert, setAlert} = useAlert();
+    const {alert, hideAlert} = useAlert();
 
     if (!alert.visible) return null;
     const alertStyle = {
@@ -21,14 +21,25 @@ function Alert() {
         transition: "opacity 0,5s ease-in-out",
     };
 
-    const handleCloseAlert = () => setAlert(({message: "", type: "success", visible: false}));
-    ;
+    const closeButtonStyle = {
+        position: "absolute",
+        top: "5px",
+        right: "10px",
+        background: "none",
+        border: "none",
+        color: alert.type === "success" ? "#155724" : "#721c24",
+        fontSize: "16px",
+        cursor: "pointer",
+    };
+
+    // const handleCloseAlert = () => setAlert(({message: "", type: "success", visible: false}));
+
 
     return (
         <div style={alertStyle} className="alert relative">
             <span
                 className={`${alert.type === 'success' ? "text-green-500" : "text-red-600"} close-alert absolute right-2 top-1 text-lg border rounded rounded-md`}
-                onClick={handleCloseAlert}
+                onClick={hideAlert}
             >
                 <IoClose/>
             </span>
