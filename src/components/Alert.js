@@ -1,5 +1,6 @@
 import React from 'react';
 import {useAlert} from "../context/AlertProvider";
+import {IoClose} from "react-icons/io5";
 
 function Alert() {
     const {alert} = useAlert();
@@ -19,8 +20,13 @@ function Alert() {
         zIndex: 1000,
         transition: "opacity 0,5s ease-in-out",
     };
+
+    const handleCloseAlert = () => alert.hideAlert();
+
     return (
-        <div style={alertStyle}>
+        <div style={alertStyle} className="alert relative">
+            <span
+                className={`${alert.type === 'success' ? "text-green-500" : "text-red-600"} close-alert absolute right-3 top-2 text-lg `}><IoClose/></span>
             {alert.message}
         </div>
     );

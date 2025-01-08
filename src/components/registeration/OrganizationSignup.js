@@ -207,6 +207,7 @@ const OrganizationSignup = () => {
         formData.append("industryField", industry);
         formData.append("country", selectedCountry);
         formData.append("description", description);
+        formData.append("url", `${window.location.origin}/login`)
 
         try {
             setIsLoading(true);
@@ -233,7 +234,7 @@ const OrganizationSignup = () => {
 
             setSuccess(true);
             setIsLoading(false)
-            handleProcess("Welcome inIHTC Community, please check your email");
+            handleProcess("Welcome in IHTC Community, please check your email");
             navigate('/')
         } catch (err) {
             setIsLoading(false)
