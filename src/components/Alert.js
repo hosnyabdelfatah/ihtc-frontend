@@ -25,14 +25,14 @@ function Alert() {
         position: "absolute",
         top: "5px",
         right: "10px",
+        padding: "5px",
         background: "none",
-        border: "none",
         color: alert.type === "success" ? "#155724" : "#721c24",
+        border: `1px solid ${alert.type === "success" ? "#155724" : "#721c24"} `,
+        borderRadius: "10px",
         fontSize: "16px",
         cursor: "pointer",
     };
-
-    // const handleCloseAlert = () => setAlert(({message: "", type: "success", visible: false}));
 
 
     return (
