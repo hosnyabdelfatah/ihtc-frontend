@@ -37,10 +37,7 @@ function Alert() {
 
     return (
         <div style={alertStyle} className="alert relative">
-            <span
-                className={`${alert.type === 'success' ? "text-green-500" : "text-red-600"} close-alert absolute right-2 top-1 text-lg border rounded rounded-md`}
-                onClick={hideAlert}
-            >
+            <span style={closeButtonStyle} onClick={hideAlert}>
                 <IoClose/>
             </span>
             {alert.message}
