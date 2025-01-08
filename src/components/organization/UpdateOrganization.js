@@ -179,7 +179,7 @@ function UpdateOrganization(props) {
 
         try {
             setLoading(true);
-            const response = await axios.patch(`${BASE_URL}/organizations/updateOrganization/${organizationData.id}`, updatedOrganizationData, {
+            const response = await axios.patch(`${BASE_URL}/organizations/updateOrganization/${auth.id}`, updatedOrganizationData, {
                 withCredentials: true,
             });
 
@@ -193,7 +193,8 @@ function UpdateOrganization(props) {
             setDescription('');
 
             setLoading(false);
-            navigate('/organization')
+            handleProcess("Update success");
+            navigate('/organization');
         } catch (err) {
             if (err.response?.status === 409) {
 
