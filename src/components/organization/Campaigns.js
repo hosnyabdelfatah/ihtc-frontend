@@ -52,9 +52,9 @@ const Campaigns = () => {
     const [totalPages, setTotalPages] = useState(0);
     const [itemsPerPage, setItemsPerPage] = useState(20);
     //End pagination const
-    const currentUser = useSelector(getCurrentUser);
+    // const currentUser = useSelector(getCurrentUser);
     // console.log(currentUser)
-    const [search, setSearch] = useState('');
+    // const [search, setSearch] = useState('');
 
     const handleClearInput = () => {
         setClearInput(true)
