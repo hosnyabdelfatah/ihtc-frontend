@@ -116,11 +116,10 @@ const Campaigns = () => {
     const handleSelectAll = () => {
         console.log(isSelectAll)
         if (!isSelectAll) {
-            // setSelectedDoctors((prev) => ({...prev, ...selectAllResult}))
             setSelectedDoctors({...selectedDoctors, ...selectAllResult})
             // console.log(selectedDoctors)
             // console.log(selectAllResult)
-            console.log(Object.keys(selectedDoctors).length);
+            // console.log(Object.keys(selectedDoctors).length);
         } else {
             setSelectedDoctors({})
             setSelectedReceivers([])

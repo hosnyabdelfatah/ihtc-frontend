@@ -20,8 +20,6 @@ const DoctorSpecialties = ({sendParent, clearInput, clearSpecialty}) => {
     let content
     if (isFetching) {
         content = <Skeleton className="w-full h-6" times={10}/>
-    } else if (error) {
-        content = <div>Error loading...</div>
     } else {
         content = data.data.filter((specialty) => {
             return search?.toLowerCase() === ''
