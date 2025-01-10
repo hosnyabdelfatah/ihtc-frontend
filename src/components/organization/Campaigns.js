@@ -69,6 +69,9 @@ const Campaigns = () => {
 
 
     const handleClearConditions = () => {
+        setIsSelectAll(false);
+        handleClearSelectedDoctors()
+        console.log(allSelectedDoctors)
         setSelectedCountry('')
         setSelectedDoctorSpecialtyResult('')
         setSelectedCountryTextResult('')
@@ -116,10 +119,11 @@ const Campaigns = () => {
     const handleSelectAll = () => {
         console.log(isSelectAll)
         if (!isSelectAll) {
+            // setSelectedDoctors((prev) => ({...prev, ...selectAllResult}))
             setSelectedDoctors({...selectedDoctors, ...selectAllResult})
             // console.log(selectedDoctors)
             // console.log(selectAllResult)
-            // console.log(Object.keys(selectedDoctors).length);
+            console.log(Object.keys(selectedDoctors).length);
         } else {
             setSelectedDoctors({})
             setSelectedReceivers([])
@@ -132,7 +136,6 @@ const Campaigns = () => {
     }
 
     const handleClearSelectedDoctors = () => {
-
         setSelectedDoctors({})
         setIsSelectAll(false)
         setCurrentPage(1)
@@ -148,10 +151,11 @@ const Campaigns = () => {
         console.log(receivers)
     }
     const handleValidateCreateCampaign = () => {
-        if (selectedReceivers.length <= 0) {
+
+        if (selectedReceivers.length === 0) {
             handleProcess("You have to select at least one doctor to send campaign!", "error");
-            return
         }
+        return selectedReceivers.length > 0;
     }
 
 
@@ -193,6 +197,8 @@ const Campaigns = () => {
     }
 
     const handleShowModal = () => {
+        console.log(selectedReceivers)
+        if (!handleValidateCreateCampaign()) return;
         setShowModal(!showModal);
     }
 
@@ -377,7 +383,7 @@ const Campaigns = () => {
                         }
                         <table className="w-full mt-5">
                             <tbody className="w-full">
-                            <tr className="w-full flex justify-start items-baseline">
+                            <tr className="w-full flex justify-between items-baseline ">
                                 <td className="mr-3">
                                     <input type="checkbox" className=" w-[20px] h-[20px]"
                                            checked={isSelectAll}
@@ -389,8 +395,11 @@ const Campaigns = () => {
                                            }}
                                     />
                                 </td>
-                                <td>Select all</td>
-                                <td className="  w-[60%] flex flex-row justify-center">
+                                <td className="text-sm w-[15%]">Select all</td>
+                                <td className="text-sm w-[50%] ml-2 ">Select all just if your search include
+                                    specialty
+                                </td>
+                                <td className="  w-[25%] flex flex-row justify-center">
                                     <button onClick={() => {
                                         handleSelectedReceivers()
                                         handleValidateCreateCampaign()
@@ -402,10 +411,8 @@ const Campaigns = () => {
                                     </button>
                                 </td>
                             </tr>
-                            {loading && <Skeleton className="h-8 w-30" times={20}/>}
-                            {error && <div>Error Loading</div>}
-
-                            {
+                            {loading ? <Skeleton className="h-8 w-30" times={20}/>
+                                :
                                 doctors.length > 0 ? doctors?.map((doctor, index) => {
                                     return <tr key={doctor._id}
                                                className="border-b-[1px] w-full flex flex-row justify-between items-center text-xs mb-2  ">
