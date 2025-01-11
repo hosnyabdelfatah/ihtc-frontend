@@ -69,7 +69,7 @@ function ResetPassword() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (newPassword !== newPasswordConfirm) {
-            handleProcess("New password not match new password confirm!");
+            handleProcess("New password not match new password confirm!", "error");
             return
         }
         try {
@@ -84,7 +84,7 @@ function ResetPassword() {
             setNewPassword('');
             setNewPasswordConfirm('');
             setSending(false);
-            handleProcess("Reset password success. Please login", "error");
+            handleProcess("Reset password success. Please login");
             navigate('/login');
             // console.log(response)
 
