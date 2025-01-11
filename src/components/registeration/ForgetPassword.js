@@ -1,14 +1,21 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {useSelector} from "react-redux";
 import {Link, useNavigate, useLocation} from 'react-router-dom';
+import {useAlert} from "../../context/AlertProvider";
 
 import axios from 'axios';
 import BASE_URL from '../../app/apis/baseUrl';
 import {selectCurrentUserState} from "../../features/userAsSlice";
 
 function ForgetPassword() {
-    const {userState} = useSelector(selectCurrentUserState)
+    const {showAlert, hideAlert} = useAlert();
+    const handleProcess = async (message, type) => {
+        showAlert(message, type);
+        await new Promise((resolve) => setTimeout(resolve, 5000));
+        hideAlert();
+    }
 
+    const {userState} = useSelector(selectCurrentUserState);
     const navigate = useNavigate();
     const location = useLocation();
     const errRef = useRef();
@@ -47,10 +54,9 @@ function ForgetPassword() {
     const handleSubmit = async (e) => {
         try {
             setSending(true);
-
             e.preventDefault();
 
-            if (!email || email === '') return setErrMsg('You must enter email')
+            if (!email || email === '') return handleProcess('You must enter email', "error")
 
             const response = await axios.post(`${BASE_URL}/${userState}s/forgetPassword`, {
                 email, url: `${window.location.origin}`, useAs: `${userState}`
@@ -119,9 +125,6 @@ function ForgetPassword() {
                     }}
                 >
                     {sending ? circleSpinner : 'Send'}
-                    {/*{errMsg !== "" ? 'Reset password'*/}
-                    {/*    : sending ? circleSpinner*/}
-                    {/*        : 'Reset password'}*/}
                 </button>
             </form>
         </div>

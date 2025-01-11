@@ -68,6 +68,10 @@ function ResetPassword() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (newPassword !== newPasswordConfirm) {
+            handleProcess("New password not match new password confirm!");
+            return
+        }
         try {
             setSending(true);
             const response = await axios.patch(`${BASE_URL}/${userState}s/resetPassword/${token}`, {
