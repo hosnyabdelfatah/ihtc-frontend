@@ -84,7 +84,7 @@ function ResetPassword() {
             setNewPassword('');
             setNewPasswordConfirm('');
             setSending(false);
-            handleProcess("Reset password success. Please login");
+            handleProcess("Reset password success. Please login", "error");
             navigate('/login');
             // console.log(response)
 
