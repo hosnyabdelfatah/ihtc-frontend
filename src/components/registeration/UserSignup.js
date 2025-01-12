@@ -342,7 +342,7 @@ const UserSignup = () => {
             setAuth({...result});
             setIsLoading(false);
             handleProcess("Welcome in IHTC community, please check your email");
-            navigate('/')
+            navigate('/login')
         } catch (err) {
             setIsLoading(false);
             if (err.response?.status === 409) {
