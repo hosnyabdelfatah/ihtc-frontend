@@ -9,7 +9,7 @@ import Skeleton from "../Skeleton";
 
 const OrganizationPage = () => {
     const {auth} = useAuth();
-
+    // const refreshToken = localStorage.getItem('token');
     const organization = {...auth};
     const [organizationData, setOrganizationData] = useState({});
 
@@ -29,6 +29,7 @@ const OrganizationPage = () => {
     }
 
     useEffect(() => {
+        // console.log("refreshToken", refreshToken)
         getOrganizationData();
     }, []);
 

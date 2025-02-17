@@ -1,0 +1,49 @@
+.organization-nav {
+  position: relative;
+
+  .logo {
+
+  }
+
+  .title {
+
+  }
+
+  .navbar {
+    @media only screen and (max-width: 949px) {
+      width: 50%;
+    }
+
+    @media only screen and (max-width: 833px) {
+      width: 55%;
+    }
+    @media only screen and (max-width: 733px) {
+      width: 60%;
+    }
+
+    @media only screen and (max-width: 685px) {
+      background-color: cornsilk;
+      width: 200px;
+      padding: 10px 5px;
+      position: absolute;
+      right: 15px;
+      top: 60px;
+      flex-direction: column;
+      z-index: 1000;
+
+      .community, .mails, .logout {
+        width: 100%;
+        margin-bottom: 5px;
+      }
+    }
+  }
+
+  .bar-button {
+    display: none;
+
+    @media only screen and (max-width: 685px) {
+      display: block;
+    }
+  }
+
+}

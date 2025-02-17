@@ -292,7 +292,7 @@ const DoctorSignup = () => {
             setSuccess(true);
             setLogging(false);
             handleProcess("Welcome in IHTC community, please check your email");
-            navigate('/login');
+            navigate('/');
         } catch (err) {
             setLogging(false);
             if (err?.response?.status === 400) {

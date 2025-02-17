@@ -235,7 +235,7 @@ const OrganizationSignup = () => {
             setSuccess(true);
             setIsLoading(false)
             handleProcess("Welcome in IHTC Community, please check your email");
-            navigate('/login')
+            navigate('/')
         } catch (err) {
             setIsLoading(false)
             if (err.response?.status === 409) {

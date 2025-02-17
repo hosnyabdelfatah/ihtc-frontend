@@ -5,6 +5,7 @@ import {setCurrentUser} from "../features/currentUserSlice";
 import {selectCurrentUser} from "../features/auth/authSlice";
 import {setCredentials} from "../features/auth/authSlice";
 import useAuth from "./useAuth";
+import {useAlert} from "../context/AlertProvider";
 import axios from "../app/apis/axios";
 import BASE_URL from "../app/apis/baseUrl";
 
@@ -26,6 +27,13 @@ const useRefreshToken = () => {
     const {auth, setAuth} = useAuth();
     const dispatch = useDispatch();
 
+    const {showAlert, hideAlert} = useAlert();
+    const handleProcess = async (message, type) => {
+        showAlert(message, type);
+        await new Promise((resolve) => setTimeout(resolve, 5000));
+        hideAlert();
+    }
+
     dispatch(changeUserState(getCookie("useAs")))
     const {userState} = useSelector(selectCurrentUserState);
     const currentUser = useSelector(selectCurrentUser);
@@ -44,9 +52,13 @@ const useRefreshToken = () => {
     }
 
     const refresh = async () => {
+        // const refreshToken = localStorage.getItem('token')
+        // refreshToken !== '' || refreshToken !== undefined && console.log(refreshToken)
         try {
             const response = await axios.get(`${BASE_URL}/${userType}s/${userType}Refresh`, {
-                headers: {'Content-type': 'application/json'},
+                headers: {
+                    'Content-type': 'application/json'
+                },
                 withCredentials: true,
                 withXSRFToken: true
             });
@@ -61,8 +73,8 @@ const useRefreshToken = () => {
             }
 
         } catch (err) {
-            console.log(err)
-            // console.log(err.response.data.message)
+            // console.log(err)
+            handleProcess(`Welcome ${err.response.data}.Click Enter to login`);
         }
     };
 

@@ -92,6 +92,7 @@ const Login = () => {
             if (userState === 'organization') {
                 dispatch(loginOrganization({user, password})).then((res) => {
                     if (res.payload !== undefined) {
+                        // localStorage.setItem('token', res.payload.token)
                         setAuth({...res.payload})
                         setUser("");
                         setPassword("");
