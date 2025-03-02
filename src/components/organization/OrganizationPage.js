@@ -39,13 +39,7 @@ const OrganizationPage = () => {
         >
             <div className="organization_header border-2"
                  style={{
-                     height: "20%",
-                     // backgroundImage: `url(${organizationData?.banner})`,
-                     // backgroundRepeat: "no-repeat",
-                     // backgroundClip: "border-box",
-                     // backgroundSize: "cover",
-                     // backgroundPosition: "center center ",
-                     // backgroundAttachment: "fixed",
+                     height: "20%"
                  }}>
                 <img src={organizationData?.banner} className="w-full h-[300px]"/>
                 <div className="logo fixed top-[90px] left-[30px] h-[130px] w-[130px] border-2

@@ -24,7 +24,7 @@ function getCookie(name) {
 
 const useRefreshToken = () => {
     const effectRan = useRef(false);
-    const {auth, setAuth} = useAuth();
+    const {setAuth} = useAuth();
     const dispatch = useDispatch();
 
     const {showAlert, hideAlert} = useAlert();
@@ -78,14 +78,14 @@ const useRefreshToken = () => {
         }
     };
 
-    useEffect(() => {
-        if (effectRan.current === true) {
-            refresh();
-        }
-        return () => {
-            effectRan.current = true
-        }
-    }, []);
+    // useEffect(() => {
+    //     if (effectRan.current === true) {
+    //         refresh();
+    //     }
+    //     return () => {
+    //         effectRan.current = true
+    //     }
+    // }, []);
 
     return refresh;
 };

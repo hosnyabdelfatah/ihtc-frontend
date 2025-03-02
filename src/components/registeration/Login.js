@@ -94,6 +94,8 @@ const Login = () => {
                     if (res.payload !== undefined) {
                         // localStorage.setItem('token', res.payload.token)
                         setAuth({...res.payload})
+
+                        setCookie("orgToken", res?.payload?.token, 30)
                         setUser("");
                         setPassword("");
                         console.log(res.payload)
