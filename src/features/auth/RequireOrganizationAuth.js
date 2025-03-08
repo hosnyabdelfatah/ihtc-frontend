@@ -17,7 +17,7 @@ const RequireOrganizationAuth = () => {
     return (
         auth?.name
             ? <Outlet/>
-            : <Navigate to="/login" state={{from: pathname}} replace/>
+            : <Navigate to={pathname} state={{from: pathname}} replace/>
     )
 
 };
