@@ -9,13 +9,14 @@ const RequireOrganizationAuth = () => {
     const {auth} = useAuth();
     const token = useSelector(selectCurrentToken)
     const location = useLocation();
+    console.log(location)
     console.log("Last Location is: " + location.state?.from?.pathname)
     const from = location.state?.from?.pathname || "/";
 
     return (
         auth?.name
             ? <Outlet/>
-            : <Navigate to="/login" state={{from: from}} replace/>
+            : <Navigate to="/login" state={{from: location.state?.from?.pathname}} replace/>
     )
 
 };
