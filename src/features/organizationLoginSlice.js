@@ -11,7 +11,6 @@ export const loginOrganization = createAsyncThunk(
             {
                 withCredentials: true,
                 withXSRFToken: true,
-                headers: {'Content-Type': 'application/json'}
             },
         );
 
