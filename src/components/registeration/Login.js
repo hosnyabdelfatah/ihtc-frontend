@@ -3,7 +3,7 @@ import {useSelector, useDispatch} from "react-redux";
 import {loginOrganization} from "../../features/organizationLoginSlice";
 import {loginDoctor} from "../../features/doctorSlice";
 import {loginUser} from "../../features/userSlice";
-import {Link, useNavigate} from 'react-router-dom';
+import {Link, useNavigate, useLocation} from 'react-router-dom';
 import {setCredentials, setError} from "../../features/auth/authSlice";
 import {changeUserState, setCurrentUser} from "../../store";
 import {selectCurrentUserState} from "../../features/userAsSlice";
@@ -22,6 +22,8 @@ const setCookie = (name, value, days) => {
 
 
 const Login = () => {
+    const location = useLocation();
+    const from = location.state?.from?.pathname || "/";
     const {auth, setAuth} = useAuth();
     // console.log(auth)
     const {showAlert, hideAlert} = useAlert();
@@ -83,7 +85,7 @@ const Login = () => {
         e.preventDefault()
         if (user === '' || password === '') {
             // setErrMsg('User and password is require');
-            handleProcess('User and password is require', "error");
+            await handleProcess('User and password is require', "error");
             setLogging(false)
             return
         }
@@ -101,7 +103,8 @@ const Login = () => {
                         console.log(res.payload)
                         handleProcess(`Welcome back ${res?.payload?.name}`);
                         setLogging(false);
-                        navigate("/");
+                        // console.log()
+                        navigate(from, {replace: true});
                     } else {
                         setLogging(false);
                         if (res?.error?.message === "Request failed with status code 401" || res?.error?.message === "Request failed with status code 400") {
@@ -124,7 +127,7 @@ const Login = () => {
                         console.log(res.payload)
                         handleProcess(`Welcome ${res.payload.firstName} ${res.payload.lastName}`);
                         setLogging(false);
-                        navigate("/");
+                        navigate(from, {replace: true});
                     } else {
                         setLogging(false);
                         console.log(res.error)
@@ -150,7 +153,7 @@ const Login = () => {
                         setPassword("");
                         handleProcess(`Welcome back  ${auth.firstName} ${auth.lastName}`);
                         setLogging(false);
-                        navigate("/");
+                        navigate(from, {replace: true});
                     } else {
                         setLogging(false)
                         if (res?.error?.message === "Network Error") {

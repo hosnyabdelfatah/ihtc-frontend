@@ -74,7 +74,7 @@ const useRefreshToken = () => {
 
         } catch (err) {
             // console.log(err)
-            handleProcess(`Welcome ${err.response.data}.Click Enter to login`);
+            await handleProcess(`Welcome ${err.response.data}.Click Enter to login`);
         }
     };
 
