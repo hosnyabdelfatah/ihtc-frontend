@@ -8,11 +8,13 @@ import useAuth from '../../hooks/useAuth';
 const RequireOrganizationAuth = () => {
     const {auth} = useAuth();
     const token = useSelector(selectCurrentToken)
+    const location = useLocation();
+    const from = location.state?.from?.pathname || "/";
 
     return (
         auth?.name
             ? <Outlet/>
-            : <Navigate to="/login" state={{from: location}} replace/>
+            : <Navigate to="/login" state={{from: from}} replace/>
     )
 
 };

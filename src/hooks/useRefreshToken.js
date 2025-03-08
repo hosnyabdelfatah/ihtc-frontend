@@ -3,7 +3,6 @@ import {useSelector, useDispatch} from "react-redux";
 import {changeUserState, selectCurrentUserState} from "../features/userAsSlice";
 import {setCurrentUser} from "../features/currentUserSlice";
 import {selectCurrentUser} from "../features/auth/authSlice";
-import {setCredentials} from "../features/auth/authSlice";
 import useAuth from "./useAuth";
 import {useAlert} from "../context/AlertProvider";
 import axios from "../app/apis/axios";
@@ -41,14 +40,18 @@ const useRefreshToken = () => {
     const userType = getCookie("useAs")
     // console.log(userState)
     let currentCookie;
+    let currentToken;
     if (userType === 'user') {
         currentCookie = getCookie("userJwt");
+        currentToken = getCookie("userToken");
     } else if (userType === 'doctor') {
         currentCookie = getCookie("doctorJwt");
+        currentToken = getCookie("doctorToken");
         // getDoctorRefresh();
 
     } else if (userType === 'organization') {
         currentCookie = getCookie("organizationJwt");
+        currentToken = getCookie("orgToken");
     }
 
     const refresh = async () => {
