@@ -33,7 +33,7 @@ const OrganizationPage = () => {
             // const response = await axios.get(`${BASE_URL}/organizations/me/${organization?.id}`,
             const response = await axios.get(`${BASE_URL}/organizations/me`);
             console.log(response);
-            const result = response?.data?.data;
+            const result = await response?.data?.data;
 
             setOrganizationData(result)
         } catch (err) {
@@ -43,7 +43,8 @@ const OrganizationPage = () => {
 
     useEffect(() => {
         // console.log("refreshToken", refreshToken)
-        (async () => await getOrganizationData())();
+        // (async () => await getOrganizationData())();
+        getOrganizationData()
     }, []);
 
     return (
