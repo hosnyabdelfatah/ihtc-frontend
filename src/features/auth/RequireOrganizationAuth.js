@@ -11,7 +11,8 @@ const RequireOrganizationAuth = () => {
     const location = useLocation();
     const {pathname} = useLocation();
     console.log(location)
-    console.log("Last Location is: " + location.pathname)
+    console.log(auth)
+    // console.log("Last Location is: " + location.pathname)
     const from = location.state?.from?.pathname || "/";
 
     return (
