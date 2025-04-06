@@ -31,10 +31,7 @@ const OrganizationPage = () => {
     const getOrganizationData = async () => {
         try {
             // const response = await axios.get(`${BASE_URL}/organizations/me/${organization?.id}`,
-            const response = await axios.get(`${BASE_URL}/organizations/me`,
-                {
-                    withCredentials: true
-                });
+            const response = await axios.get(`${BASE_URL}/organizations/me`);
             console.log(response);
             const result = response?.data?.data;
 
