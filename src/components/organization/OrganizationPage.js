@@ -30,10 +30,12 @@ const OrganizationPage = () => {
 
     const getOrganizationData = async () => {
         try {
-            // const response = await axios.get(`${BASE_URL}/organizations/me/${organization?.id}`,
-            const response = await axios.get(`${BASE_URL}/organizations/me`);
+            const response = await axios.get(`${BASE_URL}/organizations/me/${organization?.id}`,
+                {
+                    withCredentials: true
+                });
             console.log(response);
-            const result = await response?.data?.data;
+            const result = response?.data?.data;
 
             setOrganizationData(result)
         } catch (err) {
@@ -43,8 +45,7 @@ const OrganizationPage = () => {
 
     useEffect(() => {
         // console.log("refreshToken", refreshToken)
-        // (async () => await getOrganizationData())();
-        getOrganizationData()
+        (async () => await getOrganizationData())();
     }, []);
 
     return (
