@@ -28,22 +28,24 @@ const OrganizationPage = () => {
     //     }
     // }
 
-    const getOrganizationData = async () => {
-        try {
-            const response = await axios.get(`${BASE_URL}/organizations/me/${organization?.id}`,
-                {
-                    withCredentials: true
-                });
-            console.log(response);
-            const result = response?.data?.data;
-
-            setOrganizationData(result)
-        } catch (err) {
-            console.log(err)
-        }
-    }
 
     useEffect(() => {
+
+        const getOrganizationData = async () => {
+            try {
+                const response = await axios.get(`${BASE_URL}/organizations/me/${organization?.id}`,
+                    {
+                        withCredentials: true
+                    });
+                console.log(response);
+                const result = response?.data?.data;
+
+                setOrganizationData(result)
+            } catch (err) {
+                console.log(err)
+            }
+        }
+
         // console.log("refreshToken", refreshToken)
         (async () => await getOrganizationData())();
     }, []);
