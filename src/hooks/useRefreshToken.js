@@ -46,10 +46,14 @@ const useRefreshToken = () => {
         currentCookie = getCookie("userJwt");
         currentToken = getCookie("userToken");
         console.log('refresh current user Cookie is: ', currentCookie)
+        console.log('refresh current User Token is: ', currentToken)
+
     } else if (userType === 'doctor') {
         currentCookie = getCookie("doctorJwt");
         currentToken = getCookie("doctorToken");
         console.log('refresh current doctor Cookie is: ', currentCookie)
+        console.log('refresh current Doctor Token is: ', currentToken)
+
 
         // getDoctorRefresh();
 
@@ -57,6 +61,7 @@ const useRefreshToken = () => {
         currentCookie = getCookie("organizationJwt");
         currentToken = getCookie("orgToken");
         console.log('refresh current Organization Cookie is: ', currentCookie)
+        console.log('refresh current Organization Token is: ', currentToken)
 
     }
 
