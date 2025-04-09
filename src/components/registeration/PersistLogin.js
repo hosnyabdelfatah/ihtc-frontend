@@ -26,6 +26,7 @@ const PersistLogin = () => {
                     setIsLoading(false);
                 }
             }
+            console.log('Auth is: ', auth)
             !auth?.token ? verifyRefreshToken() : setIsLoading(false);
         }
 
