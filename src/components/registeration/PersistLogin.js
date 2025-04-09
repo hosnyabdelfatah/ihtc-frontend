@@ -8,20 +8,19 @@ import Spinner from "../Spinner";
 const PersistLogin = () => {
     const effectRan = useRef(false);
 
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const refresh = useRefreshToken();
     const {auth} = useAuth();
 
     useEffect(() => {
         if (effectRan.current === true) {
             const verifyRefreshToken = async () => {
-                setIsLoading(true)
                 try {
                     await refresh();
                     console.log(auth)
                 } catch (err) {
                     console.log(err);
-                    setIsLoading(false);
+                    // setIsLoading(false);
                 } finally {
                     setIsLoading(false);
                 }
@@ -36,6 +35,10 @@ const PersistLogin = () => {
         }
     }, []);
 
+    useEffect(() => {
+        console.log(`isLoading: ${isLoading}`)
+        console.log(`at: ${JSON.stringify(auth)}`)
+    }, [isLoading])
 
     return (
         <section className="persist-login w-full h-screen ">

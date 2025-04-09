@@ -66,49 +66,67 @@ const useRefreshToken = () => {
     }
 
 
-    useEffect(() => {
-        const refresh = async () => {
-            // const refreshToken = localStorage.getItem('token')
-            // refreshToken !== '' || refreshToken !== undefined && console.log(refreshToken)
-            try {
-                console.log(`${userType}Refresh`)
-                console.log(`organizationRefresh`)
+    // const refresh = async () => {
+    //     // const refreshToken = localStorage.getItem('token')
+    //     // refreshToken !== '' || refreshToken !== undefined && console.log(refreshToken)
+    //     try {
+    //         console.log(`${userType}Refresh`)
+    //         console.log(`organizationRefresh`)
+    //
+    //         const response = await axios.get(`${BASE_URL}/${userType}s/${userType}Refresh`
+    //             , {
+    //                 withCredentials: true,
+    //                 // withXSRFToken: true
+    //             }
+    //         );
+    //         console.log('UseRefreshToken Response is: ', response)
+    //         if (response?.data || Object.keys(response?.data?.data) > 0) {
+    //             const result = await response?.data?.data;
+    //             console.log(response)
+    //             console.log('Refresh result is: ', result)
+    //             // setAuth({...result});
+    //             setAuth(prev => {
+    //                 console.log(JSON.stringify(prev))
+    //                 console.log(response?.data)
+    //                 return {...prev, userType: response?.data?.data}
+    //             })
+    //             // dispatch(setCurrentUser({...result}));
+    //             dispatch(setCurrentUser(prev => {
+    //
+    //             }))
+    //             return response?.data?.data;
+    //         } else {
+    //             console.log('NO refreshToken response')
+    //             // return null;
+    //         }
+    //
+    //     } catch (err) {
+    //         // console.log(err)
+    //         await handleProcess(`Welcome ${err.response.data}.Click Enter to login`);
+    //     }
+    // };
 
-                const response = await axios.get(`${BASE_URL}/${userType}s/${userType}Refresh`
-                    //     , {
-                    //     headers: {
-                    //         'Content-type': 'application/json'
-                    //     },
-                    //     withCredentials: true,
-                    //     withXSRFToken: true
-                    // }
-                );
-                console.log('UseRefreshToken Response is: ', response)
-                if (response?.data || Object.keys(response?.data?.data) > 0) {
-                    const result = await response?.data?.data;
-                    console.log(response)
-                    console.log('Refresh result is: ', result)
-                    setAuth({...result});
-                    dispatch(setCurrentUser({...result}));
-                    return {...result};
-                } else {
-                    console.log('NO refreshToken response')
-                    return null;
-                }
-
-            } catch (err) {
-                // console.log(err)
-                await handleProcess(`Welcome ${err.response.data}.Click Enter to login`);
+    const refresh = async () => {
+        const response = await axios.get(`${BASE_URL}/${userType}s/${userType}Refresh`
+            , {
+                withCredentials: true,
+                // withXSRFToken: true
             }
-        };
+        );
 
-        if (effectRan.current === true) {
-            refresh();
-        }
-        return () => {
-            effectRan.current = true
-        }
-    }, []);
+        const result = await response?.data?.data;
+
+        setAuth(prev => {
+            console.log(JSON.stringify(prev))
+            console.log(response?.data)
+            return {...prev, userType: response?.data?.data}
+        })
+        // dispatch(setCurrentUser({...result}));
+        dispatch(setCurrentUser(prev => {
+            return {...prev, ...result}
+        }))
+        return response?.data?.data;
+    };
 
     return refresh;
 };
