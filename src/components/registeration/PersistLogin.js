@@ -13,27 +13,28 @@ const PersistLogin = () => {
     const {auth} = useAuth();
 
     useEffect(() => {
+        const verifyRefreshToken = async () => {
+            try {
+                await refresh();
+                console.log(auth)
+            } catch (err) {
+                console.log(err);
+                // setIsLoading(false);
+            } finally {
+                setIsLoading(false);
+            }
+        }
         await refresh();
         // if (effectRan.current === true) {
-        //     const verifyRefreshToken = async () => {
-        //         try {
-        //             await refresh();
-        //             console.log(auth)
-        //         } catch (err) {
-        //             console.log(err);
-        //             // setIsLoading(false);
-        //         } finally {
-        //             setIsLoading(false);
-        //         }
-        //     }
+        //
         //     console.log('Auth is: ', auth)
         //     console.log('Auth Hosny is: ')
         //     !auth?.token ? verifyRefreshToken() : setIsLoading(false);
         // }
 
-        // return () => {
-        //     effectRan.current = true;
-        // }
+        return () => {
+            effectRan.current = true;
+        }
     }, []);
 
     useEffect(() => {
