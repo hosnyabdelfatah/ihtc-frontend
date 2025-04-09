@@ -72,14 +72,16 @@ const useRefreshToken = () => {
             console.log(`${userType}Refresh`)
             console.log(`organizationRefresh`)
 
-            const response = await axios.get(`${BASE_URL}/${userType}s/${userType}Refresh`, {
-                headers: {
-                    'Content-type': 'application/json'
-                },
-                withCredentials: true,
-                withXSRFToken: true
-            });
-            // console.log(response)
+            const response = await axios.get(`${BASE_URL}/${userType}s/${userType}Refresh`
+                //     , {
+                //     headers: {
+                //         'Content-type': 'application/json'
+                //     },
+                //     withCredentials: true,
+                //     withXSRFToken: true
+                // }
+            );
+            console.log('UseRefreshToken Response is: ', response)
             if (response?.data || Object.keys(response?.data?.data) > 0) {
                 const result = await response?.data?.data;
                 console.log(response)
@@ -88,6 +90,7 @@ const useRefreshToken = () => {
                 dispatch(setCurrentUser({...result}));
                 return {...result};
             } else {
+                console.log('NO refreshToken response')
                 return null;
             }
 
