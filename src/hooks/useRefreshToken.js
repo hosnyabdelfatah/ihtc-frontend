@@ -68,6 +68,7 @@ const useRefreshToken = () => {
             // console.log(response)
             if (response?.data || Object.keys(response?.data?.data) > 0) {
                 const result = await response?.data?.data;
+                console.log(response)
                 console.log('Refresh result is: ', result)
                 setAuth({...result});
                 dispatch(setCurrentUser({...result}));
