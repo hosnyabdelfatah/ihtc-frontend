@@ -45,14 +45,19 @@ const useRefreshToken = () => {
     if (userType === 'user') {
         currentCookie = getCookie("userJwt");
         currentToken = getCookie("userToken");
+        console.log('refresh current user Cookie is: ', currentCookie)
     } else if (userType === 'doctor') {
         currentCookie = getCookie("doctorJwt");
         currentToken = getCookie("doctorToken");
+        console.log('refresh current doctor Cookie is: ', currentCookie)
+
         // getDoctorRefresh();
 
     } else if (userType === 'organization') {
         currentCookie = getCookie("organizationJwt");
         currentToken = getCookie("orgToken");
+        console.log('refresh current Organization Cookie is: ', currentCookie)
+
     }
 
     const refresh = async () => {
