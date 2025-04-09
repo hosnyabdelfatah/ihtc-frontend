@@ -66,44 +66,43 @@ const useRefreshToken = () => {
     }
 
 
-    useEffect(() =>
-    const refresh = async () => {
-        // const refreshToken = localStorage.getItem('token')
-        // refreshToken !== '' || refreshToken !== undefined && console.log(refreshToken)
-        try {
-            console.log(`${userType}Refresh`)
-            console.log(`organizationRefresh`)
+    useEffect(() => {
+        const refresh = async () => {
+            // const refreshToken = localStorage.getItem('token')
+            // refreshToken !== '' || refreshToken !== undefined && console.log(refreshToken)
+            try {
+                console.log(`${userType}Refresh`)
+                console.log(`organizationRefresh`)
 
-            const response = await axios.get(`${BASE_URL}/${userType}s/${userType}Refresh`
-                //     , {
-                //     headers: {
-                //         'Content-type': 'application/json'
-                //     },
-                //     withCredentials: true,
-                //     withXSRFToken: true
-                // }
-            );
-            console.log('UseRefreshToken Response is: ', response)
-            if (response?.data || Object.keys(response?.data?.data) > 0) {
-                const result = await response?.data?.data;
-                console.log(response)
-                console.log('Refresh result is: ', result)
-                setAuth({...result});
-                dispatch(setCurrentUser({...result}));
-                return {...result};
-            } else {
-                console.log('NO refreshToken response')
-                return null;
+                const response = await axios.get(`${BASE_URL}/${userType}s/${userType}Refresh`
+                    //     , {
+                    //     headers: {
+                    //         'Content-type': 'application/json'
+                    //     },
+                    //     withCredentials: true,
+                    //     withXSRFToken: true
+                    // }
+                );
+                console.log('UseRefreshToken Response is: ', response)
+                if (response?.data || Object.keys(response?.data?.data) > 0) {
+                    const result = await response?.data?.data;
+                    console.log(response)
+                    console.log('Refresh result is: ', result)
+                    setAuth({...result});
+                    dispatch(setCurrentUser({...result}));
+                    return {...result};
+                } else {
+                    console.log('NO refreshToken response')
+                    return null;
+                }
+
+            } catch (err) {
+                // console.log(err)
+                await handleProcess(`Welcome ${err.response.data}.Click Enter to login`);
             }
+        };
 
-        } catch (err) {
-            // console.log(err)
-            await handleProcess(`Welcome ${err.response.data}.Click Enter to login`);
-        }
-    };
-
-
-    if (effectRan.current === true) {
+        if (effectRan.current === true) {
             refresh();
         }
         return () => {
