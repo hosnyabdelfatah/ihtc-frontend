@@ -100,14 +100,14 @@ const useRefreshToken = () => {
         }
     };
 
-    // useEffect(() => {
-    //     if (effectRan.current === true) {
-    //         refresh();
-    //     }
-    //     return () => {
-    //         effectRan.current = true
-    //     }
-    // }, []);
+    useEffect(() => {
+        if (effectRan.current === true) {
+            refresh();
+        }
+        return () => {
+            effectRan.current = true
+        }
+    }, []);
 
     return refresh;
 };
