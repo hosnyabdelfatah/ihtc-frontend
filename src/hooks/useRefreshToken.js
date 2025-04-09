@@ -39,6 +39,7 @@ const useRefreshToken = () => {
 
     const userType = getCookie("useAs")
     // console.log(userState)
+    console.log('Refresh User type is: ', userType)
     let currentCookie;
     let currentToken;
     if (userType === 'user') {
