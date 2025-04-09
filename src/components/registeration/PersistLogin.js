@@ -27,6 +27,7 @@ const PersistLogin = () => {
                 }
             }
             console.log('Auth is: ', auth)
+            console.log('Auth Hosny is: ')
             !auth?.token ? verifyRefreshToken() : setIsLoading(false);
         }
 
