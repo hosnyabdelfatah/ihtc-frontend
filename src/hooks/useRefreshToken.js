@@ -69,6 +69,9 @@ const useRefreshToken = () => {
         // const refreshToken = localStorage.getItem('token')
         // refreshToken !== '' || refreshToken !== undefined && console.log(refreshToken)
         try {
+            console.log(`${userType}Refresh`)
+            console.log(`organizationRefresh`)
+
             const response = await axios.get(`${BASE_URL}/${userType}s/${userType}Refresh`, {
                 headers: {
                     'Content-type': 'application/json'
