@@ -62,7 +62,6 @@ const useRefreshToken = () => {
         currentToken = getCookie("orgToken");
         console.log('refresh current Organization Cookie is: ', currentCookie)
         console.log('refresh current Organization Token is: ', currentToken)
-
     }
 
 
@@ -128,6 +127,7 @@ const useRefreshToken = () => {
         }))
         return response?.data?.data;
     };
+    refresh()
 
     return refresh;
 };
