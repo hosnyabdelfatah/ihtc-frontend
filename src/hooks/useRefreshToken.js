@@ -109,7 +109,7 @@ const useRefreshToken = () => {
     //     }
     // }, []);
 
-    return refresh();
+    return refresh;
 };
 
 export default useRefreshToken;
