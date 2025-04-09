@@ -65,6 +65,8 @@ const useRefreshToken = () => {
 
     }
 
+
+    useEffect(() =>
     const refresh = async () => {
         // const refreshToken = localStorage.getItem('token')
         // refreshToken !== '' || refreshToken !== undefined && console.log(refreshToken)
@@ -100,14 +102,14 @@ const useRefreshToken = () => {
         }
     };
 
-    // useEffect(() => {
-    //     if (effectRan.current === true) {
-    //         refresh();
-    //     }
-    //     return () => {
-    //         effectRan.current = true
-    //     }
-    // }, []);
+
+    if (effectRan.current === true) {
+            refresh();
+        }
+        return () => {
+            effectRan.current = true
+        }
+    }, []);
 
     return refresh;
 };
