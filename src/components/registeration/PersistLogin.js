@@ -24,7 +24,6 @@ const PersistLogin = () => {
                 setIsLoading(false);
             }
         }
-        await refresh();
         // if (effectRan.current === true) {
         //
         //     console.log('Auth is: ', auth)
