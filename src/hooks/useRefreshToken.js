@@ -113,8 +113,9 @@ const useRefreshToken = () => {
                 // withXSRFToken: true
             }
         );
-
+        console.log(response)
         const result = await response?.data?.data;
+        const token = await response?.data?.token;
 
         setAuth(prev => {
             console.log(JSON.stringify(prev))
@@ -123,7 +124,7 @@ const useRefreshToken = () => {
         })
         // dispatch(setCurrentUser({...result}));
         dispatch(setCurrentUser(prev => {
-            return {...prev, ...result}
+            return {...prev, ...result, token}
         }))
         return response?.data?.data;
     };
