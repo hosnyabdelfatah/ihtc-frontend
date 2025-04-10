@@ -1,18 +1,45 @@
 import {useState, useEffect, useRef} from "react";
+import {useDispatch} from "react-redux";
 import {Outlet} from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import useRefreshToken from "../../hooks/useRefreshToken";
 import Skeleton from "../Skeleton";
 import Spinner from "../Spinner";
+import axios from "../../app/apis/axios";
+import BASE_URL from "../../app/apis/baseUrl";
+import {setCurrentUser} from "../../features/currentUserSlice";
 
 const PersistLogin = () => {
+    const dispatch = useDispatch();
     const effectRan = useRef(false);
 
     const [isLoading, setIsLoading] = useState(true);
-    const refresh = useRefreshToken();
-    const {auth} = useAuth();
+    // const refresh = useRefreshToken();
+    const {auth, setAuth} = useAuth();
 
     useEffect(() => {
+        const refresh = async () => {
+            const response = await axios.get(`${BASE_URL}/${userType}s/${userType}Refresh`
+                , {
+                    withCredentials: true,
+                    // withXSRFToken: true
+                }
+            );
+            console.log(response)
+            const result = await response?.data?.data;
+            const token = await response?.data?.token;
+
+            setAuth(prev => {
+                console.log(JSON.stringify(prev))
+                console.log(response?.data)
+                return {...prev, userType: response?.data?.data}
+            })
+            // dispatch(setCurrentUser({...result}));
+            dispatch(setCurrentUser(prev => {
+                return {...prev, ...result, token}
+            }))
+            return response?.data?.data;
+        };
         const verifyRefreshToken = async () => {
             try {
                 await refresh();
@@ -31,9 +58,9 @@ const PersistLogin = () => {
         //     !auth?.token ? verifyRefreshToken() : setIsLoading(false);
         // }
 
-        return () => {
-            effectRan.current = true;
-        }
+        // return () => {
+        //     effectRan.current = true;
+        // }
     }, []);
 
     useEffect(() => {
