@@ -28,20 +28,10 @@ const PersistLogin = () => {
             setIsLoading(false);
         }
     }
-
+    
     useEffect(() => {
-        if (effectRan.current === true) {
-            !auth?.name ? verifyRefreshToken() : setIsLoading(false);
-            !auth.name && console.log("No Auth Name")
-        }
-
-        return () => {
-            effectRan.current = true;
-        }
-    }, []);
-    // useEffect(() => {
-    //     !auth?.name ? verifyRefreshToken() : setIsLoading(false);
-    // }, [])
+        !auth?.name ? verifyRefreshToken() : setIsLoading(false);
+    }, [])
     // useEffect(() => {
     //     console.log(`isLoading: ${isLoading}`)
     //     console.log(`at: ${JSON.stringify(auth)}`)
