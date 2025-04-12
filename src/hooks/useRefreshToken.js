@@ -82,7 +82,7 @@ const useRefreshToken = () => {
         //     return {userType: response?.data?.data}
         // })
         setAuth({...result, token})
-        return response?.data?.data;
+        return {...result, token};
     };
     // refresh()
 

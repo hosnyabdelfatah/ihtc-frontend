@@ -15,13 +15,12 @@ const PersistLogin = () => {
 
     const [isLoading, setIsLoading] = useState(true);
     const refresh = useRefreshToken();
-    const {auth, setAuth} = useAuth();
+    const {auth} = useAuth();
     // console.log(auth.token)
 
     const verifyRefreshToken = async () => {
         try {
             await refresh();
-            console.log({auth})
         } catch (err) {
             console.log(err);
             setIsLoading(false);
@@ -30,23 +29,19 @@ const PersistLogin = () => {
         }
     }
 
-    // useEffect(() => {
-    //     if (effectRan.current === true) {
-    //
-    //         !auth?.name ? verifyRefreshToken() : setIsLoading(false);
-    //
-    //         console.log('Auth is: ', auth)
-    //         console.log('Auth Hosny is: ')
-    //         !auth.name && console.log("No Auth Name")
-    //     }
-    //
-    //     return () => {
-    //         effectRan.current = true;
-    //     }
-    // }, []);
     useEffect(() => {
-        !auth?.name ? verifyRefreshToken() : setIsLoading(false);
-    }, [])
+        if (effectRan.current === true) {
+            !auth?.name ? verifyRefreshToken() : setIsLoading(false);
+            !auth.name && console.log("No Auth Name")
+        }
+
+        return () => {
+            effectRan.current = true;
+        }
+    }, []);
+    // useEffect(() => {
+    //     !auth?.name ? verifyRefreshToken() : setIsLoading(false);
+    // }, [])
     // useEffect(() => {
     //     console.log(`isLoading: ${isLoading}`)
     //     console.log(`at: ${JSON.stringify(auth)}`)
