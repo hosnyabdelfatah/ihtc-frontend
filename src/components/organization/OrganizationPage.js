@@ -30,7 +30,6 @@ const OrganizationPage = () => {
 
 
     useEffect(() => {
-
         const getOrganizationData = async () => {
             try {
                 const response = await axios.get(`${BASE_URL}/organizations/me`,
@@ -40,7 +39,7 @@ const OrganizationPage = () => {
                 console.log(response);
                 const result = response?.data?.data;
 
-                setOrganizationData(result)
+                setOrganizationData({...result})
             } catch (err) {
                 console.log(err)
             }
