@@ -44,66 +44,26 @@ const useRefreshToken = () => {
     let currentToken;
     if (userType === 'user') {
         currentCookie = getCookie("userJwt");
-        currentToken = getCookie("userToken");
+        // currentToken = getCookie("userToken");
         console.log('refresh current user Cookie is: ', currentCookie)
-        console.log('refresh current User Token is: ', currentToken)
+        // console.log('refresh current User Token is: ', currentToken)
 
     } else if (userType === 'doctor') {
         currentCookie = getCookie("doctorJwt");
-        currentToken = getCookie("doctorToken");
+        // currentToken = getCookie("doctorToken");
         console.log('refresh current doctor Cookie is: ', currentCookie)
-        console.log('refresh current Doctor Token is: ', currentToken)
+        // console.log('refresh current Doctor Token is: ', currentToken)
 
 
         // getDoctorRefresh();
 
     } else if (userType === 'organization') {
         currentCookie = getCookie("organizationJwt");
-        currentToken = getCookie("orgToken");
+        // currentToken = getCookie("orgToken");
         console.log('refresh current Organization Cookie is: ', currentCookie)
-        console.log('refresh current Organization Token is: ', currentToken)
+        // console.log('refresh current Organization Token is: ', currentToken)
     }
 
-
-    // const refresh = async () => {
-    //     // const refreshToken = localStorage.getItem('token')
-    //     // refreshToken !== '' || refreshToken !== undefined && console.log(refreshToken)
-    //     try {
-    //         console.log(`${userType}Refresh`)
-    //         console.log(`organizationRefresh`)
-    //
-    //         const response = await axios.get(`${BASE_URL}/${userType}s/${userType}Refresh`
-    //             , {
-    //                 withCredentials: true,
-    //                 // withXSRFToken: true
-    //             }
-    //         );
-    //         console.log('UseRefreshToken Response is: ', response)
-    //         if (response?.data || Object.keys(response?.data?.data) > 0) {
-    //             const result = await response?.data?.data;
-    //             console.log(response)
-    //             console.log('Refresh result is: ', result)
-    //             // setAuth({...result});
-    //             setAuth(prev => {
-    //                 console.log(JSON.stringify(prev))
-    //                 console.log(response?.data)
-    //                 return {...prev, userType: response?.data?.data}
-    //             })
-    //             // dispatch(setCurrentUser({...result}));
-    //             dispatch(setCurrentUser(prev => {
-    //
-    //             }))
-    //             return response?.data?.data;
-    //         } else {
-    //             console.log('NO refreshToken response')
-    //             // return null;
-    //         }
-    //
-    //     } catch (err) {
-    //         // console.log(err)
-    //         await handleProcess(`Welcome ${err.response.data}.Click Enter to login`);
-    //     }
-    // };
 
     const refresh = async () => {
         const response = await axios.get(`${BASE_URL}/${userType}s/${userType}Refresh`
@@ -116,18 +76,15 @@ const useRefreshToken = () => {
         const result = await response?.data?.data;
         const token = await response?.data?.token;
 
-        setAuth(prev => {
-            console.log(JSON.stringify(prev))
-            console.log(response?.data)
-            return {...prev, userType: response?.data?.data}
-        })
-        // dispatch(setCurrentUser({...result}));
-        dispatch(setCurrentUser(prev => {
-            return {...prev, ...result, token}
-        }))
+        // setAuth(prev => {
+        //     console.log(JSON.stringify(prev))
+        //     console.log(response?.data)
+        //     return {userType: response?.data?.data}
+        // })
+        setAuth({...result, token})
         return response?.data?.data;
     };
-    refresh()
+    // refresh()
 
     return refresh;
 };

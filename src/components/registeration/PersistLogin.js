@@ -14,59 +14,43 @@ const PersistLogin = () => {
     const effectRan = useRef(false);
 
     const [isLoading, setIsLoading] = useState(true);
-    // const refresh = useRefreshToken();
+    const refresh = useRefreshToken();
     const {auth, setAuth} = useAuth();
+    // console.log(auth.token)
 
-    useEffect(() => {
-        const refresh = async () => {
-            const response = await axios.get(`${BASE_URL}/${userType}s/${userType}Refresh`
-                , {
-                    withCredentials: true,
-                    // withXSRFToken: true
-                }
-            );
-            console.log(response)
-            const result = await response?.data?.data;
-            const token = await response?.data?.token;
-
-            setAuth(prev => {
-                console.log(JSON.stringify(prev))
-                console.log(response?.data)
-                return {...prev, userType: response?.data?.data}
-            })
-            // dispatch(setCurrentUser({...result}));
-            dispatch(setCurrentUser(prev => {
-                return {...prev, ...result, token}
-            }))
-            return response?.data?.data;
-        };
-        const verifyRefreshToken = async () => {
-            try {
-                await refresh();
-                console.log(auth)
-            } catch (err) {
-                console.log(err);
-                // setIsLoading(false);
-            } finally {
-                setIsLoading(false);
-            }
+    const verifyRefreshToken = async () => {
+        try {
+            await refresh();
+            console.log(auth)
+        } catch (err) {
+            console.log(err);
+            setIsLoading(false);
+        } finally {
+            setIsLoading(false);
         }
-        // if (effectRan.current === true) {
-        //
-        //     console.log('Auth is: ', auth)
-        //     console.log('Auth Hosny is: ')
-        //     !auth?.token ? verifyRefreshToken() : setIsLoading(false);
-        // }
+    }
 
-        // return () => {
-        //     effectRan.current = true;
-        // }
-    }, []);
-
+    // useEffect(() => {
+    //     if (effectRan.current === true) {
+    //
+    //         !auth?.name ? verifyRefreshToken() : setIsLoading(false);
+    //
+    //         console.log('Auth is: ', auth)
+    //         console.log('Auth Hosny is: ')
+    //         !auth.name && console.log("No Auth Name")
+    //     }
+    //
+    //     return () => {
+    //         effectRan.current = true;
+    //     }
+    // }, []);
     useEffect(() => {
-        console.log(`isLoading: ${isLoading}`)
-        console.log(`at: ${JSON.stringify(auth)}`)
-    }, [isLoading])
+        !auth?.name ? verifyRefreshToken() : setIsLoading(false);
+    }, [])
+    // useEffect(() => {
+    //     console.log(`isLoading: ${isLoading}`)
+    //     console.log(`at: ${JSON.stringify(auth)}`)
+    // }, [isLoading])
 
     return (
         <section className="persist-login w-full h-screen ">

@@ -1,11 +1,9 @@
 import './App.css';
 import {useEffect} from "react";
-import {useSelector, useDispatch} from "react-redux";
-import {useFetchOrganizationsQuery} from '../store';
-import {selectCurrentUserState, changeUserState} from "../features/userAsSlice";
-import {Routes, Route, useNavigate} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {changeUserState} from "../features/userAsSlice";
+import {Routes, Route} from "react-router-dom";
 import OrganizationLayout from "./organization/OrganizationLayout";
-import axios from 'axios';
 import Login from './registeration/Login'
 import Home from './Home';
 import Welcome from "./Welcome";
@@ -54,6 +52,8 @@ import UpdateDoctorImage from "./doctor/UpdateDoctorImage";
 import UpdateUserData from "./User/UpdateUserData";
 import UpdateUserImage from "./User/UpdateUserImage";
 import ResetPasswordSuccess from "./registeration/ResetPasswordSuccess";
+import {useAlert} from "../context/AlertProvider";
+import {selectCurrentUser} from "../features/auth/authSlice";
 
 // import InsertDoctors from "./admins/dashboard/InsertDoctors";
 
@@ -78,6 +78,7 @@ function App() {
         const expires = `expires=${date.toUTCString()}`;
         document.cookie = `${name}=${value}; ${expires}; path=/`;
     };
+
 
     useEffect(() => {
         const userType = getCookie("useAs")
